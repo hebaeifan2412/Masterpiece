@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Assignment;
 use App\Models\ClassProfile;
 use App\Models\Submission;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+
 
 class AssignmentController extends Controller
 {
@@ -102,8 +103,8 @@ class AssignmentController extends Controller
         $assignment = Assignment::findOrFail($id);
         $assignment->open_time = Carbon::parse($assignment->open_time)->format('Y-m-d\TH:i');
         $assignment->close_time =Carbon::parse($assignment->close_time)->format('Y-m-d\TH:i');
-        $classes = Auth::user()->teacherProfile->classes()->with('grade')->get();
-        return view('teacher.assignments.edit', compact('assignment', 'classes'));
+        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
+        return view('teacher.assignments.edit', compact('assignment', 'classess'));
     }
 
     public function update(Request $request, $id)

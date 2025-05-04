@@ -12,11 +12,11 @@
         @csrf
         @method('PUT')
         <div class="mb-3">
-            <label class="form-label">Course</label>
-            <select name="course_id" class="form-select" required>
-                @foreach ($courses as $course)
-                    <option value="{{ $course->id }}" {{ $assignment->course_id == $course->id ? 'selected' : '' }}>
-                        {{ $course->title }} ({{ $course->code }})
+            <label class="form-label">Class</label>
+            <select name="class_id" class="form-select" required>
+                @foreach ($classess as $class)
+                    <option value="{{ $class->id }}" {{ $assignment->class_id == $class->id ? 'selected' : '' }}>
+                        {{ $class->grade->name}} - {{ $class->section}}
                     </option>
                 @endforeach
             </select>

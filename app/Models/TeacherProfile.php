@@ -22,9 +22,8 @@ class TeacherProfile extends Model
         'pic',
     ];
 
-    /**
-     * العلاقة مع جدول المستخدمين
-     */
+
+    
     public function user()
     {
         return $this->belongsTo(User::class);

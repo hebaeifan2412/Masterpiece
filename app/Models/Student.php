@@ -32,7 +32,7 @@ class Student extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function class()
+    public function classProfile()
     {
         return $this->belongsTo(ClassProfile::class, 'class_id');
     }

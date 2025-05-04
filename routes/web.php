@@ -30,6 +30,7 @@ use App\Http\Controllers\Student\StudentAssignmentController;
 use App\Http\Controllers\Student\StudentController as StudentStudentController;
 use App\Http\Controllers\Student\StudentCourseController;
 use App\Http\Controllers\Student\StudentProfileController;
+use App\Http\Controllers\Student\StudentSubjectController;
 use App\Http\Controllers\Teacher\AssignmentController;
 use App\Http\Controllers\Teacher\TeacherCourseController;
 use App\Http\Controllers\Teacher\TeacherMarkController;
@@ -142,8 +143,8 @@ Route::put('teacher/submissions/{submission}/mark', [AssignmentController::class
     Route::get('password/edit', [PasswordController::class, 'editStudent'])->name('password.edit');
     Route::put('password/update', [PasswordController::class, 'updateStudent'])->name('password.update');
 
-    Route::get('/courses', [StudentCourseController::class, 'index'])->name('courses.index');
-    Route::get('/courses/{course}', [StudentCourseController::class, 'showCourse'])->name('courses.show');
+    Route::get('/courses', [StudentSubjectController::class, 'index'])->name('courses.index');
+    Route::get('/courses/{course}', [StudentSubjectController::class, 'showCourse'])->name('courses.show');
 
 
     Route::get('/quizzes', [QuizStudentController::class, 'index'])->name('quizzes.index');

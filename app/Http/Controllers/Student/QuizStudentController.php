@@ -12,19 +12,15 @@ class QuizStudentController extends Controller
 {
     public function index()
     {
-        $now = Carbon::now();
+        $now =  Carbon::now();
         $student = Auth::user()->student;
 
-          // Get the student's class
-    $classId = $student->class_id;
+        $classId = $student->class_id;
 
-    // Get quizzes only for courses in that class
-    $quizzes = Quiz::where('status', 'show')
-        ->whereHas('course', function ($query) use ($classId) {
-            $query->where('class_id', $classId);
-        })
-        ->with('course')
-        ->get();
+        $quizzes = Quiz::where('status', 'show')
+            ->where('class_id', $classId)
+            ->with(['classProfile.grade', 'teacher.subject']) // optional: load teacher & subject
+            ->get();
 
         return view('student.quiz.index', compact('quizzes', 'now'));
     }
@@ -80,7 +76,6 @@ class QuizStudentController extends Controller
             'student_id' => $student->national_id,
         ], [
             'marks' => $score,
-           
         ]);
 
         return redirect()->route('student.quizzes.results', $quiz->id)
@@ -96,10 +91,9 @@ class QuizStudentController extends Controller
             ->where('student_id', $student->national_id)
             ->get();
 
-            $mark = Mark::where('quiz_id', $quizId)
+        $mark = Mark::where('quiz_id', $quizId)
             ->where('student_id', $student->national_id)
             ->first();
-
 
         return view('student.quiz.result', compact('quiz', 'answers', 'mark'));
     }

@@ -14,13 +14,19 @@
         @php
             $submission = $assignment->submissions->where('student_id', auth()->user()->student->national_id)->first();
             $now = now();
+
+            $subjectName = $assignment->classProfiles
+                ->flatMap->teachers
+                ->pluck('subject.name')
+                ->unique()
+                ->implode(', ');
         @endphp
 
         <div class="card mb-4">
             <div class="card-body">
                 <h5 class="card-title">{{ $assignment->title }}</h5>
-                <p class="card-text">{{ $assignment->description }}</p>
-                <p class="mb-1"><strong>Course:</strong> {{ $assignment->course->title }}</p>
+                <p class="card-text">{{ $assignment->description ?? 'No description.' }}</p>
+                <p class="mb-1"><strong>Subject:</strong> {{ $subjectName ?: 'N/A' }}</p>
                 <p class="mb-1">
                     <strong>Open:</strong> {{ \Carbon\Carbon::parse($assignment->open_time)->format('Y-m-d H:i') }} <br>
                     <strong>Close:</strong> {{ \Carbon\Carbon::parse($assignment->close_time)->format('Y-m-d H:i') }}
@@ -29,7 +35,7 @@
                 @if ($submission)
                     <div class="mt-3">
                         <p class="text-primary mb-1">You have submitted this assignment:</p>
-                        <a  href="{{ asset('storage/' . $submission->file_path) }}" target="_blank"class="btn lb btn-sm">
+                        <a href="{{ asset('storage/' . $submission->file_path) }}" target="_blank" class="btn lb btn-sm">
                             <i class="fas fa-file-download me-1"></i> View Submission
                         </a>
 
@@ -37,7 +43,7 @@
                             <form action="{{ route('student.assignments.submission.delete', $submission->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete your submission?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn ld btn-sm  ms-2">
+                                <button type="submit" class="btn ld btn-sm ms-2">
                                     <i class="fas fa-trash-alt"></i> Delete Submission
                                 </button>
                             </form>
