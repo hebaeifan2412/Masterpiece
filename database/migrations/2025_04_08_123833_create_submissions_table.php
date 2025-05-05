@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('file_path')->nullable(); // if uploaded file
             $table->integer('mark')->nullable();
             $table->dateTime('submitted_at')->nullable();
+            $table->text('feedback')->nullable();
             $table->timestamps();
             
         });

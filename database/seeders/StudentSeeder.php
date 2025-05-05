@@ -7,31 +7,40 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class StudentSeeder extends Seeder
 {
     public function run(): void
     {
-        $classes = ClassProfile::with('grade')->get();
-
-        if ($classes->isEmpty()) {
-            $this->command->warn("No classes found. Please seed ClassProfiles first.");
-            return;
-        }
-
-        $studentsPerClass = 5; // لو عندك مثلاً 10 صفوف × 5 طلاب = 50 طالب
+        $targetClasses = [
+            ['grade' => 'Grade 1', 'section' => 'A'],
+            ['grade' => 'Grade 1', 'section' => 'B'],
+            ['grade' => 'Grade 2', 'section' => 'A'],
+        ];
 
         $firstNames = ['Ahmad', 'Yousef', 'Omar', 'Khaled', 'Rami', 'Tariq', 'Lina', 'Sara', 'Mona', 'Noor'];
         $lastNames = ['Al-Fayez', 'Al-Momani', 'Al-Zoubi', 'Al-Kilani', 'Al-Hadidi', 'Al-Dabbas', 'Al-Khatib', 'Al-Shawabkeh'];
-
         $studentCounter = 1;
 
-        foreach ($classes as $class) {
-            for ($i = 0; $i < $studentsPerClass; $i++) {
+        $targetClassProfiles = ClassProfile::with('grade')
+            ->whereHas('grade', function ($q) use ($targetClasses) {
+                $q->whereIn('name', array_column($targetClasses, 'grade'));
+            })
+            ->get()
+            ->filter(function ($class) use ($targetClasses) {
+                foreach ($targetClasses as $target) {
+                    if ($class->grade->name === $target['grade'] && $class->section === $target['section']) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+
+        foreach ($targetClassProfiles as $class) {
+            for ($i = 0; $i < 15; $i++) {
                 $firstname = $firstNames[array_rand($firstNames)];
                 $lastname = $lastNames[array_rand($lastNames)];
-                $email = strtolower($firstname) . $studentCounter . '@example.com';
+                $email = strtolower($firstname) . $studentCounter . '@numaschool.com';
 
                 $user = User::create([
                     'firstname' => $firstname,
@@ -42,7 +51,7 @@ class StudentSeeder extends Seeder
                     'phone_no' => '078' . random_int(1000000, 9999999),
                     'password' => Hash::make('Password123'),
                     'image' => 'user.jpg',
-                    'role_id' => 2, // 2 = Student
+                    'role_id' => 2,
                 ]);
 
                 Student::create([
@@ -64,8 +73,6 @@ class StudentSeeder extends Seeder
 
     private function calculateDOB($gradeName)
     {
-        $currentYear = now()->year;
-
         $gradeAge = [
             'Grade 1' => 6,
             'Grade 2' => 7,
@@ -79,7 +86,8 @@ class StudentSeeder extends Seeder
             'Grade 10' => 15,
         ];
 
-        $age = $gradeAge[$gradeName] ?? 10; 
+        $age = $gradeAge[$gradeName] ?? 10;
+
         return now()->subYears($age)->subMonths(random_int(0, 11))->subDays(random_int(0, 30));
     }
 }

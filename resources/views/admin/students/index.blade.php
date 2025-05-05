@@ -4,8 +4,36 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0 fw-bold text-dark">Students Management</h2>
-       
+        <a href="{{ route('admin.students.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i> Add New Student
+        </a>
     </div>
+    <form method="GET" action="{{ route('admin.students.index') }}" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="search" class="form-control" placeholder="Search by name or email..." value="{{ request('search') }}">
+        </div>
+        <div class="col-md-4">
+            <select name="class_id" class="form-select" onchange="this.form.submit()">
+                <option value="">Class</option>
+                @foreach($classProfiles as $class)
+                <option value="{{ $class->id }}" {{ request('class_id') == $class->id ? 'selected' : '' }}>
+                    {{ $class->grade->name }} - Section {{ $class->section }}
+                </option>
+            @endforeach
+                   
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-filter me-1"></i> Apply
+            </button>
+        </div>
+        <div class="col-md-2">
+            <a href="{{ route('admin.students.index') }}" class="btn btn-secondary w-100">
+                <i class="fas fa-sync-alt me-1"></i> Reset
+            </a>
+        </div>
+    </form>
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show">
@@ -80,7 +108,7 @@
                                            title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        {{-- <form action="{{ route('admin.students.destroy', $student->national_id) }}" method="POST">
+                                        <form action="{{ route('admin.students.destroy', $student->national_id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" 
@@ -89,7 +117,7 @@
                                                     onclick="return confirm('Are you sure you want to delete this student?')">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
-                                        </form> --}}
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -101,4 +129,11 @@
     </div>
 </div>
 
+<div class="d-flex flex-column align-items-center mt-4">
+    <div class="mb-2 text-muted ">
+        Showing {{ $students->firstItem() }} to {{ $students->lastItem() }} of {{ $students->total() }} results
+    </div>
+
+    {{ $students->withQueryString()->links('pagination::bootstrap-5') }}
+</div>
 @endsection

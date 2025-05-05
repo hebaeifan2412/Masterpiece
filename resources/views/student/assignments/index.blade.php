@@ -47,6 +47,16 @@
                                     <i class="fas fa-trash-alt"></i> Delete Submission
                                 </button>
                             </form>
+                            @if ($submission && $submission->mark !== null)
+    <div class="alert alert-success">
+        <strong>Mark:</strong> {{ $submission->mark }} / 100 <br>
+        <strong>Feedback:</strong> {{ $submission->feedback ?? 'No feedback given.' }}
+    </div>
+@else
+    <div class="alert alert-warning">
+        <strong>Not graded yet.</strong>
+    </div>
+@endif
                         @else
                             <div class="text-muted mt-2">Submission time has ended.</div>
                         @endif

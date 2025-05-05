@@ -17,6 +17,7 @@
                         <th>Submitted At</th>
                         <th>File</th>
                         <th>Mark</th>
+                        <th>Feedback</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -42,6 +43,9 @@
                                 </td>
                                 <td>
                                     <input type="number" name="mark" class="form-control form-control-sm" value="{{ $submission->mark ?? '' }}" min="0" max="100">
+                                </td>
+                                <td>
+                                    <textarea name="feedback" class="form-control form-control-sm" rows="2">{{ $submission->feedback }}</textarea>
                                 </td>
                                 <td>
                                     <button type="submit" class="btn btn-sm btn-primary">Save</button>

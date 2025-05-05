@@ -11,20 +11,21 @@
        
         <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="{{ asset('dash-front/images/dashboard/people.png') }}" alt="people">
+              <img src="{{ Auth::user()->image != null ? asset('storage/' . Auth::user()->image) : asset('image/' . 'user.jpg') }}"
+               alt="user">
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-            <a class="dropdown-item" href="{{ route('teacher.profile.edit') }}">
+            <a class="dropdown-item text-primary" href="{{ route('teacher.profile.edit') }}">
               <i class="fas fa-user-cog text-primary me-2"></i>
-              Settings
+              Edit Profile
           </a>
         
              
                   <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button class="dropdown-item" type="submit">
-                     <i class="fas fa-power-off text-primary me-2"></i>
-                        Logout
+                    <button class="dropdown-item text-primary" type="submit">
+                      <i class="fa-solid fa-right-from-bracket text-primary"></i>
+                                              Logout
                       </button>
                 </form>
              

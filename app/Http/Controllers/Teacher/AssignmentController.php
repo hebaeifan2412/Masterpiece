@@ -86,17 +86,20 @@ class AssignmentController extends Controller
     }
     
     public function updateMark(Request $request, $submissionId)
-{
-    $request->validate([
-        'mark' => 'required|integer|min:0|max:100',
-    ]);
-
-    $submission = Submission::findOrFail($submissionId);
-    $submission->mark = $request->mark;
-    $submission->save();
-
-    return redirect()->back()->with('success', 'Mark saved successfully.');
-}
+    {
+        $request->validate([
+            'mark' => 'required|integer|min:0|max:100',
+            'feedback' => 'nullable|string|max:2000',
+        ]);
+    
+        $submission = Submission::findOrFail($submissionId);
+        $submission->mark = $request->mark;
+        $submission->feedback = $request->feedback;
+        $submission->save();
+    
+        return redirect()->back()->with('success', 'Mark and feedback saved successfully.');
+    }
+    
 
     public function edit($id)
     {
