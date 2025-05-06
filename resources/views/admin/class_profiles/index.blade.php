@@ -3,18 +3,12 @@
 @section('content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0 fw-bold text-dark">Class Profiles Management</h2>
+        <h2 class="mb-0 fw-bold text-dark">Class Profiles for Grade: {{ $grade->name }}</h2>
         <a href="{{ route('admin.class_profiles.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i> Add New Class
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
 
     <div class="card border-0 shadow-sm">
         <div class="card-body p-0">
@@ -23,27 +17,21 @@
                     <thead class="bg-primary text-light">
                         <tr>
                             <th class="ps-4">#</th>
-                            <th>Grade</th>
                             <th>Section</th>
                             <th>Capacity</th>
                             <th class="text-end pe-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($classProfiles as $profile)
+                        @forelse ($grade->classProfiles as $profile)
                         <tr>
                             <td class="ps-4 fw-medium">{{ $loop->iteration }}</td>
-                            <td>
-                                <span class="badge bg-primary-soft text-primary">
-                                    {{ $profile->grade->name }}
-                                </span>
-                            </td>
                             <td>{{ $profile->section }}</td>
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="progress flex-grow-1 me-2" style="height: 6px;">
                                         @php
-                                            $capacityPercentage = ($profile->students_count / $profile->capacity) * 100;
+                                            $capacityPercentage = $profile->capacity > 0 ? ($profile->students_count / $profile->capacity) * 100 : 0;
                                         @endphp
                                         <div class="progress-bar bg-{{ $capacityPercentage > 90 ? 'danger' : ($capacityPercentage > 70 ? 'warning' : 'success') }}" 
                                              role="progressbar" 
@@ -58,6 +46,20 @@
                             </td>
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
+                                     <!-- View Teachers & Subjects -->
+        <a href="{{ route('admin.class_profiles.teachers', $profile->id) }}" 
+            class="btn btn-sm btn-info-soft text-info rounded-circle"
+            title="Teachers & Subjects">
+             <i class="fas fa-chalkboard-teacher"></i>
+         </a>
+ 
+         <!-- View Students -->
+         <a href="{{ route('admin.class_profiles.students', $profile->id) }}" 
+            class="btn btn-sm btn-secondary-soft text-secondary rounded-circle"
+            title="View Students">
+             <i class="fas fa-users"></i>
+         </a>
+ 
                                     <a href="{{ route('admin.class_profiles.edit', $profile->id) }}" 
                                        class="btn btn-sm btn-warning-soft text-warning rounded-circle"
                                        title="Edit">
@@ -78,9 +80,9 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">
+                            <td colspan="4" class="text-center py-4 text-muted">
                                 <i class="fas fa-chalkboard fa-2x mb-3"></i>
-                                <p class="mb-0">No class profiles found.</p>
+                                <p class="mb-0">No class profiles found for this grade.</p>
                             </td>
                         </tr>
                         @endforelse

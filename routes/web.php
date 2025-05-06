@@ -77,6 +77,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::resource('students', AdminStudentController::class);
         Route::resource('subjects', SubjectController::class);
         Route::resource('grades', GradeController::class);
+        Route::get('/grades/{grade}/class-profiles', [ClassProfileController::class, 'showByGrade'])->name('grades.class_profiles');
+        Route::get('/class-profiles/{id}/teachers', [ClassProfileController::class, 'showTeachers'])->name('class_profiles.teachers');
+        Route::get('/class-profiles/{id}/students', [ClassProfileController::class, 'showStudents'])->name('class_profiles.students');
+        Route::get('/class-profiles/{id}/students/pdf', [ClassProfileController::class, 'downloadStudentsPdf'])
+    ->name('class_profiles.students.pdf');
         Route::resource('teacher_profiles', TeacherProfileController::class);
         Route::resource('class_profiles', ClassProfileController::class);
         Route::resource('courses', CourseController::class);

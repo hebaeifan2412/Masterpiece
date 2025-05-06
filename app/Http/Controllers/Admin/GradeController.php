@@ -9,7 +9,15 @@ class GradeController extends Controller
 {
     public function index()
     {
-        $grades = Grade::all();
+        $search = request('search');
+          
+    $grades = Grade::query()
+    ->withCount('classProfiles') // This adds class_profiles_count
+    ->when($search, function($query) use ($search) {
+        $query->where('name', 'like', '%'.$search.'%');
+    })
+    ->orderBy('name')
+    ->paginate(10);
         return view('admin.grades.index', compact('grades'));
     }
 

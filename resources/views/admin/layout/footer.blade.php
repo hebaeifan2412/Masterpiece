@@ -6,3 +6,24 @@
   </footer>
 <script src="{{ asset('dash-front/js/dashboard.js') }}"></script>
  <script src="{{ asset('dash-front/js/Chart.roundedBarCharts.js') }}"></script>
+ @if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+        });
+    </script>
+
+@endif
+@if ($errors->any())
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            html: `{!! implode('<br>', $errors->all()) !!}`,
+            confirmButtonColor: '#d33',
+        });
+    </script>
+@endif

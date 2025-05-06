@@ -108,13 +108,15 @@
                                            title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('admin.students.destroy', $student->national_id) }}" method="POST">
+                                        <form action="{{ route('admin.students.destroy', $student->national_id) }}"
+                                            class="student-delete-form d-inline"
+                                             method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" 
-                                                    class="btn btn-sm btn-danger-soft text-danger rounded-circle"
+                                                    class="btn btn-sm btn-danger-soft text-danger rounded-circle "
                                                     title="Delete"
-                                                    onclick="return confirm('Are you sure you want to delete this student?')">
+                                                    >
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -136,4 +138,31 @@
 
     {{ $students->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteForms = document.querySelectorAll('.student-delete-form');
+
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); // أوقف الإرسال الافتراضي
+
+                Swal.fire({
+    title: 'Delete student?',
+    text: 'This action cannot be undone.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete',
+    cancelButtonText: 'Cancel',
+    customClass: {
+        confirmButton: 'btn btn-danger',
+        cancelButton: 'btn btn-secondary ms-2',
+    },
+    buttonsStyling: false
+})
+            });
+        });
+    });
+</script>
 @endsection
+

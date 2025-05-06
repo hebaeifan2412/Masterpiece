@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h2 class="text-warning mb-4">Edit Class</h2>
+    <h2 class="text-dark mb-4">Edit Class</h2>
     <form action="{{ route('admin.class_profiles.update', $classProfile->id) }}" method="POST">
         @csrf
         @method('PUT')

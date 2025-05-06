@@ -1,5 +1,17 @@
 @extends('admin.layout.app')
 
+@if ($errors->any())
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            html: `{!! implode('<br>', $errors->all()) !!}`,
+            confirmButtonColor: '#d33',
+        });
+    </script>
+@endif
+
+
 @section('content')
 <div class="container mt-5">
     <h2 class="text-success mb-4">Add New Class</h2>

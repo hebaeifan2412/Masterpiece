@@ -11,6 +11,7 @@
 <script src="{{ asset('dash-front/js/settings.js') }}"></script>
 <script src="{{ asset('dash-front/js/todolist.js') }}"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Moment.js -->
 <script src='https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js'></script>
