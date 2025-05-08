@@ -34,6 +34,7 @@ use App\Http\Controllers\Student\StudentSubjectController;
 use App\Http\Controllers\Teacher\AssignmentController;
 use App\Http\Controllers\Teacher\TeacherCourseController;
 use App\Http\Controllers\Teacher\TeacherMarkController;
+use App\Http\Controllers\Admin\TeacherAssignmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,11 +85,24 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     ->name('class_profiles.students.pdf');
         Route::resource('teacher_profiles', TeacherProfileController::class);
         Route::resource('class_profiles', ClassProfileController::class);
-        Route::resource('courses', CourseController::class);
-    });
+
+       
+Route::get('/class/{class}/assign-teacher', [TeacherAssignmentController::class, 'create'])
+->name('class.assign-teacher');
+
+Route::post('/class/{class}/assign-teacher', [TeacherAssignmentController::class, 'store'])
+->name('class.assign-teacher.store');
+           
+            Route::get('/subject/{subject}/teachers', [TeacherAssignmentController::class, 'getTeachersBySubject'])
+    ->name('.subject.teachers');
+
+Route::post('/class/{class}/assign-teacher/ajax', [TeacherAssignmentController::class, 'ajaxAssign'])
+    ->name('class.assign-teacher.ajax');
+    Route::delete('/class/{class}/unassign-teacher/{teacher}', [TeacherAssignmentController::class, 'unassign'])
+    ->name('class.assign-teacher.unassign');
 
   
- 
+});
 });
 
 

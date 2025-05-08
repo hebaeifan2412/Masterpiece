@@ -9,7 +9,7 @@
                     <i class="fas fa-users me-2"></i>
                     Students in Class: {{ $classProfile->grade->name }} - Section {{ $classProfile->section }}
                 </h2>
-                <a href="{{ route('admin.class_profiles.students.pdf', $classProfile->id) }}" class="btn btn-success">
+                <a href="{{ route('admin.class_profiles.students.pdf', $classProfile->id) }}" class="btn btn-primary">
                     <i class="fas fa-file-pdf me-1"></i> Download PDF
                 </a>
             </div>
@@ -19,8 +19,8 @@
     <div class="row">
         <div class="col-12">
             <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="card-title mb-0">Student List</h5>
+                <div class="card-header bg-primary ">
+                    <h5 class="card-title mb-0 text-light">Student List</h5>
                 </div>
                 <div class="card-body p-0">
                     @if($classProfile->students->isNotEmpty())
@@ -93,9 +93,9 @@
                             <small class="text-muted">
                                 Showing {{ $classProfile->students->count() }} students
                             </small>
-                            <a href="{{ route('admin.class_profiles.students.pdf', $classProfile->id) }}" class="btn btn-sm btn-success">
+                            {{-- <a href="{{ route('admin.class_profiles.students.pdf', $classProfile->id) }}" class="btn btn-sm btn-success">
                                 <i class="fas fa-file-pdf me-1"></i> Download PDF
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                 @endif
