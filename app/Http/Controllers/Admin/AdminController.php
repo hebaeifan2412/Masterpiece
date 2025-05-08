@@ -36,7 +36,7 @@ class AdminController extends Controller
         $temperature = $data['main']['temp'] ?? 'N/A';
         $cityName = $data['name'] ?? $city;
         $countryName = $country;
-        $icon = $data['weather'][0]['icon'] ?? null; // التصحيح هون
+        $icon = $data['weather'][0]['icon'] ?? null;  
         $iconUrl = $icon ? "http://openweathermap.org/img/wn/{$icon}@2x.png" : null;
     
         // Fetch data from the database

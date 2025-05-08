@@ -11,21 +11,15 @@ use App\Models\Subject;
 
 class TeacherAssignmentController extends Controller
 {
-    /**
-     * عرض صفحة تعيين المعلم لصف محدد
-     */
+   
     public function create($classId, Request $request)
     {
-        // جلب الصف حسب ID
         $classProfile = ClassProfile::with(['grade', 'teachers.user', 'teachers.subject'])->findOrFail($classId);
 
-        // جلب كل المواد لاستخدامها في select
         $subjects = Subject::all();
 
-        // جلب المادة المختارة إن وُجدت من الـ query string
         $subjectId = $request->get('subject_id');
 
-        // جلب المعلمين المرتبطين بالمادة المختارة فقط
         $teachers = collect();
         if ($subjectId) {
             $teachers = TeacherProfile::with('user', 'subject')
@@ -33,21 +27,17 @@ class TeacherAssignmentController extends Controller
                 ->get();
         }
 
-        // تمرير البيانات للواجهة
         return view('admin.teacher_assignment.create', compact('classProfile', 'subjects', 'subjectId', 'teachers'));
 
     }
 
-    /**
-     * تخزين تعيين المعلم للصف
-     */
+    
     public function store($classId, Request $request)
     {
         $request->validate([
             'teacher_id' => 'required|exists:teacher_profiles,id',
         ]);
 
-        // التأكد من عدم وجود تعيين سابق لنفس المعلم والصف
         $exists = TeacherClass::where('class_id', $classId)
                               ->where('teacher_id', $request->teacher_id)
                               ->exists();
@@ -61,7 +51,6 @@ class TeacherAssignmentController extends Controller
                 ->withErrors(['teacher_id' => 'This teacher is already assigned to this class.']);
         }
 
-        // حفظ التعيين
         TeacherClass::create([
             'class_id' => $classId,
             'teacher_id' => $request->teacher_id,

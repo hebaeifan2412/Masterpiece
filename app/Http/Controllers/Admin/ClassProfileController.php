@@ -45,7 +45,6 @@ public function showStudents($id)
             'capacity' => 'required|integer|min:1',
         ]);
     
-        // تحقق من وجود كلاس بنفس الصف والقسم
         $exists = ClassProfile::where('grade_id', $request->grade_id)
                               ->where('section', $request->section)
                               ->exists();
@@ -84,7 +83,6 @@ public function showStudents($id)
             ])->withInput();
         }
     
-        // تحقق من تكرار الصف + القسم إذا تغيّر
         $duplicate = ClassProfile::where('grade_id', $request->grade_id)
             ->where('section', $request->section)
             ->where('id', '!=', $classProfile->id)

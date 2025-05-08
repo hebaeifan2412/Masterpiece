@@ -18,7 +18,6 @@ class UserController extends Controller
     {
         $query = User::with(['role', 'student', 'teacherProfile'])->withTrashed();
     
-        // Search (by firstname, lastname, or email)
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('firstname', 'like', '%' . $request->search . '%')
@@ -27,7 +26,6 @@ class UserController extends Controller
             });
         }
     
-        // Filter by role
         if ($request->filled('role')) {
             $query->whereHas('role', function ($q) use ($request) {
                 $q->where('name', $request->role);
@@ -50,7 +48,6 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // Common validation rules
         $rules = [
             'email' => 'required|email|unique:users,email',
             'phone_no' => 'nullable|string|size:10',
@@ -70,7 +67,6 @@ class UserController extends Controller
             'lastname' => 'required_if:role_id,2,3',
         ];
 
-        // Role-specific validation
         if ($request->role_id == 2) { // Student
             $rules = array_merge($rules, [
                 'national_id' => 'required|unique:students,national_id',
@@ -95,7 +91,6 @@ class UserController extends Controller
             ]);
         }
 
-        // Validate request
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
@@ -107,7 +102,6 @@ class UserController extends Controller
             ? $request->file('image')->store('users', 'public')
             : 'users/user.jpg';
 
-        // Create User
         $user = User::create([
             'firstname' => $request->firstname,
             'secname' => $request->secname,
@@ -120,7 +114,6 @@ class UserController extends Controller
             'role_id' => $request->role_id,
         ]);
 
-        // Create Student if applicable
         if ($request->role_id == 2) {
             Student::create([
                 'national_id' => $request->national_id,
@@ -135,7 +128,6 @@ class UserController extends Controller
             ]);
         }
 
-        // Create Teacher if applicable
         if ($request->role_id == 3) {
             TeacherProfile::create([
                 'user_id' => $user->id,

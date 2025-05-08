@@ -28,7 +28,6 @@ class TeacherProfileController extends Controller
             });
         }
     
-        // Filter by subject name
         if ($request->filled('subject')) {
             $query->whereHas('subject', function ($q) use ($request) {
                 $q->where('name', $request->input('subject'));
@@ -37,7 +36,6 @@ class TeacherProfileController extends Controller
     
         $teachers = $query->paginate(10);
     
-        // You must also pass all subjects for the filter dropdown
         $subjects = Subject::all();
         return view('admin.teachers.index', compact('teachers' ,'subjects'));
     }
