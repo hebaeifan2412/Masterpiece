@@ -6,7 +6,7 @@ use App\Models\TeacherProfile;
 use App\Models\Student;
 use App\Models\ClassProfile;
 use App\Models\Subject;
-use App\Models\User;
+use App\Models\Grade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -59,5 +59,30 @@ class AdminController extends Controller
         
     }
     
-    
+public function genderChartData()
+{
+    $genderCounts = Student::selectRaw('gender, COUNT(*) as count')
+        ->groupBy('gender')
+        ->pluck('count', 'gender');
+
+    return response()->json([
+        'labels' => $genderCounts->keys(),
+        'values' => $genderCounts->values(),
+    ]);
+}
+
+public function studentCountByGrade()
+{
+    $grades = Grade::withCount(['classProfiles as student_count' => function ($query) {
+        $query->join('students', 'class_profiles.id', '=', 'students.class_id');
+    }])->get();
+
+    $labels = $grades->pluck('name');
+    $counts = $grades->pluck('student_count');
+
+    return response()->json([
+        'labels' => $labels,
+        'data' => $counts,
+    ]);
+}
 }

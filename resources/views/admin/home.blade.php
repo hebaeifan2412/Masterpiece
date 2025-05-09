@@ -130,12 +130,11 @@
 
 <div class="row">
   <div class="col-md-8 grid-margin stretch-card">
-    <div class="col-md-6 grid-margin stretch-card">
+    <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title"><i class="fa-solid fa-calendar-days"></i> Calendar</h4>
-          <div id="calendar"></div>
-        </div>
+          <div id="calendar"></div>        </div>
       </div>
     </div>
 
@@ -202,4 +201,127 @@
                   </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        Student Gender Distribution
+      </div>
+      <div class="card-body">
+        <!-- Canvas element for the chart -->
+        <div style="position: relative; height: 250px; width: 100%;">
+          <canvas id="genderChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm ">  <!-- Added shadow-sm and h-100 here -->
+      <div class="card-header bg-primary text-white">
+        Students by Grade
+      </div>
+      <div class="card-body">
+        <canvas id="gradeChart" height="100" width="200"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
 @endsection
+
+@push('scripts')
+<script>
+  function renderGenderChart() {
+  fetch("{{ route('admin.charts.gender') }}")
+    .then(res => res.json())
+    .then(data => {
+      const ctx = document.getElementById('genderChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: data.labels,
+          datasets: [{
+            data: data.values,
+            backgroundColor: ['#36A2EB', '#FF6384']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: {
+              display: true,
+              text: 'Student Gender Distribution'
+            }
+          }
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('genderChart').closest('.card-body').innerHTML =
+        '<div class=\"alert alert-danger\">Failed to load chart</div>';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', renderGenderChart);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+@endpush
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    fetch("{{ route('admin.charts.grades') }}")
+        .then(res => res.json())
+        .then(chart => {
+            const ctx = document.getElementById('gradeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chart.labels,
+                    datasets: [{
+                        label: 'Number of Students',
+                        data: chart.data,
+                        backgroundColor: '#4747A1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Students' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Grade' }
+                        }
+                    }
+                }
+            });
+        });
+});
+</script>
+<!-- FullCalendar CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'en',
+        height: 550,
+       
+    });
+
+    calendar.render();
+});
+</script>
+@endpush
+

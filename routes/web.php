@@ -57,6 +57,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
   
     Route::get('/admin/dashboard', [AdminController::class, 'index']);
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/charts/gender', [AdminController::class, 'genderChartData'])->name('admin.charts.gender');
+    Route::get('/admin/charts/grades', [AdminController::class, 'studentCountByGrade'])
+    ->name('admin.charts.grades');
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');

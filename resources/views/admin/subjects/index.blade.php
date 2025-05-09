@@ -7,7 +7,7 @@
     @endif
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0 fw-bold text-dark">All Subjects</h2>
+            <h2 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-book"></i> All Subjects</h2>
             <a href="{{ route('admin.subjects.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i> Add New Subject
             </a>

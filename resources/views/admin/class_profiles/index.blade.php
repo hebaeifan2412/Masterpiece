@@ -89,7 +89,9 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+            <a href="{{ route('admin.grades.index') }}" class="btn btn-secondary text-light tex">
+                <i class="fas fa-arrow-left me-1"></i> 
+            </a>        </div>
     </div>
 </div>
 @endsection

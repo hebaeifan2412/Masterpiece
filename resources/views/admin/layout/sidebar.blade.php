@@ -3,7 +3,7 @@
       <!-- Dashboard -->
       <li class="nav-item">
           <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
-              <i class="fas fa-tachometer-alt menu-icon"></i>
+            <i class="fa-solid fa-house menu-icon"></i>
               <span class="menu-title">Dashboard</span>
           </a>
       </li>
@@ -27,7 +27,7 @@
       <!-- Subjects -->
       <li class="nav-item">
           <a class="nav-link {{ request()->routeIs('admin.subjects.*') ? 'active' : '' }}" href="{{ route('admin.subjects.index') }}">
-              <i class="fas fa-book-open menu-icon"></i>
+            <i class="fa-solid fa-book  menu-icon"></i> 
               <span class="menu-title">Subjects</span>
           </a>
       </li>

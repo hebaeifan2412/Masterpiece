@@ -276,12 +276,6 @@ select {
   word-wrap: normal;
 }
 
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-  -webkit-appearance: button;
-}
 
 button:not(:disabled),
 [type="button"]:not(:disabled),
@@ -489,11 +483,7 @@ mark,
   color: #6c757d;
 }
 
-code {
-  font-size: 87.5%;
-  color: #e83e8c;
-  word-wrap: break-word;
-}
+
 
 a > code {
   color: inherit;
@@ -10632,78 +10622,6 @@ input:focus {
   font-style: normal;
 }
 
-.bg-twitter {
-  background: #4747A1;
-}
-
-.bg-facebook {
-  background: #7DA0FA;
-}
-
-.bg-google {
-  background: #dc4a38;
-}
-
-.bg-linkedin {
-  background: #7978E9;
-}
-
-.bg-pinterest {
-  background: #cc2127;
-}
-
-.bg-youtube {
-  background: #e52d27;
-}
-
-.bg-github {
-  background: #333333;
-}
-
-.bg-behance {
-  background: #1769ff;
-}
-
-.bg-dribbble {
-  background: #ea4c89;
-}
-
-.bg-reddit {
-  background: #ff4500;
-}
-
-.bg-gradient-primary {
-  background: linear-gradient(230deg, #759bff, #843cf6);
-}
-
-.bg-gradient-secondary {
-  background: linear-gradient(to right, #e7ebf0, #868e96);
-}
-
-.bg-gradient-success {
-  background: linear-gradient(45deg, #7bffce, #30c93e);
-}
-
-.bg-gradient-info {
-  background: linear-gradient(to bottom, #0e4cfd, #6a8eff);
-}
-
-.bg-gradient-warning {
-  background: linear-gradient(135deg, #ffc480, #ff763b);
-}
-
-.bg-gradient-danger {
-  background: linear-gradient(316deg, #fc5286, #fbaaa2);
-}
-
-.bg-gradient-light {
-  background: linear-gradient(to right, #cfd9df 0%, #e2ebf0 100%);
-}
-
-.bg-gradient-dark {
-  background: linear-gradient(to right, #7d7979 0%, #000000 100%);
-}
-
 /* Typography */
 body {
   font-size: 1rem;
@@ -10713,41 +10631,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
-  font-weight: 500;
-  line-height: 1;
-}
 
-p {
-  font-size: 0.875rem;
-  margin-bottom: .5rem;
-  line-height: 1.3rem;
-}
 
-h1, .h1 {
-  font-size: 3.125rem;
-}
 
-h2, .h2 {
-  font-size: 2.187rem;
-}
 
-h3, .h3 {
-  font-size: 1.525rem;
-}
-
-h4, .h4 {
-  font-size: 1.125rem;
-}
-
-h5, .h5 {
-  font-size: 1rem;
-}
-
-h6, .h6 {
-  font-size: .9375rem;
-}
 
 .display-1 {
   font-size: 3.75rem;
@@ -10882,45 +10769,6 @@ address p {
   }
 }
 
-.text-twitter {
-  color: #4747A1;
-}
-
-.text-facebook {
-  color: #7DA0FA;
-}
-
-.text-google {
-  color: #dc4a38;
-}
-
-.text-linkedin {
-  color: #7978E9;
-}
-
-.text-pinterest {
-  color: #cc2127;
-}
-
-.text-youtube {
-  color: #e52d27;
-}
-
-.text-github {
-  color: #333333;
-}
-
-.text-behance {
-  color: #1769ff;
-}
-
-.text-dribbble {
-  color: #ea4c89;
-}
-
-.text-reddit {
-  color: #ff4500;
-}
 
 .page-header {
   margin-bottom: 2.5rem;
@@ -11193,55 +11041,6 @@ code {
   z-index: 0;
 }
 
-.rounded-legend ul li {
-  list-style-type: none;
-  color: #737F8B;
-  font-size: .75rem;
-}
-
-.rounded-legend ul li .legend-dots {
-  width: 1rem;
-  height: 1rem;
-  border-radius: 100%;
-  display: inline-block;
-  vertical-align: text-bottom;
-  margin-right: .5rem;
-}
-
-.rtl .rounded-legend ul li .legend-dots {
-  margin-left: .5rem;
-}
-
-.rounded-legend.legend-horizontal {
-  display: -webkit-flex;
-  display: flex;
-}
-
-.rounded-legend.legend-horizontal ul li {
-  display: inline-block;
-  margin-right: 1.5rem;
-}
-
-.rtl .rounded-legend.legend-horizontal ul li {
-  margin-right: auto;
-  margin-left: 1.5rem;
-}
-
-.rounded-legend.legend-top-right ul {
-  float: right;
-}
-
-.rtl .rounded-legend.legend-top-right ul {
-  float: left;
-}
-
-.rounded-legend.legend-vertical ul li {
-  margin-top: 1rem;
-}
-
-.demo-chart {
-  height: 300px;
-}
 
 @media (max-width: 767px) {
   .demo-chart {
@@ -18273,7 +18072,7 @@ table.dataTable tbody td.select-checkbox:after {
 
 .swal2-modal .swal2-icon,
 .swal2-modal .swal2-success-ring {
-  margin-top: 0;
+  margin-top: 1;
   margin-bottom: 42px;
 }
 

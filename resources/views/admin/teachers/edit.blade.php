@@ -4,8 +4,8 @@
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-primary">Edit Teacher Profile</h2>
-        <a href="{{ route('admin.teacher_profiles.index') }}" class="btn btn-outline-primary">
-            <i class="fas fa-arrow-left me-1"></i> Back to List
+        <a href="{{ route('admin.teacher_profiles.index') }}" class="btn btn-secondary text-light">
+            <i class="fas fa-arrow-left me-1"></i> 
         </a>
     </div>
 

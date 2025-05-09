@@ -29,7 +29,7 @@
 
     @include('admin.layout.footer')
     <!-- Scripts -->
-   
+    @stack('scripts')
 </body>
 
 </html>
