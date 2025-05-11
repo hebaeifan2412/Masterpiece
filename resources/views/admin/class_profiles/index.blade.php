@@ -3,8 +3,8 @@
 @section('content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0 fw-bold text-dark">Class Profiles for Grade: {{ $grade->name }}</h2>
-        <a href="{{ route('admin.class_profiles.create') }}" class="btn btn-primary">
+        <h2 class="mb-0 fw-bold text-dark">  <i class="fas fa-layer-group me-1"></i> Class for  {{ $grade->name }}</h2>
+        <a href="{{ route('admin.class_profiles.create',  ['grade' => $grade->id]) }}" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i> Add New Class
         </a>
     </div>
@@ -48,31 +48,32 @@
                                 <div class="d-flex justify-content-end gap-2">
                                      <!-- View Teachers & Subjects -->
         <a href="{{ route('admin.class_profiles.teachers', $profile->id) }}" 
-            class="btn btn-sm btn-info-soft text-info rounded-circle"
+            class="btn btn-sm btn-primary-soft text-primary a rounded-circle "
+            
             title="Teachers & Subjects">
-             <i class="fas fa-chalkboard-teacher"></i>
+             <i class="fas fa-chalkboard-teacher "></i>
          </a>
  
          <!-- View Students -->
          <a href="{{ route('admin.class_profiles.students', $profile->id) }}" 
-            class="btn btn-sm btn-secondary-soft text-secondary rounded-circle"
+            class="btn btn-sm btn-b-soft   rounded-circle"
             title="View Students">
              <i class="fas fa-users"></i>
          </a>
  
                                     <a href="{{ route('admin.class_profiles.edit', $profile->id) }}" 
-                                       class="btn btn-sm btn-warning-soft text-warning rounded-circle"
+                                       class="btn btn-sm btn-secondary-soft  text-secondary rounded-circle"
                                        title="Edit">
-                                        <i class="fas fa-edit"></i>
+                                        <i class="fas fa-edit a"></i>
                                     </a>
-                                    <form action="{{ route('admin.class_profiles.destroy', $profile->id) }}" method="POST">
+                                    <form id="delete-class-form-{{ $profile->id }}" action="{{ route('admin.class_profiles.destroy', $profile->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" 
-                                                class="btn btn-sm btn-danger-soft text-danger rounded-circle"
+                                        <button type="button" 
+                                                class="btn btn-sm btn-c-soft  rounded-circle"
                                                 title="Delete"
-                                                onclick="return confirm('Are you sure you want to delete this class profile?')">
-                                            <i class="fas fa-trash-alt"></i>
+                                                onclick="confirmClassDelete({{ $profile->id }})">
+                                              <i class="fas fa-trash-alt c"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -89,9 +90,40 @@
                     </tbody>
                 </table>
             </div>
-            <a href="{{ route('admin.grades.index') }}" class="btn btn-secondary text-light tex">
-                <i class="fas fa-arrow-left me-1"></i> 
-            </a>        </div>
+                   </div>
     </div>
+     <a href="{{ route('admin.grades.index') }}" class="btn btn-secondary text-light me-2 mt-4 float-end">
+                <i class="fas fa-arrow-left me-1"></i> 
+            </a>
 </div>
+
 @endsection
+@push('scripts')
+<script>
+function confirmClassDelete(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to delete this class.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#F3797E',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: 'Yes, delete it'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-class-form-' + id).submit();
+        }
+    });
+}
+</script>
+
+@if(session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Cannot Delete Class',
+        text: "{{ session('error') }}"
+    });
+</script>
+@endif
+@endpush

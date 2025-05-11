@@ -81,13 +81,35 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::resource('students', AdminStudentController::class);
         Route::resource('subjects', SubjectController::class);
         Route::resource('grades', GradeController::class);
-        Route::get('/grades/{grade}/class-profiles', [ClassProfileController::class, 'showByGrade'])->name('grades.class_profiles');
+        Route::resource('teacher_profiles', TeacherProfileController::class);
+
+  
+            Route::get('/grades/{grade}/class-profiles', [ClassProfileController::class, 'showByGrade'])->name('grades.class_profiles');
         Route::get('/class-profiles/{id}/teachers', [ClassProfileController::class, 'showTeachers'])->name('class_profiles.teachers');
         Route::get('/class-profiles/{id}/students', [ClassProfileController::class, 'showStudents'])->name('class_profiles.students');
         Route::get('/class-profiles/{id}/students/pdf', [ClassProfileController::class, 'downloadStudentsPdf'])
     ->name('class_profiles.students.pdf');
-        Route::resource('teacher_profiles', TeacherProfileController::class);
-        Route::resource('class_profiles', ClassProfileController::class);
+     Route::post('/class_profiles', [ClassProfileController::class, 'store'])
+        ->name('class_profiles.store');
+
+    // Route::get('/class_profiles/{class_profile}', [ClassProfileController::class, 'show'])
+    //     ->name('class_profiles.show');
+     Route::get('/class_profiles/create/{grade}', [ClassProfileController::class, 'create'])
+        ->name('class_profiles.create');
+
+    Route::get('/class_profiles', [ClassProfileController::class, 'index'])
+        ->name('class_profiles.index');
+
+    Route::get('/class_profiles/{class_profile}/edit', [ClassProfileController::class, 'edit'])
+        ->name('class_profiles.edit');
+
+    Route::put('/class_profiles/{class_profile}', [ClassProfileController::class, 'update'])
+        ->name('class_profiles.update');
+
+    Route::delete('/class_profiles/{class_profile}', [ClassProfileController::class, 'destroy'])
+        ->name('class_profiles.destroy');
+
+       // Route::resource('class_profiles', ClassProfileController::class);
 
        
 Route::get('/class/{class}/assign-teacher', [TeacherAssignmentController::class, 'create'])
@@ -105,6 +127,7 @@ Route::post('/class/{class}/assign-teacher/ajax', [TeacherAssignmentController::
     ->name('class.assign-teacher.unassign');
 
   
+
 });
 });
 

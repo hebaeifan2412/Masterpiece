@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0 fw-bold text-dark">Teacher Management</h2>
+        <h2 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-chalkboard-user me-2"></i>Teacher Management</h2>
         <a href="{{ route('admin.teacher_profiles.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i> Add New Teacher
         </a>
@@ -37,17 +37,12 @@
         </div>
     </form>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+   
 
     <div class="card border-0 shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-hover lign-middlea mb-0">
                     <thead class="bg-primary text-light">
                         <tr>
                             <th class="ps-4">#</th>
@@ -83,13 +78,14 @@
                                        title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a> --}}
-                                    <form action="{{ route('admin.teacher_profiles.destroy', $profile->id) }}" method="POST">
+                                    <form action="{{ route('admin.teacher_profiles.destroy', $profile->id) }}"
+                                        class="teacher-delete-form" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" 
-                                                class="btn btn-sm btn-danger-soft text-danger rounded-circle"
+                                                class="btn btn-sm btn-c-soft text-c rounded-circle"
                                                 title="Delete"
-                                                onclick="return confirm('Are you sure you want to delete this teacher profile?')">
+                                            >
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
@@ -121,3 +117,32 @@
     {{ $teachers->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
 @endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteForms = document.querySelectorAll('.teacher-delete-form');
+
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); 
+
+                Swal.fire({
+    title: 'Delete teacher?',
+    text: 'This action cannot be undone.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete',
+    cancelButtonText: 'Cancel',
+    customClass: {
+        confirmButton: 'btn bg-light-red ',
+        cancelButton: 'btn btn-secondary ms-2',
+    },
+    buttonsStyling: false
+}).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); 
+                }
+            });
+            });
+        });
+    });
+</script>

@@ -5,11 +5,7 @@
     <div class="card shadow-lg border-0 rounded-4 p-5">
         <h2 class="text-center text-primary mb-4">Edit Subject</h2>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-            </div>
-        @endif
+       
 
         <form method="POST" action="{{ route('admin.subjects.update', $subject->id) }}">
             @csrf
@@ -26,7 +22,7 @@
             </div>
 
             <div class="text-center mt-4">
-                <button type="submit" class="btn btn-warning btn-lg w-50">Update Subject</button>
+                <button type="submit" class="btn btn-primary btn-lg w-50">Update Subject</button>
             </div>
         </form>
     </div>

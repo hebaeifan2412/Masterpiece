@@ -4,7 +4,7 @@
 <div class="container-fluid py-4">
     <div class="row align-items-center mb-4">
         <div class="col-md-6">
-            <h2 class="mb-0 text-dark fw-bold">Grades Management</h2>
+            <h2 class="mb-0 text-dark fw-bold"><i class="fa-solid fa-school me-2"></i>Grades Management</h2>
         </div>
         <div class="col-md-6 text-md-end">
             <a href="{{ route('admin.grades.create') }}" class="btn btn-primary">
@@ -59,14 +59,14 @@
                                     <i class="fas fa-edit me-1"></i> Edit
                                 </a>
                     
-                                <form action="{{ route('admin.grades.destroy', $grade->id) }}" method="POST">
+                                <form  id="delete-grade-form-{{ $grade->id }}" action="{{ route('admin.grades.destroy', $grade->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
+                                    <button type="button" 
                                             class="btn ld btn-sm px-3"
                                             style="border-top-right-radius: 50rem; border-bottom-right-radius: 50rem;"
-                                            data-bs-toggle="tooltip" title="Delete"
-                                            onclick="return confirm('Are you sure you want to delete this grade?')">
+                                              onclick="confirmDelete({{ $grade->id }})"
+                                     data-bs-toggle="tooltip" title="Delete">
                                         <i class="fas fa-trash-alt me-1"></i> Delete
                                     </button>
                                 </form>
@@ -100,3 +100,33 @@
     });
 </script>
 @endsection
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmDelete(id) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to delete this grade. This action cannot be undone!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#F3797E',
+        cancelButtonColor: '#aaa',
+        confirmButtonText: 'Yes, delete it'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-grade-form-' + id).submit();
+        }
+    });
+}
+</script>
+@if(session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Cannot Delete Grade',
+        text: "{{ session('error') }}"
+    });
+</script>
+@endif
+
+@endpush

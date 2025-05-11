@@ -3,13 +3,9 @@
 @section('content')
 <div class="container mt-5">
     <div class="card shadow-lg border-0 rounded-4 p-5">
-        <h2 class="text-center text-primary mb-4">Create New Subject</h2>
+        <h2 class="text-center text-primary mb-4"> New Subject</h2>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-            </div>
-        @endif
+       
 
         <form method="POST" action="{{ route('admin.subjects.store') }}">
             @csrf

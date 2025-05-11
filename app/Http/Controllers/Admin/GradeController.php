@@ -53,9 +53,16 @@ class GradeController extends Controller
         return redirect()->route('admin.grades.index')->with('success', 'Grade updated successfully.');
     }
 
-    public function destroy(Grade $grade)
-    {
-        $grade->delete();
-        return redirect()->route('admin.grades.index')->with('success', 'Grade deleted successfully.');
+   public function destroy(Grade $grade)
+{
+    $hasStudents = $grade->classProfiles()->withCount('students')->get()
+        ->sum('students_count') > 0;
+
+    if ($hasStudents) {
+        return back()->with('error', 'Cannot delete grade with students in its classes.');
     }
+
+    $grade->delete();
+    return redirect()->route('admin.grades.index')->with('success', 'Grade deleted successfully.');
+}
 }

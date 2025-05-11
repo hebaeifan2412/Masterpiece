@@ -24,7 +24,7 @@
                 <input type="text" name="name" value="{{ old('name', $grade->name) }}" class="form-control shadow-sm" required>
             </div>
             <div class="form-group text-center mt-4">
-                <button type="submit" class="btn btn-warning px-5">Update</button>
+                <button type="submit" class="btn btn-primary px-5">Update</button>
                 <a href="{{ route('admin.grades.index') }}" class="btn btn-secondary ms-2">Cancel</a>
             </div>
         </form>

@@ -2,9 +2,6 @@
 
 @section('content')
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-book"></i> All Subjects</h2>
@@ -13,12 +10,7 @@
             </a>
         </div>
     
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show">
-                <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+      
     
         <div class="card border-0 shadow-sm">
             <div class="card-body p-0">
@@ -43,20 +35,20 @@
                                 <td class="text-end pe-4">
                                     <div class="d-flex justify-content-end gap-2">
                                         <a href="{{ route('admin.subjects.edit', $subject->id) }}" 
-                                           class="btn btn-sm btn-warning-soft text-warning rounded-circle"
+                                           class="btn btn-sm btn-secondary-soft text-secondary rounded-circle"
                                            title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" 
-                                                    class="btn btn-sm btn-danger-soft text-danger rounded-circle"
-                                                    title="Delete"
-                                                    onclick="return confirm('Are you sure you want to delete this subject?')">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
+                                      <form action="{{ route('admin.subjects.destroy', $subject->id) }}" method="POST" id="delete-subject-form-{{ $subject->id }}" class="d-inline">
+    @csrf
+    @method('DELETE')
+    <button type="button" 
+            class="btn btn-sm btn-c-soft text-c rounded-circle delete-subject-btn"
+            title="Delete"
+            data-form-id="delete-subject-form-{{ $subject->id }}">
+        <i class="fas fa-trash-alt"></i>
+    </button>
+</form>
                                     </div>
                                 </td>
                             </tr>
@@ -75,3 +67,30 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.delete-subject-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const formId = this.getAttribute('data-form-id');
+            const form = document.getElementById(formId);
+            
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#F3797E',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+});
+</script>
+@endpush

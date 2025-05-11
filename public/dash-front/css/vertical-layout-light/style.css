@@ -93,7 +93,12 @@ hr {
   overflow: visible;
 }
 
+/* 4747A1 dark blue
+7DA0FA light blue
+F3797E light danger
+7978e9 purple */
 
+.
 
 p {
   margin-top: 0;
@@ -18454,9 +18459,21 @@ div.tagsinput span.tag a {
   --primary: #6a0dad;
   --primary-soft: rgba(106, 13, 173, 0.1);
   --danger: #dc3545;
+  
+  --a:#4747A1 ;
+
+--b: #7DA0FA;
+--b-soft : rgba(125, 160, 250, 0.1);
+--c: #F3797E;
+--c-soft : rgba(243, 121, 126, 0.1);
+
+--d: #7978e9;
+--d-soft : rgba(121, 120, 233, 0.1);
+
   --danger-soft: rgba(220, 53, 69, 0.1);
   --warning: #ffc107;
   --warning-soft: rgba(255, 193, 7, 0.1);
+  
   --success: #28a745;
   --success-soft: rgba(40, 167, 69, 0.1);
   --info: #17a2b8;
@@ -18464,13 +18481,36 @@ div.tagsinput span.tag a {
   --pink: #e83e8c;
   --pink-soft: rgba(232, 62, 140, 0.1);
 }
-
+.btn-b-soft{
+background-color: var(--b-soft);
+color: var(--b);
+}
+.bg-light-blue{
+background-color: var(--b);
+}
+.bg-light-red{
+background-color: var(--c);
+}
+.text-c{
+  color: var(--c);
+} 
+.btn-c-soft{
+background-color: var(--c-soft);
+color: var(--c);
+}
+.btn-d-soft{
+background-color: var(--d-soft);
+color: var(--d);
+}
 .bg-primary-soft {
   background-color: var(--primary-soft);
 }
 
 .bg-danger-soft {
   background-color: var(--danger-soft);
+}
+.bg-b-soft {
+  background-color: var(--b-soft);
 }
 
 .bg-warning-soft {
@@ -18548,7 +18588,8 @@ div.tagsinput span.tag a {
 
 .btn-primary-soft:hover, 
 .btn-danger-soft:hover,
-.btn-warning-soft:hover {
+.btn-warning-soft:hover,
+.btn-b-soft {
   opacity: 0.8;
 }
 

@@ -86,7 +86,7 @@
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach ($teacherProfile->classes as $class)
                                     <span class="badge bg-light text-dark border p-2 fs-6">
-                                        <i class="fas fa-door-open text-primary me-1"></i> {{ $class->name }}
+                                        <i class="fas fa-door-open text-primary me-1"></i>Grade {{ $class->grade->id }} - {{ $class->section }}
                                     </span>
                                 @endforeach
                             </div>
@@ -99,7 +99,7 @@
                 </div>
                 
                 <div class="card-footer bg-light text-end">
-                    <a href="{{ url()->previous() }}" class="btn btn-outline-secondary me-2">
+                    <a href="{{  route('admin.teacher_profiles.index') }}" class="btn btn-outline-secondary me-2">
                         <i class="fas fa-arrow-left me-1"></i> 
                     </a>
                     <a  href="{{ route('admin.teacher_profiles.edit',  $teacherProfile->id) }}"  class="btn btn-primary">

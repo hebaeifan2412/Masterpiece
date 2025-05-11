@@ -35,7 +35,7 @@
       <!-- Grades -->
       <li class="nav-item">
           <a class="nav-link {{ request()->routeIs('admin.grades.*') ? 'active' : '' }}" href="{{ route('admin.grades.index') }}">
-              <i class="fas fa-layer-group menu-icon"></i>
+              <i class="fas fa-school menu-icon"></i>
               <span class="menu-title">Grades</span>
           </a>
       </li>

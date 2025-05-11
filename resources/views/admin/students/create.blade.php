@@ -3,11 +3,11 @@
 @section('content')
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center fs-4">
-    <h3 class="text-dark text-capitalize ps-3 mb-0">
+    <h3 class="text-dark text-capitalize ps-3 fw-bold mb-0">
         <i class="fas fa-user-graduate me-2"></i> Register New Student
     </h3>
     <a href="{{ route('admin.students.index') }}" class="btn  btn-secondary text-light me-3 mt-2">
-        <i class="fas fa-arrow-left me-1"></i> Back to List
+        <i class="fas fa-arrow-left me-1"></i> 
     </a>
 </div>
     <div class="row">

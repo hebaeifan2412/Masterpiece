@@ -4,7 +4,7 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>
-            Teachers & Subjects for: Grade {{ $classProfile->grade->name }} - Section {{ $classProfile->section }}
+            Teachers & Subjects for:  {{ $classProfile->grade->name }} - Section {{ $classProfile->section }}
         </h2>
         <a href="{{ route('admin.class.assign-teacher', ['class' => $classProfile->id]) }}" 
            class="btn btn-primary">
@@ -16,8 +16,8 @@
         <div class="card-body">
             @if ($classProfile->teachers && $classProfile->teachers->count())
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-light">
+                    <table class="table table-hover lign-middlea ">
+                        <thead class="text-light bg-primary">
                             <tr>
                                 <th>Teacher</th>
                                 <th>Subjects</th>
@@ -54,7 +54,7 @@
                     </table>
                 </div>
             @else
-                <div class="alert alert-info">
+                <div class="alert alert-primary">
                     <i class="fas fa-info-circle me-2"></i> No teachers have been assigned to this class yet.
                 </div>
             @endif

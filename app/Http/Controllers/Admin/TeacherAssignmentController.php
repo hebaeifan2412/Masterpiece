@@ -12,22 +12,24 @@ use App\Models\Subject;
 class TeacherAssignmentController extends Controller
 {
    
-    public function create($classId, Request $request)
-    {
-        $classProfile = ClassProfile::with(['grade', 'teachers.user', 'teachers.subject'])->findOrFail($classId);
+   public function create($classId)
+{
+    $classProfile = ClassProfile::with(['grade', 'teachers'])->findOrFail($classId);
+    $subjects = Subject::all();
 
-        $subjects = Subject::all();
+    $allTeachers = TeacherProfile::with('user', 'subject')->get();
 
-        $subjectId = $request->get('subject_id');
+    $assignedTeacherIds = TeacherClass::where('class_id', $classId)->pluck('teacher_id');
 
-        $teachers = collect();
-        if ($subjectId) {
-            $teachers = TeacherProfile::with('user', 'subject')
-                ->where('subject_id', $subjectId)
-                ->get();
-        }
+    $availableTeachers = $allTeachers->reject(function ($teacher) use ($assignedTeacherIds) {
+        return $assignedTeacherIds->contains($teacher->id);
+    });
 
-        return view('admin.teacher_assignment.create', compact('classProfile', 'subjects', 'subjectId', 'teachers'));
+    return view('admin.teacher_assignment.create', compact(
+        'classProfile',
+        'subjects',
+        'availableTeachers'
+    ));
 
     }
 

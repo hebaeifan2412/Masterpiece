@@ -45,7 +45,7 @@
                             <th class="ps-4">National ID</th>
                             <th>Full Name</th>
                             <th>Gender</th>
-                            <th>Status</th>
+                            {{-- <th>Status</th> --}}
                             <th>Class</th>
                             <th class="text-end pe-4">Actions</th>
                         </tr>
@@ -76,11 +76,11 @@
                                         {{ ucfirst($student->gender) }}
                                     </span>
                                 </td>
-                                <td>
+                                {{-- <td>
                                     <span class="badge bg-{{ $student->student_status == 'active' ? 'success' : 'secondary' }}-soft text-{{ $student->student_status == 'active' ? 'success' : 'secondary' }}">
                                         {{ ucfirst($student->student_status) }}
                                     </span>
-                                </td>
+                                </td> --}}
                                 <td>
                                     @if($student->classProfile)
                                         <span class="badge text-dark">
@@ -97,18 +97,18 @@
                                            title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('admin.students.edit', $student->national_id) }}" 
+                                        {{-- <a href="{{ route('admin.students.edit', $student->national_id) }}" 
                                            class="btn btn-sm btn-warning-soft text-warning rounded-circle"
                                            title="Edit">
                                             <i class="fas fa-edit"></i>
-                                        </a>
+                                        </a> --}}
                                         <form action="{{ route('admin.students.destroy', $student->national_id) }}"
                                             class="student-delete-form d-inline"
                                              method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" 
-                                                    class="btn btn-sm btn-danger-soft text-danger rounded-circle "
+                                                    class="btn btn-sm btn-c-soft text-c rounded-circle "
                                                     title="Delete"
                                                     >
                                                 <i class="fas fa-trash-alt"></i>
@@ -132,31 +132,57 @@
 
     {{ $students->withQueryString()->links('pagination::bootstrap-5') }}
 </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const deleteForms = document.querySelectorAll('.student-delete-form');
+   document.addEventListener('DOMContentLoaded', function () {
+    const deleteForms = document.querySelectorAll('.student-delete-form');
 
-        deleteForms.forEach(form => {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault(); // أوقف الإرسال الافتراضي
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
 
-                Swal.fire({
-    title: 'Delete student?',
-    text: 'This action cannot be undone.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, delete',
-    cancelButtonText: 'Cancel',
-    customClass: {
-        confirmButton: 'btn btn-danger',
-        cancelButton: 'btn btn-secondary ms-2',
-    },
-    buttonsStyling: false
-})
+            Swal.fire({
+                title: 'Delete student?',
+                text: 'This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete',
+                cancelButtonText: 'Cancel',
+                customClass: {
+                    confirmButton: 'btn bg-light-red fw-bold text-light',
+                    cancelButton: 'btn btn-secondary fw-bold text-light ms-2',
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); 
+                }
             });
         });
     });
+});
+
 </script>
 @endsection
+@if (session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: "{{ session('success') }}",
+        confirmButtonColor: '#7978e9',
+    });
+</script>
+@endif
+
+@if (session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "{{ session('error') }}",
+        confirmButtonColor: '#d33',
+    });
+</script>
+@endif
+
 

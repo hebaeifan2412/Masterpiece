@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-5">
     <div class="card shadow p-5 rounded-4">
-        <h2 class="text-primary text-center mb-4">Add New Grade</h2>
+        <h2 class="text-primary text-center mb-4"> New Grade</h2>
 
         @if ($errors->any())
             <div class="alert alert-danger">
