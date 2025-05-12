@@ -22,12 +22,12 @@ class ClassProfileController extends Controller
 }
 public function showTeachers($id)
 {
-    $subjects = Subject:: all();
+    $subjects = Subject::all();
     
-    $classProfile = ClassProfile::with(['teachers.user'])->findOrFail($id);
+    $classProfile = ClassProfile::with(['teachers.user', 'teachers.subject'])->findOrFail($id);
+
     return view('admin.class_profiles.teachers', compact('classProfile', 'subjects'));
 }
-
 
 public function showStudents($id)
 {

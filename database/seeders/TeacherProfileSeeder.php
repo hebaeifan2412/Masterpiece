@@ -38,18 +38,21 @@ class TeacherProfileSeeder extends Seeder
                 'secname' => $teacher['secname'],
                 'thirdname' => $teacher['thirdname'],
                 'lastname' => $teacher['lastname'],
-                'email' => strtolower($teacher['firstname']) . $index . '@schoolmind.com',
+                'email' => strtolower($teacher['firstname']) .strtolower($teacher['lastname']) . '@numaschool.com',
                 'phone_no' => '079' . str_pad($index + 1000, 7, '0', STR_PAD_LEFT),
                 'password' => Hash::make('Password123'),
-                'image' => 'users/default.jpg',
+                'image' => '',
                 'role_id' => 3, // Assuming 3 = Teacher
             ]);
     
+
+            $randomSubjectId = $subjects[array_rand($subjects)];
+             $subjectName = Subject::find($randomSubjectId)->name;
             TeacherProfile::create([
                 'user_id' => $user->id,
-                'qualification' => 'Bachelor of Education',
+                'qualification' => 'Bachelor of '.$subjectName,
                 'dob' => now()->subYears(rand(28, 40))->subDays($index * 10),
-                'subject_id' => $subjects[array_rand($subjects)],
+                'subject_id' => $randomSubjectId,
                 'gender' => $teacher['gender'],
                 'address' => 'Amman - Street ' . ($index + 1),
                 'joining_date' => now()->subYears(rand(3, 7)),

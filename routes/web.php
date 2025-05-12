@@ -35,6 +35,7 @@ use App\Http\Controllers\Teacher\AssignmentController;
 use App\Http\Controllers\Teacher\TeacherCourseController;
 use App\Http\Controllers\Teacher\TeacherMarkController;
 use App\Http\Controllers\Admin\TeacherAssignmentController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,8 @@ use App\Http\Controllers\Admin\TeacherAssignmentController;
 |
 */
 Route::get('/', [HomeController::class, 'index']);
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.submit');
+
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('signin');
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
@@ -94,7 +97,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Route::get('/class_profiles/{class_profile}', [ClassProfileController::class, 'show'])
     //     ->name('class_profiles.show');
-     Route::get('/class_profiles/create/{grade}', [ClassProfileController::class, 'create'])
+     Route::get('grades/class_profiles/create/{grade}', [ClassProfileController::class, 'create'])
         ->name('class_profiles.create');
 
     Route::get('/class_profiles', [ClassProfileController::class, 'index'])
@@ -112,15 +115,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
        // Route::resource('class_profiles', ClassProfileController::class);
 
        
-Route::get('/class/{class}/assign-teacher', [TeacherAssignmentController::class, 'create'])
-->name('class.assign-teacher');
+
 
 Route::post('/class/{class}/assign-teacher', [TeacherAssignmentController::class, 'store'])
 ->name('class.assign-teacher.store');
-           
-            Route::get('/subject/{subject}/teachers', [TeacherAssignmentController::class, 'getTeachersBySubject'])
-    ->name('.subject.teachers');
 
+Route::get('/class/{class}/assign-teacher', [TeacherAssignmentController::class, 'create'])
+->name('class.assign-teacher');
+           
+       Route::get('/subject/{subject}/teachers', [TeacherAssignmentController::class, 'getTeachersBySubject'])
+        ->name('subject.teachers');
 Route::post('/class/{class}/assign-teacher/ajax', [TeacherAssignmentController::class, 'ajaxAssign'])
     ->name('class.assign-teacher.ajax');
     Route::delete('/class/{class}/unassign-teacher/{teacher}', [TeacherAssignmentController::class, 'unassign'])

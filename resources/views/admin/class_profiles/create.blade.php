@@ -46,8 +46,8 @@
                         </div>
 
                         <div class="d-flex justify-content-end gap-2">
-                            <a href="{{ route('admin.class_profiles.index') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-2"></i> Cancel
+                            <a href="{{ route('admin.grades.class_profiles', ['grade' => $grade->id]) }}" class="btn btn-secondary text-light">
+                                <i class="fas fa-arrow-left me-1"></i> 
                             </a>
                             <button type="submit" class="btn text-light bg-light-blue">
                                 <i class="fas fa-save me-2"></i> Create Class

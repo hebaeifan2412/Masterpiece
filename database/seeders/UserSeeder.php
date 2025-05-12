@@ -11,16 +11,16 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        $faker = Faker::create();
+   
 
         $adminRole = Role::where('name', 'admin')->first();
         User::create([
             'firstname' => 'Heba',
-            'secname' => 'Aifan',
+            'secname' => 'Qasim',
             'thirdname' => 'Mohammad',
             'lastname' => 'Aleifan',
             'image' => '',
-            'email' => 'hebaeifan@admin.com',
+            'email' => 'hebaeifan@numaschool.com',
             'phone_no' => '+962790000000',
             'password' => Hash::make('hebaeifan'),
             'role_id' => $adminRole->id,

@@ -57,7 +57,7 @@ class AdminStudentController extends Controller
             'email' => 'required|email|unique:users,email',
             'phone_no' => 'nullable|string|max:15',
             'password' => 'required|string|min:8',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
     
             // Student fields
             'national_id' => 'required|string|unique:students,national_id',
@@ -130,7 +130,7 @@ class AdminStudentController extends Controller
             'lastname'      => 'nullable|string|max:50',
             'email'         => 'required|email|max:100|unique:users,email,' . $student->user_id,
             'phone_no'      => 'nullable|string|max:15',
-            'image'         => 'nullable|image|max:2048',
+            'image'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
     
 'national_id' => 'required|unique:students,national_id,' . $student->national_id . ',national_id',
             'class_id'      => 'required|exists:class_profiles,id',

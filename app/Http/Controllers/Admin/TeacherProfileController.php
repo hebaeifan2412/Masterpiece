@@ -106,7 +106,7 @@ class TeacherProfileController extends Controller
             'joining_date'  => 'required|date',
             'leave_date'    => 'nullable|date|after_or_equal:joining_date',
             'address'       => 'nullable|string|max:500',
-            'image'           => 'nullable|image|max:2048',
+            'image'           => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
     
         $teacher_profile->user->update([

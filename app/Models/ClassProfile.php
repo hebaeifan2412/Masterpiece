@@ -15,6 +15,11 @@ class ClassProfile extends Model
     {
         return $this->belongsTo(Grade::class);
     }
+    public function quizzes()
+{
+    return $this->belongsToMany(Quiz::class, 'class_quiz');
+}
+
 
     public function students()
     {

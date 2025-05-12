@@ -23,8 +23,9 @@
                 <input type="text" name="name" value="{{ old('name') }}" class="form-control shadow-sm" required>
             </div>
             <div class="form-group text-center mt-4">
-                <button type="submit" class="btn btn-primary px-5">Create</button>
-                <a href="{{ route('admin.grades.index') }}" class="btn btn-secondary ms-2">Back</a>
+                <button type="submit" class="btn btn-primary px-5">  <i class="fas fa-save me-1"></i> Create</button>
+                <a href="{{ route('admin.grades.index') }}" class="btn btn-secondary text-light ms-2">  
+                       <i class="fas fa-arrow-left me-1"></i> </a>
             </div>
         </form>
     </div>

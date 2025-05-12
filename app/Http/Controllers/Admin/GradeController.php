@@ -16,8 +16,8 @@ class GradeController extends Controller
     ->when($search, function($query) use ($search) {
         $query->where('name', 'like', '%'.$search.'%');
     })
-    ->orderBy('name')
-    ->paginate(10);
+    ->orderBy('id')
+    ->paginate(9);
         return view('admin.grades.index', compact('grades'));
     }
 

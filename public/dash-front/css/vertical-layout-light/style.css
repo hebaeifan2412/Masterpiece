@@ -98,7 +98,7 @@ hr {
 F3797E light danger
 7978e9 purple */
 
-.
+
 
 p {
   margin-top: 0;
@@ -18445,6 +18445,9 @@ div.tagsinput span.tag a {
 
 .sidebar .nav:not(.sub-menu) > .nav-item.active {
   background: #4B49AC;
+}
+.icon-only  .navbar-brand-wrapper  .school-name {
+    display: none;
 }
 
 .sidebar .nav.sub-menu {

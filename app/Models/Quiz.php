@@ -9,7 +9,6 @@ class Quiz extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'class_id',
         'teacher_id',
         'title',
         'duration',
@@ -20,12 +19,13 @@ class Quiz extends Model
     ];
     
   
+public function classes()
+{
+    return $this->belongsToMany(ClassProfile::class, 'class_quiz');
+}
 
    
-    public function classProfile()
-    {
-        return $this->belongsTo(ClassProfile::class, 'class_id');
-    }
+  
     
 
     public function teacher()

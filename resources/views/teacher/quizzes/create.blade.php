@@ -16,14 +16,14 @@
                     </div>
 
                     <div class="mb-3">
-                        <label>Class</label>
-                        <select name="class_id" class="form-control" required>
-                            <option value="">Select class</option>
-                            @foreach(auth()->user()->teacherProfile->classes as $class)
-                                <option value="{{ $class->id }}"> {{ $class->grade->name }} - Section {{ $class->section }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+    <label>Classes</label>
+    <select name="class_ids[]" class="form-control" multiple required>
+        @foreach(auth()->user()->teacherProfile->classes as $class)
+            <option value="{{ $class->id }}"> {{ $class->grade->name }} - Section {{ $class->section }}</option>
+        @endforeach
+    </select>
+    <small class="text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple.</small>
+</div>
 
                     <div class="mb-3">
                         <label>Start Time</label>

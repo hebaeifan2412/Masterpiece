@@ -28,7 +28,7 @@ class AdminProfileController extends Controller
             'email'       => 'required|email|unique:users,email,' . $admin->id,
             'phone_no'    => 'nullable|string|max:15',
             'status'      => 'in:active,inactive',
-            'image'       => 'nullable|image|max:2048',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         if ($request->hasFile('image')) {

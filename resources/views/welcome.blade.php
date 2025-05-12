@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>SchoolMind</title>
+    <title>NumaSchool</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -53,15 +53,13 @@
 <header class="site-navbar py-4 js-sticky-header fixed-top site-navbar-target" role="banner">
   <div class="container-fluid">
     <div class="d-flex align-items-center">
-      <div class="site-logo mr-auto w-25"><a href="{{ url('/') }}"  class="nav-link "> <i class="fa-solid fa-graduation-cap  me-1"></i>SchoolMind</a></div>
+      <div class="site-logo mr-auto w-25"><a href="{{ url('/') }}"  class="nav-link "> <i class="fa-solid fa-graduation-cap  me-1"></i>NumaSchool</a></div>
 
       <div class="mx-auto text-center">
         <nav class="site-navigation position-relative text-right">
           <ul class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block m-0 p-0">
             <li><a href="#home-section" class="nav-link font-weight-bold">Home</a></li>
             <li><a href="#about-us" class="nav-link font-weight-bold ">About Us </a></li>
-
-            <li><a href="#" class="nav-link font-weight-bold">Event</a></li>
             <li><a href="#teachers-section" class="nav-link font-weight-bold">Teachers</a></li>
             <li><a href="#contact-section" class="nav-link font-weight-bold">Contact Us</a></li>
           </ul>
@@ -80,7 +78,7 @@
             <div class="col-12">
               <div class="row align-items-center">
                 <div class="col-lg-6 mb-2">
-                  <h1 data-aos="fade-up" data-aos-delay="100">Discover a Smarter Way to Learn at SchoolMind</h1>
+                  <h1 data-aos="fade-up" data-aos-delay="100">Discover a Smarter Way to Learn at NumaSchool</h1>
                   <p class="mb-4" data-aos="fade-up" data-aos-delay="200" >Empowering students from Grade 1 to Grade 10 through technology-driven learning,
                      passionate educators, and a supportive academic community that fosters success and growth.</p>
                 </p>
@@ -103,11 +101,11 @@
       <div class="container">
         <div class="row mb-5 justify-content-center">
           <div class="col-lg-7 text-center" data-aos="fade-up">
-            <h2 class="section-title">Why SchoolMind?
+            <h2 class="section-title">Why NumaSchool?
 
             </h2>
             <p> 
-              At SchoolMind, we believe education is more than lessons and exams — it’s about nurturing smart,
+              At NumaSchool, we believe education is more than lessons and exams — it’s about nurturing smart,
                confident, and creative minds ready to shape the future.
               
               That’s why we built a smart, intuitive, and powerful school management platform designed for today’s challenge.</p>
@@ -118,7 +116,7 @@
         <div class="row g-4 my-4">
           <!-- Card 1 -->
           <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-lg">
+            <div class="card h-100 border-0 shadow-lg counter-item">
               <div class="card-body text-center p-4">
                 <div class="icon-lg bg-primary bg-opacity-10 text-primary rounded-circle mb-3 mx-auto">
                   <i class="fa-solid fa-lightbulb fa-lg text-light"></i>
@@ -131,7 +129,7 @@
         
           <!-- Card 2 -->
           <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-lg">
+            <div class="card h-100 border-0  counter-item shadow-lg">
               <div class="card-body text-center p-4">
                 <div class="icon-lg bg-success bg-opacity-10 text-success rounded-circle mb-3 mx-auto">
                   <i class="fas fa-chalkboard-teacher text-light fa-lg"></i>
@@ -144,8 +142,8 @@
         
           <!-- Card 3 -->
           <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-lg">
-              <div class="card-body text-center p-4">
+            <div class="card h-100 border-0 counter-item">
+              <div class="card-body text-center p-4 ">
                 <div class="icon-lg bg-info bg-opacity-10 text-info rounded-circle mb-3 mx-auto">
                   <i class="fas fa-school text-light fa-lg"></i>
                 </div>
@@ -201,10 +199,13 @@
       position: relative;
       overflow: hidden;
     }
+     
     
     .counter-item {
       transition: all 0.3s ease;
       backdrop-filter: blur(5px);
+      border-radius: 1rem;
+   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
     }
     
     .counter-item {
@@ -228,52 +229,6 @@
     }
   </style>
 
-   <!-- Programs Section -->
-{{-- <div class="site-section" id="programs-section">
-  <div class="container">
-    <div class="row mb-5 justify-content-center">
-      <div class="col-lg-7 text-center" data-aos="fade-up">
-        <h2 class="section-title">Academic Programs</h2>
-        <p>Our comprehensive curriculum combines academic excellence with practical learning experiences. We offer specialized tracks in STEM, Humanities, and Creative Arts to nurture diverse student talents.</p>
-      </div>
-    </div>
-
-    <!-- Program 1 -->
-    <div class="row mb-5 align-items-center">
-      <div class="col-lg-7 mb-5" data-aos="fade-up" data-aos-delay="100">
-        <img src="{{ asset('dist-front/images/undraw_youtube_tutorial.svg') }}" alt="STEM Program" class="img-fluid">
-      </div>
-      <div class="col-lg-4 ml-auto" data-aos="fade-up" data-aos-delay="200">
-        <h2 class="text-black mb-4">STEM Innovation Program</h2>
-        <p class="mb-4">Our science and technology track features hands-on learning in modern laboratories, robotics workshops, and annual innovation challenges. Students gain practical experience with cutting-edge technologies.</p>
-
-        <div class="d-flex align-items-center custom-icon-wrap mb-3">
-          <span class="custom-icon-inner mr-3"><span class="icon icon-flask"></span></span>
-          <div><h3 class="m-0">15 Advanced Science lab</h3></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Program 2 -->
-    <div class="row mb-5 align-items-center">
-      <div class="col-lg-7 mb-5 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
-        <img src="{{ asset('dist-front/images/undraw_teacher.svg')}}" alt="Arts Program" class="img-fluid">
-      </div>
-      <div class="col-lg-4 mr-auto order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
-        <h2 class="text-black mb-4">Creative Arts</h2>
-        <p class="mb-4">Our arts program develops creative expression through music, visual arts, and theater. Students participate in annual exhibitions and regional competitions.</p>
-
-        <div class="d-flex align-items-center custom-icon-wrap mb-3">
-          <span class="custom-icon-inner mr-3"><span class="icon icon-palette"></span></span>
-          <div><h3 class="m-0">8 Professional Art Studios</h3></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> --}}
-
-
-
 
 <div class="site-section" id="teachers-section" >
   <div class="container" >
@@ -287,12 +242,18 @@
       <div class="row">
         @foreach($featuredTeachers as $teacher)
             <div class="col-md-6 col-lg-4 mb-4" style="background-color: #fff;">
-                <div class="teacher text-center">
-                    <img src="{{ asset('storage/users/'. ($teacher->user->image ?? 'users/user.jpg')) }}" alt="{{ $teacher->user->firstname }}" class="img-fluid w-50 rounded-circle mx-auto mb-4">
+                <div class="teacher text-center ">
+                   @php
+                    $imagePath = $teacher->user->image
+                
+                        ? asset('storage/' . $teacher->user->image)
+                        : asset('image/user.jpg');
+                @endphp
+                    <img src="{{ $imagePath }}" alt="{{ $teacher->user->firstname }}" class="img-fluid w-50 rounded-circle mx-auto mb-4">
                     <div class="py-2">
-                        <h3 class="text-black">{{ $teacher->user->firstname }} {{ $teacher->user->lastname }}</h3>
-                        <p class="position">{{ $teacher->qualification }}</p>
-                        <p>{{ $teacher->address ?? 'Experienced and passionate teacher.' }}</p>
+                        <h2 class="text-light fw-bold">{{ $teacher->user->firstname }} {{ $teacher->user->lastname }}</h2>
+                        <p class="position text-light">{{ $teacher->qualification }}</p>
+                        {{-- <p>{{ $teacher->address ?? 'Experienced and passionate teacher.' }}</p> --}}
                     </div>
                 </div>
             </div>
@@ -301,20 +262,6 @@
     </div>
   </div>
 </div>
-
-{{-- <div class="site-section bg-image overlay" style="background-image: url('dist-front/images/hero_1.jpg');">
-  <div class="container">
-    <div class="row justify-content-center align-items-center">
-      <div class="col-md-8 text-center testimony">
-        <img src="{{ asset('dist-front/images/person_4.jpg')}}" alt="Student testimonial" class="img-fluid w-25 mb-4 rounded-circle">
-        <h3 class="mb-4">Emily Rodriguez</h3>
-        <blockquote>
-          <p>"The personalized learning approach helped me improve my grades significantly. The teachers genuinely care about student success."</p>
-        </blockquote>
-      </div>
-    </div>
-  </div>
-</div> --}}
 
 <div class="site-section py-5" id="contact-section">
   <div class="container">
@@ -331,26 +278,27 @@
         <div class="bg-white p-5 shadow rounded">
           <h2 class="section-title mb-4">Message Us</h2>
           
-          <form method="post" data-aos="fade">
+          <form method="post"  action="/contact" data-aos="fade">
+             @csrf
             <div class="form-row">
               <div class="form-group col-md-6">
-                <input type="text" class="form-control form-control-lg" placeholder="First name">
+                <input type="text"   name="first_name" class="form-control form-control-lg" placeholder="First name">
               </div>
               <div class="form-group col-md-6">
-                <input type="text" class="form-control form-control-lg" placeholder="Last name">
+                <input type="text"  name="last_name"class="form-control form-control-lg" placeholder="Last name">
               </div>
             </div>
 
             <div class="form-group">
-              <input type="text" class="form-control form-control-lg" placeholder="Subject">
+              <input type="text" name="subject" class="form-control form-control-lg" placeholder="Subject">
             </div>
 
             <div class="form-group">
-              <input type="email" class="form-control form-control-lg" placeholder="Email">
+              <input type="email" name="email" class="form-control form-control-lg" placeholder="Email">
             </div>
             
             <div class="form-group">
-              <textarea class="form-control form-control-lg" rows="5" placeholder="Write your message here"></textarea>
+              <textarea class="form-control form-control-lg" name="message" rows="5" placeholder="Write your message here"></textarea>
             </div>
 
             <div class="form-group">
@@ -421,10 +369,10 @@
               <!-- About Column -->
               <div class="col-lg-4 col-md-6">
                   <div class="d-flex  align-items-start">
-                    <div >  <img src="{{ asset('dash-front/images/logo.png') }}" class="me-3 logo-img " alt="SchoolMind logo" width="10" height="20">
+                    <div >  <img src="{{ asset('dash-front/images/logo.png') }}" class="me-3 logo-img " alt="NumaSchool logo" width="10" height="20">
                     </div>
                     <div class="ps-3"> 
-                      <h4 class="mb-3 fw-bold border-bottom ms-5 p-2">About SchoolMind</h4>
+                      <h4 class="mb-3 fw-bold border-bottom ms-5 p-2">About NumaSchool</h4>
                       <p class="text-light ms-2 p-2">Established in 2010, we're committed to academic excellence and holistic student development.</p>
                     </div>
                    </div>
@@ -459,7 +407,7 @@
                   <a href="#" class="text-white p-2"><i class="fab fa-linkedin-in"></i></a>
                   <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
               </div>
-                  <p class="text-light mb-1">&copy; 2025 SchoolMind. All rights reserved.</p>
+                  <p class="text-light mb-1">&copy; 2025 NumaSchool. All rights reserved.</p>
                   
               </div>
               

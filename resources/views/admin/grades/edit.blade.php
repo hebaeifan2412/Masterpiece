@@ -25,7 +25,7 @@
             </div>
             <div class="form-group text-center mt-4">
                 <button type="submit" class="btn btn-primary px-5">Update</button>
-                <a href="{{ route('admin.grades.index') }}" class="btn btn-secondary ms-2">Cancel</a>
+                <a href="{{ route('admin.grades.index') }}" class="btn btn-secondary text-light ms-2"> <i class="fas fa-arrow-left me-1"></i> </a>
             </div>
         </form>
     </div>

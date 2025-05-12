@@ -40,7 +40,14 @@ class StudentSeeder extends Seeder
             for ($i = 0; $i < 15; $i++) {
                 $firstname = $firstNames[array_rand($firstNames)];
                 $lastname = $lastNames[array_rand($lastNames)];
-                $email = strtolower($firstname) . $studentCounter . '@numaschool.com';
+                $baseEmail = strtolower($firstname) . strtolower($lastname) . '@numaschool.com';
+                $email = $baseEmail;
+                $counter = 1;
+
+                while (User::where('email', $email)->exists()) {
+                    $email = strtolower($firstname) . strtolower($lastname) . $counter . '@numaschool.com';
+                    $counter++;
+                }
 
                 $user = User::create([
                     'firstname' => $firstname,
@@ -50,7 +57,7 @@ class StudentSeeder extends Seeder
                     'email' => $email,
                     'phone_no' => '078' . random_int(1000000, 9999999),
                     'password' => Hash::make('Password123'),
-                    'image' => 'user.jpg',
+                    'image' => '',
                     'role_id' => 2,
                 ]);
 

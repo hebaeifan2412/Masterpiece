@@ -14,12 +14,7 @@
         <div class="col-12">
             <div class="card my-4">
                 
-                     
-                      
-                           
-                            
-                       
-                  
+    
                 
                 
                 <div class="card-body px-4 pb-4 pt-3">
@@ -32,7 +27,7 @@
                     </div>
                     @endif
 
-                    @if($errors->any()))
+                    @if($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <div class="d-flex align-items-center">
                             <i class="fas fa-exclamation-triangle me-2"></i>
