@@ -5,7 +5,8 @@
     <h2 class="mb-4">Submissions - {{ $assignment->title }}</h2>
 
     @if ($assignment->submissions->count() === 0)
-        <div class="alert alert-info">No submissions yet.</div>
+        <div class="alert alert-primary">             
+            <i class="fas fa-info-circle me-2"></i>No submissions yet.</div>
     @else
         <div class="table-responsive">
             <table class="table table-bordered">

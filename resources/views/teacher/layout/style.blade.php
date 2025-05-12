@@ -14,6 +14,7 @@
  <link rel="stylesheet" href="{{ asset('dash-front/css/vertical-layout-light/style.css') }}"> <!-- endinject -->
  <link rel="shortcut icon" href="{{ asset('dash-front/images/favicon.png') }}" />
  
- 
- <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.css' rel='stylesheet' />
- <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.min.css' rel='stylesheet' />
+ <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+
+  <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.css' rel='stylesheet' />
+ <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.min.css' rel='stylesheet' /> 

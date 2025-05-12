@@ -16,11 +16,12 @@ class QuizStudentController extends Controller
         $student = Auth::user()->student;
 
         $classId = $student->class_id;
-
-        $quizzes = Quiz::where('status', 'show')
-            ->where('class_id', $classId)
-            ->with(['classProfile.grade', 'teacher.subject']) // optional: load teacher & subject
-            ->get();
+$quizzes = Quiz::where('status', 'show')
+    ->whereHas('classes', function ($query) use ($classId) {
+        $query->where('class_profile_id', $classId);
+    })
+    ->with(['classes.grade', 'teacher.subject' , 'teacher.user']) 
+    ->get();
 
         return view('student.quiz.index', compact('quizzes', 'now'));
     }

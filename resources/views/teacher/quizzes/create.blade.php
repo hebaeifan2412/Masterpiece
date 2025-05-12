@@ -1,5 +1,14 @@
 <div class="modal fade" id="quizCreateModal" tabindex="-1" aria-labelledby="quizCreateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
+         @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
         <form action="{{ route('teacher.quizzes.store') }}" method="POST">
             @csrf
             <div class="modal-content">
@@ -14,16 +23,18 @@
                         <label>Quiz Title</label>
                         <input type="text" name="title" class="form-control" required>
                     </div>
-
                     <div class="mb-3">
-    <label>Classes</label>
-    <select name="class_ids[]" class="form-control" multiple required>
-        @foreach(auth()->user()->teacherProfile->classes as $class)
-            <option value="{{ $class->id }}"> {{ $class->grade->name }} - Section {{ $class->section }}</option>
-        @endforeach
-    </select>
-    <small class="text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple.</small>
-</div>
+                        <label class="form-label">Assign to Classes</label>
+                        @foreach ($classess as $class)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="class_ids[]"
+                                    value="{{ $class->id }}" id="class{{ $class->id }}">
+                                <label class="form-check-label" for="class{{ $class->id }}">
+                                    {{ $class->grade->name }} - Section {{ $class->section }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
 
                     <div class="mb-3">
                         <label>Start Time</label>

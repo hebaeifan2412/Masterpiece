@@ -1,8 +1,18 @@
+<style>
+    .sidebar-icon-only .navbar .school-name {
+    display: inline !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    font-size: 0.1px !important;
+}
+</style>
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-  <div class="text-center navbar-brand-wrapper bg-primary text-light d-flex align-items-center justify-content-center">
-    <a class="navbar-brand brand-logo " href= ""><img src="{{ asset('dash-front/images/logo.png') }}" class="mr-2" alt="logo"/></a>
-    SchoolMind
-  </div>
+ <div class="text-center navbar-brand-wrapper bg-primary text-light fw-bold d-flex align-items-center justify-content-center">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="{{ asset('dash-front/images/logo.png') }}" class="mr-2" alt="logo" />
+        <span class="school-name text-light">NumaSchool</span>
+    </a>
+</div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
       <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
         <span class="icon-menu"></span>

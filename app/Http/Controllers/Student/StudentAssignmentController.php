@@ -33,7 +33,7 @@ class StudentAssignmentController extends Controller
     public function submit(Request $request, $id)
     {
         $request->validate([
-            'file' => 'required|file|mimes:pdf|max:20480', // max 20MB    
+            'file' => 'required|file|max:20480', // max 20MB    
         ], [
             'file.mimes' => 'The file must be a PDF document.',
             'file.max' => 'The file may not be greater than 20MB.',

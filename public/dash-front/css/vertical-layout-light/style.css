@@ -18488,6 +18488,9 @@ div.tagsinput span.tag a {
 background-color: var(--b-soft);
 color: var(--b);
 }
+.bg-light-purple{
+background-color: var(--d);
+}
 .bg-light-blue{
 background-color: var(--b);
 }
@@ -18555,8 +18558,31 @@ color: var(--d);
 .text-pink {
   color: var(--pink);
 }
+.feedback-container {
+    border: 1px solid rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
 
+.feedback-container:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+}
 
+.bg-light-success {
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.mark-display {
+    min-width: 80px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.feedback-text {
+    border-left: 3px solid #4747A1;
+}
+.h{
+  background-color: #c4cfff;
+}
 
 .card {
   border-radius: 12px;

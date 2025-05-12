@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-primary">
+        <h2 class="fw-bold text-dark">
             <i class="fas fa-question-circle me-2"></i> Quiz: {{ $quiz->title }}
         </h2>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#questionCreateModal">
@@ -14,7 +14,7 @@
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show">
             <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close mb-1" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
@@ -68,7 +68,7 @@
                             </td>
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button class="btn btn-sm btn-outline-warning" 
+                                    <button class="btn btn-sm btn-secondary text-light" 
                                             data-bs-toggle="modal" 
                                             data-bs-target="#editQuestionModal{{ $question->id }}"
                                             data-bs-toggle="tooltip" title="Edit Question">
@@ -81,7 +81,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" 
-                                                class="btn btn-sm btn-outline-danger"
+                                                class="btn btn-sm bg-light-red text-light"
                                                 onclick="return confirm('Are you sure you want to delete this question?')"
                                                 data-bs-toggle="tooltip" title="Delete Question">
                                             <i class="fas fa-trash-alt"></i>

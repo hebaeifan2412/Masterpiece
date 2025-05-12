@@ -16,8 +16,11 @@
 
 <!-- Moment.js -->
 <script src='https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js'></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
-{{-- <!-- FullCalendar JS -->
+ <!-- FullCalendar JS -->
 <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.global.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.global.min.js'></script>
-<script src="{{  asset('dash-front/js/calendar.js') }}" --}}
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+

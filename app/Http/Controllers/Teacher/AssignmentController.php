@@ -45,6 +45,7 @@ class AssignmentController extends Controller
             'open_time'        => 'required|date',
             'close_time'       => 'required|date|after:open_time',
             'status'           => 'required|in:show,hide',
+            'fullmark' =>'required|integer|min:0',
             'classes_display'  => 'required|array|min:1',
             'classes_display.*'=> 'exists:class_profiles,id',
         ]);
@@ -57,6 +58,9 @@ class AssignmentController extends Controller
             'open_time'   => $request->open_time,
             'close_time'  => $request->close_time,
             'status'      => $request->status,
+            'fullmark' => $request->fullmark,
+
+            
         ]);
 
         // ربط الواجب بالصفوف المختارة
@@ -120,7 +124,8 @@ class AssignmentController extends Controller
             'description' => 'nullable|string',
             'open_time'    => 'required|date',
             'close_time'   => 'required|date|after:open_time',
-            'status' => 'required|in:show,hide'
+            'status' => 'required|in:show,hide',
+            'fullmark' =>'required|integer|min:0',
         ]);
 
         $assignment->update([
@@ -130,6 +135,7 @@ class AssignmentController extends Controller
             'open_time'   => $request->open_time,
             'close_time'  => $request->close_time,
             'status' => $request->status,
+             'fullmark' => $request->fullmark,
         ]);
 
         return redirect()->route('teacher.assignments.index')->with('success', 'Assignment updated successfully.');

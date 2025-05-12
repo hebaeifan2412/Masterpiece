@@ -19,6 +19,7 @@ return new class extends Migration
             $table->dateTime('open_time');
             $table->dateTime('close_time');     
             $table->enum('status', ['show', 'hide'])->default('hide');
+            $table->integer('fullmark');
             
                    $table->timestamps();
         });

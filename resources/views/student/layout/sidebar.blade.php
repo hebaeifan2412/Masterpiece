@@ -29,8 +29,8 @@
         <!-- Courses (commented out) -->
         <li class="nav-item">
             <a class="nav-link" href="{{ route('student.courses.index') }}">
-                <i class="fas fa-chalkboard-teacher me-2"></i>
-                <span class="menu-title">My Courses</span>
+    <i class="fa-solid fa-book  menu-icon"></i> 
+                    <span class="menu-title">My Subjects</span>
             </a>
         </li> 
          

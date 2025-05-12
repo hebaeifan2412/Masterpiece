@@ -16,46 +16,48 @@ class QuizController extends Controller
         $teacherId = Auth::user()->teacherProfile->id;
 
         $quizzes = Quiz::where('teacher_id', $teacherId)
-            ->with(['classProfile', 'questions.options'])
+            ->with(['classes', 'questions.options'])
             ->get();
 
-        $classes = Auth::user()->teacherProfile->classes()->with('grade')->get();
+        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
 
-        return view('teacher.quizzes.index', compact('quizzes', 'classes'));
+        return view('teacher.quizzes.index', compact('quizzes', 'classess'));
     }
 
     public function create()
     {
-        $classes = Auth::user()->teacherProfile->classes()->with('grade')->get();
-        return view('teacher.quizzes.create', compact('classes'));
+        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
+        return view('teacher.quizzes.create', compact('classess'));
     }
 
-    public function store(Request $request)
-    {
-        $teacherId = Auth::user()->teacherProfile->id;
+   public function store(Request $request)
+{
+    $teacherId = Auth::user()->teacherProfile->id;
 
-        $request->validate([
-            'class_id' => 'required|exists:class_profiles,id',
-            'title' => 'required|string|max:255',
-            'start_time' => 'required|date',
-            'end_time' => 'required|date|after:start_time',
-            'duration' => 'required|integer|min:1',
-            'status' => 'required|in:show,hide',
-        ]);
+    $request->validate([
+        'class_ids' => 'required|array',
+        'class_ids.*' => 'exists:class_profiles,id',
+        'title' => 'required|string|max:255',
+        'start_time' => 'required|date',
+        'end_time' => 'required|date|after:start_time',
+        'duration' => 'required|integer|min:1',
+        'status' => 'required|in:show,hide',
+    ]);
 
-        Quiz::create([
-            'teacher_id' => $teacherId,
-            'class_id' => $request->class_id,
-            'title' => $request->title,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'duration' => $request->duration,
-            'number_of_questions' => 0,
-            'status' => $request->status,
-        ]);
+    $quiz = Quiz::create([
+        'teacher_id' => $teacherId,
+        'title' => $request->title,
+        'start_time' => $request->start_time,
+        'end_time' => $request->end_time,
+        'duration' => $request->duration,
+        'number_of_questions' => 0,
+        'status' => $request->status,
+    ]);
 
-        return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz created successfully.');
-    }
+    $quiz->classes()->attach($request->class_ids);
+
+    return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz created successfully.');
+}
 
     public function show($quizId)
     {
@@ -67,40 +69,44 @@ class QuizController extends Controller
     {
         $teacherId = Auth::user()->teacherProfile->id;
 
-        $quiz = Quiz::where('teacher_id', $teacherId)->findOrFail($id);
-        $classes = Auth::user()->teacherProfile->classes()->with('grade')->get();
+        $quiz = Quiz::where('teacher_id', $teacherId)
+        ->with('classes') 
+        ->findOrFail($id);
+        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
 
-        return view('teacher.quizzes.edit', compact('quiz', 'classes'));
+        return view('teacher.quizzes.edit', compact('quiz', 'classess'));
     }
+public function update(Request $request, $id)
+{
+    $teacherId = Auth::user()->teacherProfile->id;
 
-    public function update(Request $request, $id)
-    {
-        $teacherId = Auth::user()->teacherProfile->id;
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'class_ids' => 'required|array',
+        'class_ids.*' => 'exists:class_profiles,id',
+        'duration' => 'required|integer|min:1',
+        'start_time' => 'required|date',
+        'end_time' => 'required|date|after:start_time',
+        
+        'status' => 'required|in:show,hide',
+    ]);
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'class_id' => 'required|exists:class_profiles,id',
-            'duration' => 'required|integer|min:1',
-            'start_time' => 'required|date',
-            'end_time' => 'required|date|after:start_time',
-            'number_of_questions' => 'required|integer|min:1',
-            'status' => 'required|in:show,hide',
-        ]);
+    $quiz = Quiz::where('teacher_id', $teacherId)->findOrFail($id);
 
-        $quiz = Quiz::where('teacher_id', $teacherId)->findOrFail($id);
+    $quiz->update([
+        'title' => $request->title,
+        'duration' => $request->duration,
+        'start_time' => $request->start_time,
+        'end_time' => $request->end_time,
+       
+        'status' => $request->status,
+    ]);
 
-        $quiz->update([
-            'title' => $request->title,
-            'class_id' => $request->class_id,
-            'duration' => $request->duration,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'number_of_questions' => $request->number_of_questions,
-            'status' => $request->status,
-        ]);
+    // Sync classes
+    $quiz->classes()->sync($request->class_ids);
 
-        return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz updated successfully.');
-    }
+    return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz updated successfully.');
+}
 
     public function destroy($id)
     {
