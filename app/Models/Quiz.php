@@ -21,11 +21,9 @@ class Quiz extends Model
   
 public function classes()
 {
-    return $this->belongsToMany(ClassProfile::class, 'class_quiz');
+    return $this->belongsToMany(ClassProfile::class, 'class_quiz', 'quiz_id', 'class_profile_id');
 }
 
-   
-  
     
 
     public function teacher()

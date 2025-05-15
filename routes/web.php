@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\Admin\ClassProfileController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\AdminController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\GradeController;
+use App\Http\Controllers\Admin\MarkController;
 use App\Http\Controllers\Teacher\ClassTeacherController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
@@ -47,6 +49,7 @@ use App\Http\Controllers\ContactController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('/', [HomeController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.submit');
 
@@ -57,88 +60,86 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-  
+
     Route::get('/admin/dashboard', [AdminController::class, 'index']);
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/charts/gender', [AdminController::class, 'genderChartData'])->name('admin.charts.gender');
     Route::get('/admin/charts/grades', [AdminController::class, 'studentCountByGrade'])
-    ->name('admin.charts.grades');
+        ->name('admin.charts.grades');
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
         Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-             ->middleware(middleware: 'throttle:6,1')
+            ->middleware(middleware: 'throttle:6,1')
             ->name('verification.send');
         Route::get('password/edit', [PasswordController::class, 'editAdmin'])->name('password.edit');
-    Route::put('password/update', [PasswordController::class, 'updateAdmin'])->name('password.update');
+        Route::put('password/update', [PasswordController::class, 'updateAdmin'])->name('password.update');
 
         Route::get('/students/trashed', [AdminStudentController::class, 'trashed'])
-            ->name('students.trashed');   
+            ->name('students.trashed');
         Route::post('/students/{national_id}/restore', [AdminStudentController::class, 'restore'])
             ->name('students.restore');
         Route::delete('/students/{national_id}/force-delete', [AdminStudentController::class, 'forceDelete'])
             ->name('students.force-delete');
-
+Route::get('/marks', [MarkController::class, 'index'])
+    ->name('marks.index');
         Route::resource('users', UserController::class);
         Route::resource('students', AdminStudentController::class);
         Route::resource('subjects', SubjectController::class);
         Route::resource('grades', GradeController::class);
         Route::resource('teacher_profiles', TeacherProfileController::class);
 
-  
-            Route::get('/grades/{grade}/class-profiles', [ClassProfileController::class, 'showByGrade'])->name('grades.class_profiles');
+
+        Route::get('/grades/{grade}/class-profiles', [ClassProfileController::class, 'showByGrade'])->name('grades.class_profiles');
         Route::get('/class-profiles/{id}/teachers', [ClassProfileController::class, 'showTeachers'])->name('class_profiles.teachers');
         Route::get('/class-profiles/{id}/students', [ClassProfileController::class, 'showStudents'])->name('class_profiles.students');
         Route::get('/class-profiles/{id}/students/pdf', [ClassProfileController::class, 'downloadStudentsPdf'])
-    ->name('class_profiles.students.pdf');
-     Route::post('/class_profiles', [ClassProfileController::class, 'store'])
-        ->name('class_profiles.store');
+            ->name('class_profiles.students.pdf');
+        Route::post('/class_profiles', [ClassProfileController::class, 'store'])
+            ->name('class_profiles.store');
 
-    // Route::get('/class_profiles/{class_profile}', [ClassProfileController::class, 'show'])
-    //     ->name('class_profiles.show');
-     Route::get('grades/class_profiles/create/{grade}', [ClassProfileController::class, 'create'])
-        ->name('class_profiles.create');
+        // Route::get('/class_profiles/{class_profile}', [ClassProfileController::class, 'show'])
+        //     ->name('class_profiles.show');
+        Route::get('grades/class_profiles/create/{grade}', [ClassProfileController::class, 'create'])
+            ->name('class_profiles.create');
 
-    Route::get('/class_profiles', [ClassProfileController::class, 'index'])
-        ->name('class_profiles.index');
+        Route::get('/class_profiles', [ClassProfileController::class, 'index'])
+            ->name('class_profiles.index');
 
-    Route::get('/class_profiles/{class_profile}/edit', [ClassProfileController::class, 'edit'])
-        ->name('class_profiles.edit');
+        Route::get('/class_profiles/{class_profile}/edit', [ClassProfileController::class, 'edit'])
+            ->name('class_profiles.edit');
 
-    Route::put('/class_profiles/{class_profile}', [ClassProfileController::class, 'update'])
-        ->name('class_profiles.update');
+        Route::put('/class_profiles/{class_profile}', [ClassProfileController::class, 'update'])
+            ->name('class_profiles.update');
 
-    Route::delete('/class_profiles/{class_profile}', [ClassProfileController::class, 'destroy'])
-        ->name('class_profiles.destroy');
+        Route::delete('/class_profiles/{class_profile}', [ClassProfileController::class, 'destroy'])
+            ->name('class_profiles.destroy');
 
-       // Route::resource('class_profiles', ClassProfileController::class);
-
-       
+        // Route::resource('class_profiles', ClassProfileController::class);
 
 
-Route::post('/class/{class}/assign-teacher', [TeacherAssignmentController::class, 'store'])
-->name('class.assign-teacher.store');
 
-Route::get('/class/{class}/assign-teacher', [TeacherAssignmentController::class, 'create'])
-->name('class.assign-teacher');
-           
-       Route::get('/subject/{subject}/teachers', [TeacherAssignmentController::class, 'getTeachersBySubject'])
-        ->name('subject.teachers');
-Route::post('/class/{class}/assign-teacher/ajax', [TeacherAssignmentController::class, 'ajaxAssign'])
-    ->name('class.assign-teacher.ajax');
-    Route::delete('/class/{class}/unassign-teacher/{teacher}', [TeacherAssignmentController::class, 'unassign'])
-    ->name('class.assign-teacher.unassign');
 
-  
+        Route::post('/class/{class}/assign-teacher', [TeacherAssignmentController::class, 'store'])
+            ->name('class.assign-teacher.store');
 
-});
+        Route::get('/class/{class}/assign-teacher', [TeacherAssignmentController::class, 'create'])
+            ->name('class.assign-teacher');
+
+        Route::get('/subject/{subject}/teachers', [TeacherAssignmentController::class, 'getTeachersBySubject'])
+            ->name('subject.teachers');
+        Route::post('/class/{class}/assign-teacher/ajax', [TeacherAssignmentController::class, 'ajaxAssign'])
+            ->name('class.assign-teacher.ajax');
+        Route::delete('/class/{class}/unassign-teacher/{teacher}', [TeacherAssignmentController::class, 'unassign'])
+            ->name('class.assign-teacher.unassign');
+    });
 });
 
 
-  
+
 Route::middleware(['auth', 'role:teacher'])->group(function () {
-  
+
     Route::get('/teacher/dashboard', [TeacherController::class, 'index']);
     Route::get('/teacher/dashboard', [TeacherController::class, 'index'])->name('teacher.dashboard');
 
@@ -147,53 +148,52 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
 
 
     Route::prefix('teacher')->name('teacher.')->group(function () {
-    Route::get('/profile', [ProfileTeacherController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileTeacherController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileTeacherController::class, 'destroy'])->name('profile.destroy');     
-     
-    Route::put('/change-password', [PasswordController::class, 'updateTeacher'])->name('password.update');
-    Route::get('/change-password', [PasswordController::class, 'editTeacher'])->name('password.edit');
-        
-    
-       
-Route::resource('quizzes', QuizController::class);
-Route::resource('quizzes.questions', QuizQuestionController::class);
-Route::resource('questions.options', QuestionOptionController::class);
-Route::get('/teacher/quizzes/{quiz}/questions/{question}',[QuizQuestionController::class, 'show'])->name('quizzes.questions.show');
+        Route::get('/profile', [ProfileTeacherController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileTeacherController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileTeacherController::class, 'destroy'])->name('profile.destroy');
 
-Route::post('student-quiz-answers', [StudentQuizAnswerController::class, 'store']);
-Route::get('student-quiz-answers/{studentId}/{quizId}', [StudentQuizAnswerController::class, 'show']);
-Route::get('/marks', [TeacherMarkController::class, 'index'])->name('marks.index');
-Route::post('/marks/update', [TeacherMarkController::class, 'update'])->name('marks.update');
-
-Route::resource('assignments', AssignmentController::class);
-Route::get('/assignments/{id}/submissions', [AssignmentController::class, 'submissions'])->name('assignments.submissions');
-Route::put('teacher/submissions/{submission}/mark', [AssignmentController::class, 'updateMark'])->name('assignments.submissions.mark');
+        Route::put('/change-password', [PasswordController::class, 'updateTeacher'])->name('password.update');
+        Route::get('/change-password', [PasswordController::class, 'editTeacher'])->name('password.edit');
 
 
 
-    });   
- });
- 
+        Route::resource('quizzes', QuizController::class);
+        Route::resource('quizzes.questions', QuizQuestionController::class);
+        Route::resource('questions.options', QuestionOptionController::class);
+        Route::get('/teacher/quizzes/{quiz}/questions/{question}', [QuizQuestionController::class, 'show'])->name('quizzes.questions.show');
+
+        Route::post('student-quiz-answers', [StudentQuizAnswerController::class, 'store']);
+        Route::get('student-quiz-answers/{studentId}/{quizId}', [StudentQuizAnswerController::class, 'show']);
+        Route::get('/marks', [TeacherMarkController::class, 'index'])->name('marks.index');
+        Route::post('/marks/update', [TeacherMarkController::class, 'update'])->name('marks.update');
+
+        Route::resource('assignments', AssignmentController::class);
+        Route::get('/sections-by-grade/{gradeId}', [AssignmentController::class, 'getSectionsByGrade']);
+
+        Route::get('/assignments/{id}/submissions', [AssignmentController::class, 'submissions'])->name('assignments.submissions');
+        Route::put('teacher/submissions/{submission}/mark', [AssignmentController::class, 'updateMark'])->name('assignments.submissions.mark');
+    });
+});
 
 
 
- Route::prefix('student')->name('student.')->middleware(['auth', 'role:student'])->group(function () {
 
-    
+Route::prefix('student')->name('student.')->middleware(['auth', 'role:student'])->group(function () {
+
+
     Route::get('/dashboard', [StudentStudentController::class, 'index']);
     Route::get('/dashboard', [StudentStudentController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [StudentProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [StudentProfileController::class, 'update'])->name('profile.update');
 
-    
+
 
     Route::get('password/edit', [PasswordController::class, 'editStudent'])->name('password.edit');
     Route::put('password/update', [PasswordController::class, 'updateStudent'])->name('password.update');
 
-    Route::get('/courses', [StudentSubjectController::class, 'index'])->name('courses.index');
-    Route::get('/courses/{course}', [StudentSubjectController::class, 'showCourse'])->name('courses.show');
+    Route::get('/Subjects', [StudentSubjectController::class, 'index'])->name('Subjects.index');
+    Route::get('/Subjects/{course}', [StudentSubjectController::class, 'showCourse'])->name('Subjects.show');
 
 
     Route::get('/quizzes', [QuizStudentController::class, 'index'])->name('quizzes.index');
@@ -204,9 +204,6 @@ Route::put('teacher/submissions/{submission}/mark', [AssignmentController::class
     Route::get('/assignments', [StudentAssignmentController::class, 'index'])->name('assignments.index');
     Route::post('/assignments/{id}/submit', [StudentAssignmentController::class, 'submit'])->name('assignments.submit');
     Route::delete('/student/assignments/submission/{id}', [StudentAssignmentController::class, 'destroySubmission'])->name('assignments.submission.delete');
-
-
-
 });
- 
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';

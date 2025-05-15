@@ -16,46 +16,49 @@ class ProfileTeacherController extends Controller
         return view('teacher.profile.edit', compact('teacher'));
     }
 
+
     public function update(Request $request)
     {
+        $teacher = auth()->user()->teacherProfile;
+
         $request->validate([
-            'firstname'      => 'required|string|max:50',
-            'secname'        => 'required|string|max:50',
-            'thirdname'      => 'nullable|string|max:50',
-            'lastname'       => 'required|string|max:50',
-            'phone'          => 'nullable|string|max:20',
-            'qualification'  => 'nullable|string|max:255',
-            'dob'            => 'required|date',
-            'address'        => 'nullable|string|max:500',
-            'image'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'firstname'     => 'required|string|max:255',
+            'secname'       => 'nullable|string|max:255',
+            'thirdname'     => 'nullable|string|max:255',
+            'lastname'      => 'required|string|max:255',
+            'phone'         => 'required|digits:10',
+            'qualification' => 'required|string|max:255',
+            'dob'           => 'nullable|date',
+            'address'       => 'required|string|max:255',
+            'image'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $user = User::findOrFail(Auth::id());
-        $teacher = $user->teacherProfile;
-
-        $user->update([
-            'firstname'  => $request->firstname,
-            'secname'    => $request->secname,
-            'thirdname'  => $request->thirdname,
-            'lastname'   => $request->lastname,
-            'phone_no'   => $request->phone,
-        ]);
-
+        $user = $teacher->user;
+        $user->firstname = $request->firstname;
+        $user->secname   = $request->secname;
+        $user->thirdname = $request->thirdname;
+        $user->lastname  = $request->lastname;
+        $user->phone_no  = $request->phone;
         if ($request->hasFile('image')) {
-            if ($user->image && Storage::disk('public')->exists($user->image)) {
-                Storage::disk('public')->delete($user->image);
+            if ($teacher->image && Storage::disk('public')->exists($teacher->image)) {
+                Storage::disk('public')->delete($teacher->image);
             }
-        
-            $path = $request->file('image')->store('teachers', 'public');
-            $user->update(['image' => $path]);
+
+            $image      = $request->file('image');
+            $imageName  = time() . '.' . $image->getClientOriginalExtension();
+            $imagePath  = $image->storeAs('teacher_pics', $imageName, 'public');
+            $user->image = $imagePath;
         }
+        $user->save();
 
-        $teacher->update([
-            'qualification' => $request->qualification,
-            'dob'           => $request->dob,
-           'address'       => $request->address,
-        ]);
+        $teacher->qualification = $request->qualification;
+        $teacher->dob           = $request->dob;
+        $teacher->address       = $request->address;
 
-        return back()->with('success', 'Profile updated successfully.');
+
+
+        $teacher->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully.');
     }
 }

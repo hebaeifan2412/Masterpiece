@@ -45,7 +45,7 @@ class TeacherController extends Controller
 
      $classes = $teacherProfile->classes()->with('students')->get();
  
-     $assignmentsCount = Assignment::where('teacher_id', $teacherProfile->id)->count();
+     $Classcount = $classes->count();
      $quizzesCount = Quiz::where('teacher_id', $teacherProfile->id)->count();
  $subjectName =  $teacherProfile->subject->name;
      $studentsCount = $classes->sum(function ($class) {
@@ -57,7 +57,7 @@ class TeacherController extends Controller
          'cityName', 
          'countryName', 
          'iconUrl',
-         'assignmentsCount',
+         'Classcount',
          'quizzesCount',
          'studentsCount',
          'classes',

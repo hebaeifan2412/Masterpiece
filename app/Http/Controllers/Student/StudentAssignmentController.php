@@ -24,8 +24,7 @@ class StudentAssignmentController extends Controller
             })
             ->where('open_time', '<=', now())
             ->where('close_time', '>=', now())
-            ->with(['classProfiles.teachers.subject', 'submissions'])
-            ->get();
+            ->with(['teacher.subject', 'submissions'])->get();
 
         return view('student.assignments.index', compact('assignments'));
     }
@@ -46,8 +45,7 @@ class StudentAssignmentController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        if (now()->lt(Carbon::parse($assignment->open_time)) || now()->gt(Carbon::parse($assignment->close_time)))
-         {
+        if (now()->lt(Carbon::parse($assignment->open_time)) || now()->gt(Carbon::parse($assignment->close_time))) {
             return back()->with('error', 'Submission is not allowed at this time.');
         }
 

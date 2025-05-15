@@ -10,18 +10,13 @@
 <script src="{{ asset('dash-front/js/template.js') }}"></script>
 <script src="{{ asset('dash-front/js/settings.js') }}"></script>
 <script src="{{ asset('dash-front/js/todolist.js') }}"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- SweetAlert2 CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-<!-- SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
 <!-- Moment.js -->
 <script src='https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js'></script>
 
- <!-- FullCalendar JS -->
+<!-- FullCalendar JS -->
 <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.global.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.global.min.js'></script>
 <script src="{{  asset('dash-front/js/calendar.js') }}"></script>

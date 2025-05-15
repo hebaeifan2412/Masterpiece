@@ -9,15 +9,16 @@ use App\Models\Assignment;
 use App\Models\ClassProfile;
 use App\Models\Submission;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Storage;
 
 class AssignmentController extends Controller
 {
     public function index()
     {
         $teacherId = Auth::user()->teacherProfile->id;
+
         $assignments = Assignment::where('teacher_id', $teacherId)
-            ->with('classProfile')
+            ->with('classProfiles')
             ->latest()
             ->get()
             ->map(function ($assignment) {
@@ -31,87 +32,130 @@ class AssignmentController extends Controller
 
     public function create()
     {
-        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
-        return view('teacher.assignments.create', compact('classess'));
+        $teacher = auth()->user()->teacherProfile;
+        $classess = $teacher->classes()->with('grade')->get();
+        $grades = $classess->pluck('grade')->unique('id');
+
+        return view('teacher.assignments.create', compact('classess', 'grades'));
     }
+    public function getSectionsByGrade($gradeId)
+    {
+        $teacher = auth()->user()->teacherProfile;
+
+        $sections = $teacher->classes()
+            ->where('grade_id', $gradeId)
+            ->with('grade')
+            ->get()
+            ->map(function ($class) {
+                return [
+                    'id' => $class->id,
+                    'section' => $class->section,
+                    'grade_name' => $class->grade->name,
+                ];
+            });
+
+        return response()->json($sections);
+    }
+
 
     public function store(Request $request)
     {
-        $teacherId = Auth::user()->teacherProfile->id;
-
         $request->validate([
-            'title'            => 'required|string|max:255',
-            'description'      => 'nullable|string',
-            'open_time'        => 'required|date',
-            'close_time'       => 'required|date|after:open_time',
-            'status'           => 'required|in:show,hide',
-            'fullmark' =>'required|integer|min:0',
-            'classes_display'  => 'required|array|min:1',
-            'classes_display.*'=> 'exists:class_profiles,id',
+            'grade_id' => 'required|exists:grades,id',
+            'class_ids' => 'required|array|min:1',
+            'class_ids.*' => 'exists:class_profiles,id',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'fullmark' => 'required|integer|min:1',
+            'open_time' => 'required|date',
+            'close_time' => 'required|date|after:open_time',
+            'status' => 'required|in:show,hide',
+            'attachment' => 'nullable|file|max:10240', // max 10MB
         ]);
 
-        $assignment = Assignment::create([
-            'class_id' =>$request->class_id,
-            'teacher_id'  => $teacherId,
-            'title'       => $request->title,
-            'description' => $request->description,
-            'open_time'   => $request->open_time,
-            'close_time'  => $request->close_time,
-            'status'      => $request->status,
-            'fullmark' => $request->fullmark,
-
-            
+        $assignmentData = $request->only([
+            'title',
+            'description',
+            'fullmark',
+            'open_time',
+            'close_time',
+            'status'
         ]);
 
-        // ربط الواجب بالصفوف المختارة
-        $assignment->classProfiles()->attach($request->classes_display);
+        $assignmentData['teacher_id'] = auth()->user()->teacherProfile->id;
 
-        return redirect()->route('teacher.assignments.index')
-                         ->with('success', 'Assignment created successfully.');
+        if ($request->hasFile('attachment')) {
+            $assignmentData['attachment'] = $request->file('attachment')->store('assignments', 'public');
+        }
+
+        $assignment = Assignment::create($assignmentData);
+        $assignment->classProfiles()->attach($request->class_ids);
+
+        return redirect()->route('teacher.assignments.index')->with('success', 'Assignment created successfully.');
     }
 
     public function show($id)
     {
-        $assignment = Assignment::with('classProfile')->findOrFail($id);
+        $assignment = Assignment::with('classProfiles')->findOrFail($id);
         return view('teacher.assignments.show', compact('assignment'));
     }
 
-    public function submissions($id)
+    public function submissions(Request $request, $id)
     {
-        $assignment = Assignment::with([
-            'classProfile',
-            'submissions' => function ($q) {
-                $q->with('student.user');
-            }
-        ])->findOrFail($id);
-        
-    
-        return view('teacher.assignments.submissions', compact('assignment'));
+        $assignment = Assignment::with(['classProfiles', 'submissions.student.user'])->findOrFail($id);
+        $classId = $request->get('class');
+
+        if ($classId) {
+            $class = ClassProfile::with(['grade', 'students.user'])->findOrFail($classId);
+            $students = $class->students;
+
+            $submissions = $assignment->submissions->filter(function ($submission) use ($classId) {
+                return $submission->student && $submission->student->class_id == $classId;
+            });
+        } else {
+            $students = collect();
+            $submissions = collect();
+            $class = null;
+        }
+
+        return view('teacher.assignments.submissions', compact(
+            'assignment',
+            'class',
+            'students',
+            'submissions',
+            'classId'
+        ));
     }
-    
+
     public function updateMark(Request $request, $submissionId)
     {
+        $submission = Submission::with('assignment')->findOrFail($submissionId);
+
+        if (Carbon::now()->lt(Carbon::parse($submission->assignment->close_time))) {
+            return redirect()->back()->with('error', 'You can only add marks after the assignment has closed.');
+        }
+
         $request->validate([
-            'mark' => 'required|integer|min:0|max:100',
+            'mark' => 'required|integer|min:0|max:' . $submission->assignment->fullmark,
             'feedback' => 'nullable|string|max:2000',
         ]);
-    
-        $submission = Submission::findOrFail($submissionId);
+
         $submission->mark = $request->mark;
         $submission->feedback = $request->feedback;
         $submission->save();
-    
+
         return redirect()->back()->with('success', 'Mark and feedback saved successfully.');
     }
-    
 
     public function edit($id)
     {
-        $assignment = Assignment::findOrFail($id);
+        $assignment = Assignment::with('classProfiles')->findOrFail($id);
         $assignment->open_time = Carbon::parse($assignment->open_time)->format('Y-m-d\TH:i');
-        $assignment->close_time =Carbon::parse($assignment->close_time)->format('Y-m-d\TH:i');
+        $assignment->close_time = Carbon::parse($assignment->close_time)->format('Y-m-d\TH:i');
         $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
-        return view('teacher.assignments.edit', compact('assignment', 'classess'));
+        $grades = $classess->pluck('grade')->unique('id');
+
+        return view('teacher.assignments.edit', compact('assignment', 'classess', 'grades'));
     }
 
     public function update(Request $request, $id)
@@ -119,24 +163,29 @@ class AssignmentController extends Controller
         $assignment = Assignment::findOrFail($id);
 
         $request->validate([
-            'class_id' => 'required|exists:class_profiles,id',
+            'grade_id' => 'required|exists:grades,id',
+            'class_ids' => 'required|array|min:1',
+            'class_ids.*' => 'exists:class_profiles,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'open_time'    => 'required|date',
-            'close_time'   => 'required|date|after:open_time',
+            'open_time' => 'required|date',
+            'close_time' => 'required|date|after:open_time',
             'status' => 'required|in:show,hide',
-            'fullmark' =>'required|integer|min:0',
+            'fullmark' => 'required|integer|min:0',
+            'attachment' => 'nullable|file|max:10240',
         ]);
 
-        $assignment->update([
-            'class_id' => $request->class_id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'open_time'   => $request->open_time,
-            'close_time'  => $request->close_time,
-            'status' => $request->status,
-             'fullmark' => $request->fullmark,
-        ]);
+        $data = $request->only(['title', 'description', 'open_time', 'close_time', 'status', 'fullmark']);
+
+        if ($request->hasFile('attachment')) {
+            if ($assignment->attachment) {
+                Storage::disk('public')->delete($assignment->attachment);
+            }
+            $data['attachment'] = $request->file('attachment')->store('assignments', 'public');
+        }
+
+        $assignment->update($data);
+        $assignment->classProfiles()->sync($request->class_ids);
 
         return redirect()->route('teacher.assignments.index')->with('success', 'Assignment updated successfully.');
     }
@@ -144,6 +193,11 @@ class AssignmentController extends Controller
     public function destroy($id)
     {
         $assignment = Assignment::findOrFail($id);
+
+        if ($assignment->attachment) {
+            Storage::disk('public')->delete($assignment->attachment);
+        }
+
         $assignment->delete();
 
         return redirect()->route('teacher.assignments.index')->with('success', 'Assignment deleted successfully.');

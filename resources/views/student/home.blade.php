@@ -39,8 +39,8 @@
                         </div>
                     </div>
                     <div class="col text-end pe-4">
-                        <h2 class="display-4 fw-bold text-white mb-0">{{ $coursesCount }}</h2>
-                        <p class="text-uppercase text-white mb-0 fs-5 letter-spacing-1">Total Courses</p>
+                        <h2 class="display-4 fw-bold text-white mb-0">{{ count($teachers) }}</h2>
+                        <p class="text-uppercase text-white mb-0 fs-5 letter-spacing-1"> Subjects</p>
                     </div>
                 </div>
             </div>

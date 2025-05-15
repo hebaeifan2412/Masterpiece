@@ -4,5 +4,5 @@
       <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">  <i class="ti-heart text-danger ml-1"></i></span>
     </div>
   </footer>
-<script src="{{ asset('dash-front/js/dashboard.js') }}"></script>
- <script src="{{ asset('dash-front/js/Chart.roundedBarCharts.js') }}"></script>
+{{-- <script src="{{ asset('dash-front/js/dashboard.js') }}"></script>
+ <script src="{{ asset('dash-front/js/Chart.roundedBarCharts.js') }}"></script> --}}

@@ -120,6 +120,32 @@
     </div>
   </div>
 </div>
+
+<div class="row mb-2">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        Student Gender Distribution
+      </div>
+      <div class="card-body">
+        <!-- Canvas element for the chart -->
+        <div style="position: relative; height: 260px; width: 100%;">
+          <canvas id="genderChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm ">  <!-- Added shadow-sm and h-100 here -->
+      <div class="card-header bg-primary text-white">
+        Students by Grade
+      </div>
+      <div class="card-body">
+        <canvas id="gradeChart" height="95" width="200"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row">
   <div class="col-md-12 grid-margin stretch-card">
     <div class="card position-relative">
@@ -127,9 +153,10 @@
         <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2" data-ride="carousel">
          
         
+          
 
 <div class="row">
-  <div class="col-md-8 grid-margin stretch-card">
+  <div class="col-md-12 grid-margin stretch-card">
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
@@ -140,7 +167,7 @@
 
       
     </div>
-  <div class="col-md-4 grid-margin stretch-card">
+  {{-- <div class="col-md-4 grid-margin stretch-card">
                   <div class="card">
                       <div class="card-body">
                          <div class="add-items d-flex mb-0 mt-2">
@@ -156,34 +183,9 @@
        
                       </div>
                   </div>
-  </div>
+  </div> --}}
 </div>
 
-<div class="row">
-  <div class="col-md-6">
-    <div class="card shadow-sm">
-      <div class="card-header bg-primary text-white">
-        Student Gender Distribution
-      </div>
-      <div class="card-body">
-        <!-- Canvas element for the chart -->
-        <div style="position: relative; height: 250px; width: 100%;">
-          <canvas id="genderChart"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="card shadow-sm ">  <!-- Added shadow-sm and h-100 here -->
-      <div class="card-header bg-primary text-white">
-        Students by Grade
-      </div>
-      <div class="card-body">
-        <canvas id="gradeChart" height="100" width="200"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 </div>

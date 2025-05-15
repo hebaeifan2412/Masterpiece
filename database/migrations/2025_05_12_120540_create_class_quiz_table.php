@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('class_quiz', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
-    $table->foreignId('class_profile_id')->constrained('class_profiles')->onDelete('cascade');
-    $table->timestamps();
-});
-
+            $table->id();
+            $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
+            $table->foreignId('class_profile_id')->constrained('class_profiles')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**

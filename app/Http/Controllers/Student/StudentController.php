@@ -24,7 +24,11 @@ class StudentController extends Controller
         $className = $student->classProfile
             ? ($student->classProfile->grade->name . ' - ' . $student->classProfile->section)
             : 'N/A';
-
+$teachers = TeacherProfile::with(['subject', 'user'])
+            ->whereHas('classes', function ($query) use ($classId) {
+                $query->where('class_id', $classId);
+            })
+            ->get();
         $quizzesCount = Quiz::whereHas('classes', function ($query) use ($classId) {
             $query->where('class_profile_id', $classId);
            
@@ -58,7 +62,7 @@ class StudentController extends Controller
 
         return view('student.home', compact(
             'className',
-            'coursesCount',
+            'teachers',
             'quizzesCount',
             'averageMark',
             'studentName',

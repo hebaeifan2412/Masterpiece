@@ -1,14 +1,14 @@
 <div class="modal fade" id="quizCreateModal" tabindex="-1" aria-labelledby="quizCreateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-         @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul class="mb-0">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form action="{{ route('teacher.quizzes.store') }}" method="POST">
             @csrf
             <div class="modal-content">
@@ -26,15 +26,17 @@
                     <div class="mb-3">
                         <label class="form-label">Assign to Classes</label>
                         @foreach ($classess as $class)
-                            <div class="form-check">
+                            <div class="ms-3">
                                 <input class="form-check-input" type="checkbox" name="class_ids[]"
                                     value="{{ $class->id }}" id="class{{ $class->id }}">
-                                <label class="form-check-label" for="class{{ $class->id }}">
+                                <p class="form-check-label" for="class{{ $class->id }}">
                                     {{ $class->grade->name }} - Section {{ $class->section }}
-                                </label>
+                                </p>
                             </div>
                         @endforeach
                     </div>
+                   
+
 
                     <div class="mb-3">
                         <label>Start Time</label>
@@ -60,8 +62,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button class="btn btn-success">Create</button>
+                    <button class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary">Create</button>
                 </div>
             </div>
         </form>

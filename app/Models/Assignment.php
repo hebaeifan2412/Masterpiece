@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Assignment extends Model
 {
     use HasFactory;
-    protected $fillable = [ 'teacher_id', 'title', 'description', 'open_time','close_time' ,'status','fullmark'];
+    protected $fillable = [ 'teacher_id', 'title', 'description', 'open_time','close_time' ,'status','fullmark','attachment'];
 
     public function classProfile()
     {

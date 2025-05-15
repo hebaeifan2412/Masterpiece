@@ -18,6 +18,7 @@
 <script src='https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js'></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
  <!-- FullCalendar JS -->
 <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.global.min.js'></script>

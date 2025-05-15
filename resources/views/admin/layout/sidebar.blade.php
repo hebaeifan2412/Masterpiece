@@ -41,12 +41,12 @@
       </li>
 
       <!-- Classes -->
-      {{-- <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('admin.class_profiles.*') ? 'active' : '' }}" href="{{ route('admin.class_profiles.index') }}">
+      <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('admin.marks.*') ? 'active' : '' }}" href="{{ route('admin.marks.index') }}">
               <i class="fas fa-school menu-icon"></i>
-              <span class="menu-title">Classes</span>
+              <span class="menu-title">Marks</span>
           </a>
-      </li> --}}
+      </li>
   </ul>
   
 </nav>

@@ -17,11 +17,13 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->dateTime('open_time');
-            $table->dateTime('close_time');     
+            $table->dateTime('close_time');
             $table->enum('status', ['show', 'hide'])->default('hide');
             $table->integer('fullmark');
-            
-                   $table->timestamps();
+            $table->string('attachment')->nullable();
+
+
+            $table->timestamps();
         });
     }
 

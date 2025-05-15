@@ -15,7 +15,6 @@
         @method('PUT')
         
         <div class="row">
-            <!-- الصورة على اليسار -->
             <div class="col-md-3">
                 <div class="text-center mb-4">
                     @php
