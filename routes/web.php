@@ -82,8 +82,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             ->name('students.restore');
         Route::delete('/students/{national_id}/force-delete', [AdminStudentController::class, 'forceDelete'])
             ->name('students.force-delete');
-Route::get('/marks', [MarkController::class, 'index'])
-    ->name('marks.index');
+        Route::get('/marks', [MarkController::class, 'index'])
+            ->name('marks.index');
         Route::resource('users', UserController::class);
         Route::resource('students', AdminStudentController::class);
         Route::resource('subjects', SubjectController::class);
@@ -147,6 +147,8 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::get('/teacher/classes/{course}/students/pdf', [ClassTeacherController::class, 'downloadStudentsPdf'])->name('teacher.classes.students.pdf');
 
 
+Route::get('/teacher/class/{id}/students-pdf', [ClassTeacherController::class, 'exportStudents'])
+     ->name('teacher.class.students.pdf');
     Route::prefix('teacher')->name('teacher.')->group(function () {
         Route::get('/profile', [ProfileTeacherController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileTeacherController::class, 'update'])->name('profile.update');
@@ -161,6 +163,7 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
         Route::resource('quizzes.questions', QuizQuestionController::class);
         Route::resource('questions.options', QuestionOptionController::class);
         Route::get('/teacher/quizzes/{quiz}/questions/{question}', [QuizQuestionController::class, 'show'])->name('quizzes.questions.show');
+    Route::get('/grade/{grade}/sections', [QuizController::class, 'getSectionsByGrade'])->name('teacher.grade.sections');
 
         Route::post('student-quiz-answers', [StudentQuizAnswerController::class, 'store']);
         Route::get('student-quiz-answers/{studentId}/{quizId}', [StudentQuizAnswerController::class, 'show']);

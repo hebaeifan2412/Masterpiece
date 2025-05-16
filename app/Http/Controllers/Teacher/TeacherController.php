@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Assignment;
 use App\Models\ClassProfile;
 use App\Models\Course;
+use App\Models\Mark;
 use App\Models\Quiz;
 use App\Models\Student;
 use App\Models\Subject;
@@ -51,6 +52,24 @@ class TeacherController extends Controller
      $studentsCount = $classes->sum(function ($class) {
          return $class->students->count();
      });
+
+
+      $averages = collect();
+
+    foreach ($classes as $class) {
+       $avg = Mark::whereHas('quiz', function ($query) use ($teacherProfile, $class) {
+    $query->where('teacher_id', $teacherProfile->id)
+          ->whereHas('classes', function ($q) use ($class) {
+              $q->where('class_profiles.id', $class->id);
+          });
+})
+->avg('marks');
+
+        $averages->push([
+            'class' => $class->grade->name . ' - ' . $class->section,
+            'average' => round($avg ?? 0, 2)
+        ]);
+    }
  
      return view('teacher.home', compact(
          'temperature', 
@@ -62,6 +81,7 @@ class TeacherController extends Controller
          'studentsCount',
          'classes',
          'user',
-         'subjectName'
+         'subjectName',
+           'averages' ,
      ));
  }}

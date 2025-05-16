@@ -26,12 +26,97 @@
 
 
 <style>
+
   .icon-lg {
   width: 60px;
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+  .counter-section {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .counter-item {
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+    
+    .counter-item {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    
+    .letter-spacing-1 {
+      letter-spacing: 1px;
+    }
+    
+    .counter {
+      font-size: 3.5rem;
+      line-height: 1.2;
+    }
+    
+    @media (max-width: 768px) {
+      .counter {
+        font-size: 2.5rem;
+      }
+    }
+/* footer */
+
+
+  #contact-section {
+    background-color: #f8f9fa;
+  }
+  
+  .section-title {
+    position: relative;
+    padding-bottom: 15px;
+    color: #2c3e50;
+  }
+  
+  .section-title:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    /* background: #3498db; */
+  }
+  
+  .form-control-lg {
+    border-radius: 0.3rem;
+    border: 1px solid #ced4da;
+    padding: 1rem 1.25rem;
+  }
+  
+  .form-control-lg:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+  }
+  
+  textarea.form-control-lg {
+    min-height: 150px;
+  }
+  
+  .btn-block {
+    border-radius: 50px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  
+  .btn-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  @media (max-width: 576px) {
+  .intro-section h1 {
+    font-size: 1.8rem;
+    line-height: 2.2rem;
+  }
 }
 </style>
   </head>
@@ -60,6 +145,8 @@
           <ul class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block m-0 p-0">
             <li><a href="#home-section" class="nav-link font-weight-bold">Home</a></li>
             <li><a href="#about-us" class="nav-link font-weight-bold ">About Us </a></li>
+
+            <li><a href="#" class="nav-link font-weight-bold">Event</a></li>
             <li><a href="#teachers-section" class="nav-link font-weight-bold">Teachers</a></li>
             <li><a href="#contact-section" class="nav-link font-weight-bold">Contact Us</a></li>
           </ul>
@@ -71,21 +158,25 @@
 </header>
 
     {{-- Intro Section --}}
-    <div class="intro-section" id="home-section">
+    <div class="intro-section " id="home-section" >
       <div class="slide-1"  data-stellar-background-ratio="0.5">
         <div class="container">
           <div class="row align-items-center">
             <div class="col-12">
-              <div class="row align-items-center">
-                <div class="col-lg-6 mb-2">
-                  <h1 data-aos="fade-up" data-aos-delay="100">Discover a Smarter Way to Learn at NumaSchool</h1>
+              <div class="row align-items-center gap-1">
+
+
+
+<div class="col-lg-6 mb-2  text-md-start">
+                <h1 data-aos="fade-up" data-aos-delay="100">Discover a Smarter Way to Learn at NumaSchool</h1>
                   <p class="mb-4" data-aos="fade-up" data-aos-delay="200" >Empowering students from Grade 1 to Grade 10 through technology-driven learning,
                      passionate educators, and a supportive academic community that fosters success and growth.</p>
                 </p>
                   <p data-aos="fade-up" data-aos-delay="300"><a href="{{ route('login') }}" class="btn bg-light py-3 px-5 text-dark ">log in</a></p>
                 </div>
+      
 
-                <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="500">
+                <div class="col-lg-6 mb-md-4 text-center mb-lg-0" data-aos="fade-up" data-aos-delay="500">
                   <img src="{{ asset('dist-front/images/download.jpg') }}" alt="STEM Program" class="img-fluid custom-img w-100 mt-0">
 
                 </div>
@@ -101,11 +192,11 @@
       <div class="container">
         <div class="row mb-5 justify-content-center">
           <div class="col-lg-7 text-center" data-aos="fade-up">
-            <h2 class="section-title">Why NumaSchool?
+            <h2 class="section-title">Why Numa School?
 
             </h2>
             <p> 
-              At NumaSchool, we believe education is more than lessons and exams — it’s about nurturing smart,
+              At Numa School, we believe education is more than lessons and exams — it’s about nurturing smart,
                confident, and creative minds ready to shape the future.
               
               That’s why we built a smart, intuitive, and powerful school management platform designed for today’s challenge.</p>
@@ -116,7 +207,7 @@
         <div class="row g-4 my-4">
           <!-- Card 1 -->
           <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-lg counter-item">
+            <div class="card h-100 border-0 shadow-lg">
               <div class="card-body text-center p-4">
                 <div class="icon-lg bg-primary bg-opacity-10 text-primary rounded-circle mb-3 mx-auto">
                   <i class="fa-solid fa-lightbulb fa-lg text-light"></i>
@@ -129,7 +220,7 @@
         
           <!-- Card 2 -->
           <div class="col-md-4">
-            <div class="card h-100 border-0  counter-item shadow-lg">
+            <div class="card h-100 border-0 shadow-lg">
               <div class="card-body text-center p-4">
                 <div class="icon-lg bg-success bg-opacity-10 text-success rounded-circle mb-3 mx-auto">
                   <i class="fas fa-chalkboard-teacher text-light fa-lg"></i>
@@ -142,8 +233,8 @@
         
           <!-- Card 3 -->
           <div class="col-md-4">
-            <div class="card h-100 border-0 counter-item">
-              <div class="card-body text-center p-4 ">
+            <div class="card h-100 border-0 shadow-lg">
+              <div class="card-body text-center p-4">
                 <div class="icon-lg bg-info bg-opacity-10 text-info rounded-circle mb-3 mx-auto">
                   <i class="fas fa-school text-light fa-lg"></i>
                 </div>
@@ -193,43 +284,7 @@
         </div>
       </div>
     </section>
-    
-    <style>
-    .counter-section {
-      position: relative;
-      overflow: hidden;
-    }
-     
-    
-    .counter-item {
-      transition: all 0.3s ease;
-      backdrop-filter: blur(5px);
-      border-radius: 1rem;
-   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-    }
-    
-    .counter-item {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-    
-    .letter-spacing-1 {
-      letter-spacing: 1px;
-    }
-    
-    .counter {
-      font-size: 3.5rem;
-      line-height: 1.2;
-    }
-    
-    @media (max-width: 768px) {
-      .counter {
-        font-size: 2.5rem;
-      }
-    }
-  </style>
-
-
+ 
 <div class="site-section" id="teachers-section" >
   <div class="container" >
     <div class="row mb-5 justify-content-center">
@@ -242,18 +297,17 @@
       <div class="row">
         @foreach($featuredTeachers as $teacher)
             <div class="col-md-6 col-lg-4 mb-4" style="background-color: #fff;">
-                <div class="teacher text-center ">
-                   @php
-                    $imagePath = $teacher->user->image
-                
-                        ? asset('storage/' . $teacher->user->image)
-                        : asset('image/user.jpg');
-                @endphp
-                    <img src="{{ $imagePath }}" alt="{{ $teacher->user->firstname }}" class="img-fluid w-50 rounded-circle mx-auto mb-4">
-                    <div class="py-2">
-                        <h2 class="text-light fw-bold">{{ $teacher->user->firstname }} {{ $teacher->user->lastname }}</h2>
+                <div class="teacher text-center">
+ @php
+              $imagePath = $teacher->user->image
+                ? asset('storage/' . $teacher->user->image)
+                : asset('image/user.jpg');
+            @endphp
+            <img src="{{ $imagePath }}" alt="{{ $teacher->user->firstname }}"
+                 class="img-fluid w-50 rounded-circle mx-auto mb-4">                    <div class="py-2">
+                        <h2 class="text-light">{{ $teacher->user->firstname }} {{ $teacher->user->lastname }}</h2>
                         <p class="position text-light">{{ $teacher->qualification }}</p>
-                        {{-- <p>{{ $teacher->address ?? 'Experienced and passionate teacher.' }}</p> --}}
+                        
                     </div>
                 </div>
             </div>
@@ -262,6 +316,7 @@
     </div>
   </div>
 </div>
+
 
 <div class="site-section py-5" id="contact-section">
   <div class="container">
@@ -275,30 +330,29 @@
       
       <!-- Form Column (Right) -->
       <div class="col-lg-6">
-        <div class="bg-white p-5 shadow rounded">
+        <div class="bg-white p-3 shadow rounded">
           <h2 class="section-title mb-4">Message Us</h2>
           
-          <form method="post"  action="/contact" data-aos="fade">
-             @csrf
+          <form method="post" data-aos="fade">
             <div class="form-row">
               <div class="form-group col-md-6">
-                <input type="text"   name="first_name" class="form-control form-control-lg" placeholder="First name">
+                <input type="text" class="form-control form-control-lg" placeholder="First name">
               </div>
               <div class="form-group col-md-6">
-                <input type="text"  name="last_name"class="form-control form-control-lg" placeholder="Last name">
+                <input type="text" class="form-control form-control-lg" placeholder="Last name">
               </div>
             </div>
 
             <div class="form-group">
-              <input type="text" name="subject" class="form-control form-control-lg" placeholder="Subject">
+              <input type="text" class="form-control form-control-lg" placeholder="Subject">
             </div>
 
             <div class="form-group">
-              <input type="email" name="email" class="form-control form-control-lg" placeholder="Email">
+              <input type="email" class="form-control form-control-lg" placeholder="Email">
             </div>
             
             <div class="form-group">
-              <textarea class="form-control form-control-lg" name="message" rows="5" placeholder="Write your message here"></textarea>
+              <textarea class="form-control form-control-lg" rows="5" placeholder="Write your message here"></textarea>
             </div>
 
             <div class="form-group">
@@ -313,91 +367,11 @@
   </div>
 </div>
 
-<style>
-  #contact-section {
-    background-color: #f8f9fa;
-  }
-  
-  .section-title {
-    position: relative;
-    padding-bottom: 15px;
-    color: #2c3e50;
-  }
-  
-  .section-title:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 50px;
-    height: 3px;
-    /* background: #3498db; */
-  }
-  
-  .form-control-lg {
-    border-radius: 0.3rem;
-    border: 1px solid #ced4da;
-    padding: 1rem 1.25rem;
-  }
-  
-  .form-control-lg:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
-  }
-  
-  textarea.form-control-lg {
-    min-height: 150px;
-  }
-  
-  .btn-block {
-    border-radius: 50px;
-    letter-spacing: 1px;
-    font-weight: 600;
-    transition: all 0.3s;
-  }
-  
-  .btn-block:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  }
-</style>
      
     {{-- Footer --}}
     <footer class="bg-dark text-white border-top pt-4 pb-2"> 
 
-          {{-- <div class="d-flex  justify-content-around">
-              <!-- About Column -->
-              <div class="col-lg-4 col-md-6">
-                  <div class="d-flex  align-items-start">
-                    <div >  <img src="{{ asset('dash-front/images/logo.png') }}" class="me-3 logo-img " alt="NumaSchool logo" width="10" height="20">
-                    </div>
-                    <div class="ps-3"> 
-                      <h4 class="mb-3 fw-bold border-bottom ms-5 p-2">About NumaSchool</h4>
-                      <p class="text-light ms-2 p-2">Established in 2010, we're committed to academic excellence and holistic student development.</p>
-                    </div>
-                   </div>
-              </div>
-  
-  
-              <!-- Newsletter Column -->
-              <div class="col-lg-4 col-md-12">
-                  <h4 class="mb-4 fw-bold border-bottom pb-2">Subscribe</h4>
-                  <form action="#" class="footer-subscribe">
-                      <div class="input-group mb-3">
-                          <input type="email" class="form-control bg-dark text-white rounded-0 border-primary" 
-                                 placeholder="Enter your email" aria-label="Email">
-                          <button class="btn btn-primary rounded-0" type="submit">
-                              Subscribe
-                          </button>
-                      </div>
-                      <small class="text-light">Stay updated with our latest news</small>
-                  </form>
-  
-                  <!-- Social Links -->
-                 
-              </div>
-          </div> --}}
-  
+       
           <!-- Copyright -->
           <div class=" ">
               <div class="col-md-12 text-center">

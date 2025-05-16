@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">My Assignments</h2>
+        <h2 class="mb-0"><i class="fas fa-tasks me-2"></i>My Assignments</h2>
         <a href="{{ route('teacher.assignments.create') }}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> Create Assignment
         </a>
@@ -15,7 +15,7 @@
 
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="table-light">
+            <thead class="bg-primary text-light">
                 <tr>
                     <th>#</th>
                     <th>Title</th>
@@ -37,13 +37,10 @@
                             <div class="mb-2"><strong>Open:</strong> {{ \Carbon\Carbon::parse($assignment->open_time)->format('Y-m-d H:i') }}</div>
                             <div><strong>Close:</strong> {{ \Carbon\Carbon::parse($assignment->close_time)->format('Y-m-d H:i') }}</div>
                         </td>
-                        {{-- <td>
-                            <span class="badge {{ $assignment->status == 'show' ? 'bg-success' : 'bg-secondary' }}">
-                                {{ ucfirst($assignment->status) }}
-                            </span>
-                        </td> --}}
+                       
                         <td class="d-flex gap-2">
-                            <a href="{{ route('teacher.assignments.edit', $assignment->id) }}" class="btn btn-sm bb text-white">
+                            <a href="{{ route('teacher.assignments.edit', $assignment->id) }}"
+                                 class="btn btn-sm btn-secondary  text-white">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <form id="delete-form-{{ $assignment->id }}" 
@@ -56,7 +53,7 @@
     </button>
 </form>
                             <div class="dropdown">
-        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <button class="btn btn-sm bb text-light fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown">
             Select Class
         </button>
         <ul class="dropdown-menu">
@@ -69,7 +66,7 @@
                     <a class="dropdown-item d-flex justify-content-between align-items-center"
                        href="{{ route('teacher.assignments.submissions', ['id' => $assignment->id, 'class' => $class->id]) }}">
                         {{ $class->grade->name }} - {{ $class->section }}
-                        <span class="badge bg-info ms-2">{{ $submitted }} / {{ $totalStudents }}</span>
+                        <span class="badge bg-primary ms-2">{{ $submitted }} / {{ $totalStudents }}</span>
                     </a>
                 </li>
             @endforeach

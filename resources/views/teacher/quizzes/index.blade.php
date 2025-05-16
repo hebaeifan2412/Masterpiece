@@ -64,7 +64,7 @@
                                              <a class="btn btn-sm btn-primary text-white" data-bs-toggle="modal"
                                             data-bs-target="#quizClassesModal{{ $quiz->id }}" data-bs-toggle="tooltip"
                                             title="View Assigned Classes">
-                                            <i class="fas fa-eye"></i>
+                                            <i class="fas fa-door-open"></i>
                                         </a>
                                             <a href="{{ route('teacher.quizzes.questions.index', $quiz->id) }}"
                                                 class="btn btn-sm bg-light-blue text-light" data-bs-toggle="tooltip"

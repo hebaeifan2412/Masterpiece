@@ -80,56 +80,151 @@
             </div>
         </div>
     </div>
-
-    <!-- Optional Calendar + Todo List Section (for students) -->
     <div class="row">
-        <div class="col-md-8 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><i class="fa-solid fa-calendar-days"></i> Calendar</h4>
-                    <div id="calendar"></div>
+        <div class="col-12">
+            <!-- Dashboard Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0 text-primary">
+                    <i class="fas fa-user-graduate me-2"></i> My Info
+                </h4>
+                <div>
+                    <span class="badge bg-primary">
+                        <i class="fas fa-id-card me-1"></i> Student
+                    </span>
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-4 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">To Do Lists</h4>
-                    <div class="add-items d-flex mb-0 mt-2">
-                        <input type="text" class="form-control todo-list-input" placeholder="Add new task">
-                        <button class="add btn btn-icon text-primary todo-list-add-btn bg-transparent"><i
-                                class="icon-circle-plus"></i></button>
-                    </div>
-                    <div class="list-wrapper pt-2">
-                        <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-                          
-                        </ul>
+            <!-- Profile Card -->
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <!-- Profile Picture Column -->
+                        <div class="col-md-4 text-center mb-4 mb-md-0">
+                            <div class="position-relative d-inline-block">
+                                <img src="{{ Auth::user()->image != null ? asset('storage/' . Auth::user()->image) : asset('image/' . 'user.jpg') }}"
+                                    class="img-thumbnail  border-primary"
+                                    style=" object-fit: cover;" alt="Student Image">
+                              
+                            </div>
+                            <div class="mt-3">
+                                <span class="badge bg-light text-dark">
+                                    <i
+                                        class="fas fa-{{ $student->gender == 'male' ? 'mars' : 'venus' }} me-1 text-{{ $student->gender == 'male' ? 'primary' : 'danger' }}"></i>
+                                    {{ ucfirst($student->gender) }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information Column -->
+                        <div class="col-md-8">
+
+                            <div class="bg-light p-3 rounded mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-envelope  text-primary me-2 fs-5"></i>
+                                    <div>
+                                        <strong>Email</strong>  - {{ $student->user->email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-light p-3 rounded mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-id-card  text-primary me-2 fs-5"></i>
+                                    <div>
+                                       <strong>National Id </strong>- {{ $student->national_id }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-light p-3 rounded mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-birthday-cake text-primary fs-5 me-1"></i>
+                                    <div>
+                                       <strong> Date Of Birth</strong> - 
+                                        {{ $student->date_of_birth }}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Address Box -->
+                            <div class="bg-light p-3 rounded mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-map-marker-alt text-primary me-2 fs-5"></i>
+                                    <div>
+                                        <strong>Address</strong> - <span class="mb-0">{{ $student->address }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-light p-3 rounded mb-3">
+                                <div class="d-flex align-items-center">
+                                     <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                            <i class="fas fa-female text-primary fs-4"></i>
+                                        </div>
+                                    <div>
+                                      <strong>Mother</strong>   - {{ $student->mother_name }}<p class="mb-0"> {{ $student->mother_phone }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-light p-3 rounded mb-3">
+                                <div class="d-flex align-items-center">
+                                     <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                            <i class="fas fa-male text-primary fs-4"></i>
+                                        </div>
+                                    <div>
+                                       <strong>Father</strong>   - {{ $student->user->secname }}<p class="mb-0"> {{ $student->father_phone }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
+                    <hr class="my-4">
+                    
+                    
                 </div>
+
+
             </div>
         </div>
     </div>
+
+    <style>
+        .card {
+            border-radius: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.5em 0.8em;
+            font-weight: 500;
+            border-radius: 0.375rem;
+        }
+
+        .bg-light {
+            background-color: #f8f9fa !important;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+        }
+
+        .bg-opacity-10 {
+            background-color: rgba(13, 110, 253, 0.1) !important;
+        }
+    </style>
 @endsection
 @push('scripts')
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
-<script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
 
-document.addEventListener('DOMContentLoaded', function () {
-    var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'en',
+                height: 550,
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
-        locale: 'en',
-        height: 550,
-       
-    });
+            });
 
-    calendar.render();
-});
-</script>
+            calendar.render();
+        });
+    </script>
 @endpush
-

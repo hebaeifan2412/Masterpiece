@@ -36,48 +36,44 @@ class TeacherMarkController extends Controller
 
         return view('teacher.marks.index', compact('classess', 'quizzes', 'marks'));
     }
-
     public function update(Request $request)
     {
         $request->validate([
-            'student_id'     => 'required|exists:students,national_id',
-            'class_id'       => 'required|exists:class_profiles,id',
-            'quiz_id'        => 'required|exists:quizzes,id',
-            'marks'          => 'required|integer|min:0',
-        ]);
+    'student_id' => 'required|exists:students,national_id',
+    'quiz_id'    => 'required|exists:quizzes,id',
+    'marks'      => 'required|integer|min:0',
+]);
 
-        $teacherId = Auth::user()->teacherProfile->id;
+$teacherId = Auth::user()->teacherProfile->id;
 
-        // Check if the teacher teaches the class
-        $class = ClassProfile::whereHas('teachers', function ($q) use ($teacherId) {
-            $q->where('teacher_id', $teacherId);
-        })->where('id', $request->class_id)
-            ->with('students')
-            ->firstOrFail();
+//  the quiz and its assigned classes
+$quiz = Quiz::where('id', $request->quiz_id)
+    ->where('teacher_id', $teacherId)
+    ->with('classes')
+    ->first();
 
-        // Check if student belongs to the class
-        $student = $class->students->where('national_id', $request->student_id)->first();
-        if (!$student) {
-            return back()->with('error', 'Student does not belong to this class.');
-        }
+if (!$quiz) {
+    return back()->with('error', 'Quiz not found or not assigned to this teacher.');
+}
 
-        // Validate that quiz belongs to teacher and class
-        $validQuiz = Quiz::where('id', $request->quiz_id)
-            ->where('teacher_id', $teacherId)
-            ->where('class_id', $request->class_id)
-            ->exists();
-        if (!$validQuiz) {
-            return back()->with('error', 'Quiz does not belong to this class.');
-        }
+//  student by national ID and check class
+$student = \App\Models\Student::where('national_id', $request->student_id)
+    ->with('classProfile')
+    ->first();
 
-        // Save or update mark
-        Mark::updateOrCreate([
-            'student_id' => $request->student_id,
-            'quiz_id'    => $request->quiz_id,
-        ], [
-            'marks' => $request->marks,
-        ]);
+if (!$student || !$student->classProfile || ! $quiz->classes->pluck('id')->contains($student->classProfile->id)) {
+    return back()->with('error', 'Student not in class assigned to this quiz.');
+}
 
-        return back()->with('success', 'Mark updated successfully.');
+Mark::updateOrCreate([
+    'student_id' => $request->student_id, // still national_id (string)
+    'quiz_id'    => $request->quiz_id,
+], [
+    'marks' => $request->marks,
+]);
+
+return back()->with(['success' => 'Mark updated successfully.','open_quiz_id' => $request->quiz_id
+,
+    'open_class_id' => $student->classProfile->id ?? null,]);
     }
 }

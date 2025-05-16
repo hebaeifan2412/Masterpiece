@@ -84,6 +84,7 @@
                                 <div class="d-flex flex-wrap gap-2">
                                     @foreach ($teacherProfile->classes as $class)
                                         <span class="badge bg-light text-dark border p-2 fs-6">
+                                            
                                             <i class="fas fa-door-open text-primary me-1"></i>Grade {{ $class->grade->id }}
                                             - {{ $class->section }}
                                         </span>

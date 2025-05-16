@@ -110,7 +110,7 @@ public function destroy(ClassProfile $classProfile)
 {
     $classProfile = ClassProfile::with(['grade', 'students.user'])->findOrFail($id);
 
-    $pdf = PDF::loadView('admin.class_profiles.studentspdf', compact('classProfile'));
+    $pdf = Pdf::loadView('admin.class_profiles.studentspdf', compact('classProfile'));
     return $pdf->download('students_list_grade_' . $classProfile->grade->name . '_section_' . $classProfile->section . '.pdf');
 }
 }

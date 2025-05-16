@@ -38,14 +38,14 @@
                     @csrf
                     @method('patch')
 
-                    <!-- صورة الملف الشخصي -->
                     <input type="file" name="image" id="profileImageInput" class="d-none" accept="image/*">
                     <div class="d-flex align-items-start mb-4">
                      <div class="me-4">
                             <label for="profileImageInput" style="cursor: pointer;">
                                 <div class="position-relative">
                                     @if($teacher->image)
-                                        <img src="{{ asset('storage/'.$user->image) }}" 
+                                        <img src="{{ Auth::user()->image != null ? asset('storage/' . Auth::user()->image) : asset('image/' . 'user.jpg') }}"
+                                    class="img-thumbnail  border-primary"
                                              alt="Profile Image" 
                                              width="100" 
                                              class="rounded-circle border border-3 border-primary object-fit-cover"

@@ -19,7 +19,7 @@
         <!-- Courses -->
         <li class="nav-item">
           <a class="nav-link" href="{{ route('teacher.classes.index') }}">
-              <i class="fa-solid fa-school  menu-icon"></i>
+              <i class="fa-solid fa-door-open   menu-icon"></i>
               <span class="menu-title">Classes</span>
           </a>
         </li>

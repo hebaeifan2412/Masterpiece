@@ -18,16 +18,19 @@ class QuizController extends Controller
         $quizzes = Quiz::where('teacher_id', $teacherId)
             ->with(['classes', 'questions.options'])
             ->get();
+$classess = auth()->user()->teacherProfile->classes()->with('grade')->get();
+$grades = $classess->pluck('grade')->unique('id');
 
-        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
+return view('teacher.quizzes.index', compact('quizzes', 'classess', 'grades'));
 
-        return view('teacher.quizzes.index', compact('quizzes', 'classess'));
     }
 
     public function create()
     {
-        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
-        return view('teacher.quizzes.create', compact('classess'));
+        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();$grades = $classess->pluck('grade')->unique('id');
+
+return view('teacher.quizzes.create', compact('classess', 'grades'));
+    
     }
 
    public function store(Request $request)
@@ -117,6 +120,27 @@ public function update(Request $request, $id)
 
         return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz deleted successfully.');
     }
+ public function getSectionsByGrade($gradeId)
+{
+    $teacher = auth()->user()->teacherProfile;
+
+    $sections = $teacher->classes()
+        ->with('grade')
+        ->whereHas('grade', function ($query) use ($gradeId) {
+            $query->where('id', $gradeId);
+        })
+        ->get()
+        ->map(function ($class) {
+            return [
+                'id' => $class->id,
+                'grade' => $class->grade->name,
+                'section' => $class->section
+            ];
+        });
+
+    return response()->json($sections);
+}
+
 
     public function startQuiz($id)
     {

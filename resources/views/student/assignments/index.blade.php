@@ -48,64 +48,63 @@
     </div>
                     @if ($submission)
                         <div class="mt-3">
-                            <p class="text-primary mb-1">You have submitted this assignment:</p>
-                            <a href="{{ asset('storage/' . $submission->file_path) }}" target="_blank"
-                                class="btn lb btn-sm">
-                                <i class="fas fa-file-download me-1"></i> View Submission
-                            </a>
+    <p class="text-primary mb-1">You have submitted this assignment:</p>
+    <a href="{{ asset('storage/' . $submission->file_path) }}" target="_blank" class="btn lb btn-sm">
+        <i class="fas fa-file-download me-1"></i> View Submission
+    </a>
 
-                            @if ($now->between($assignment->open_time, $assignment->close_time))
-                                <form id="delete-submission-form-{{ $submission->id }}"
-                                    action="{{ route('student.assignments.submission.delete', $submission->id) }}"
-                                    method="POST" class="d-inline delete-submission-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn ld btn-sm ms-2 delete-submission-btn"
-                                        data-id="{{ $submission->id }}">
-                                        <i class="fas fa-trash-alt"></i> Delete Submission
-                                    </button>
-                                </form>
-                                @if ($submission && $submission->mark !== null)
-                                    {{-- <div class="bg-success bg-gradient rounded-circle d-flex align-items-center justify-content-center mb-3 text-white"
-                                            style="width: 70px; height: 70px;">
-                                            <h3 class="m-0"></h3>
-                                        </div> --}}
+    @if ($now->between($assignment->open_time, $assignment->close_time))
+        {{-- زر الحذف يظهر فقط خلال فترة التسليم --}}
+        <form id="delete-submission-form-{{ $submission->id }}"
+            action="{{ route('student.assignments.submission.delete', $submission->id) }}"
+            method="POST" class="d-inline delete-submission-form">
+            @csrf
+            @method('DELETE')
+            <button type="button" class="btn ld btn-sm ms-2 delete-submission-btn"
+                data-id="{{ $submission->id }}">
+                <i class="fas fa-trash-alt"></i> Delete Submission
+            </button>
+        </form>
+    @else
+        {{-- بعد انتهاء الفترة، يظهر تنبيه صغير --}}
+        <div class="alert btn-c-soft   d-inline-block ms-3 mt-2 py-1 px-2">
+            <i class="fas fa-clock me-1"></i> Submission period is over.
+        </div>
+    @endif
 
-                                    <div class="feedback-container bg-white rounded-3 shadow-sm p-0 overflow-hidden my-4">
-                                        <!-- Results Section -->
-                                        <div class="result-section h p-4 border-bottom border-2 border-light">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-star text-primary me-2 fs-5"></i>
-                                                <h6 class="mb-0 text-dark fw-semibold">Your Results</h6>
-                                            </div>
-                                            <div class="mark-display bg-white rounded-2 p-2 text-center d-inline-block">
-                                                <p class="mb-0 text-primary fw-bold fs-3">{{ $submission->mark }} /
-                                                    {{ $submission->fullmark }}</p>
-                                            </div>
-                                        </div>
+    @if ($submission && $submission->mark !== null)
+        <div class="feedback-container bg-white rounded-3 shadow-sm p-0 overflow-hidden my-4">
+            <!-- Results Section -->
+            <div class="result-section h p-4 border-bottom border-2 border-light">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-star text-primary me-2 fs-5"></i>
+                    <h6 class="mb-0 text-dark fw-semibold">Your Results</h6>
+                </div>
+                <div class="mark-display bg-white rounded-2 p-2 text-center d-inline-block">
+                    <p class="mb-0 text-primary fw-bold fs-3">{{ $submission->mark }} / {{ $submission->fullmark }}</p>
+                </div>
+            </div>
 
-                                        <!-- Feedback Section -->
-                                        <div class="feedback-section p-4">
-                                            <div class="d-flex align-items-center mb-3">
-                                                <i class="fas fa-comment-alt text-primary me-2 fs-5"></i>
-                                                <h6 class="mb-0 text-dark fw-semibold">Feedback</h6>
-                                            </div>
-                                            <div class="feedback-text h p-3 rounded-2">
-                                                <p class="mb-0 text-dark lh-base">
-                                                    {{ $submission->feedback ?? 'No feedback provided yet.' }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="alert alert-primary mt-3">
-                                        <strong><i class="fas fa-info-circle me-2"></i> Not graded yet.</strong>
-                                    </div>
-                                @endif
-                            @else
-                                <div class="text-muted mt-2">Submission time has ended.</div>
-                            @endif
-                        </div>
+            <!-- Feedback Section -->
+            <div class="feedback-section p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-comment-alt text-primary me-2 fs-5"></i>
+                    <h6 class="mb-0 text-dark fw-semibold">Feedback</h6>
+                </div>
+                <div class="feedback-text h p-3 rounded-2">
+                    <p class="mb-0 text-dark lh-base">
+                        {{ $submission->feedback ?? 'No feedback provided yet.' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="alert alert-primary mt-3">
+            <strong><i class="fas fa-info-circle me-2"></i> Not graded yet.</strong>
+        </div>
+    @endif
+</div>
+
                     @elseif($now->between($assignment->open_time, $assignment->close_time))
                         <form action="{{ route('student.assignments.submit', $assignment->id) }}" method="POST"
                             enctype="multipart/form-data" class="mt-3">

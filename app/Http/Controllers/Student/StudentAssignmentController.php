@@ -23,7 +23,7 @@ class StudentAssignmentController extends Controller
                 $query->where('class_profiles.id', $classId);
             })
             ->where('open_time', '<=', now())
-            ->where('close_time', '>=', now())
+           
             ->with(['teacher.subject', 'submissions'])->get();
 
         return view('student.assignments.index', compact('assignments'));

@@ -66,7 +66,7 @@ $teachers = TeacherProfile::with(['subject', 'user'])
             'quizzesCount',
             'averageMark',
             'studentName',
-            'quizCountsBySubject'
+            'quizCountsBySubject','student'
         ));
     }
 }
