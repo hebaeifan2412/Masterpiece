@@ -21,23 +21,23 @@ class TeacherProfileController extends Controller
             $search = $request->input('search');
             $query->whereHas('user', function ($q) use ($search) {
                 $q->where('firstname', 'like', "%{$search}%")
-                  ->orWhere('secname', 'like', "%{$search}%")
-                  ->orWhere('thirdname', 'like', "%{$search}%")
-                  ->orWhere('lastname', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('secname', 'like', "%{$search}%")
+                    ->orWhere('thirdname', 'like', "%{$search}%")
+                    ->orWhere('lastname', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
-    
+
         if ($request->filled('subject')) {
             $query->whereHas('subject', function ($q) use ($request) {
                 $q->where('name', $request->input('subject'));
             });
         }
-    
+
         $teachers = $query->paginate(10);
-    
+
         $subjects = Subject::all();
-        return view('admin.teachers.index', compact('teachers' ,'subjects'));
+        return view('admin.teachers.index', compact('teachers', 'subjects'));
     }
 
 
@@ -47,28 +47,45 @@ class TeacherProfileController extends Controller
         $subjects = Subject::all();
         return view('admin.teachers.create', compact('subjects'));
     }
-    
+
     public function store(Request $request)
     {
-        $request->validate([
-            'firstname' => 'required|string|max:50',
-            'lastname' => 'required|string|max:50',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8',
-            'subject_id' => 'required|exists:subjects,id',
-            'dob' => 'required|date',
-            'gender' => 'required|in:male,female',
-            'joining_date' => 'required|date',
-        ]);
-    
+        $request->validate(
+            [
+                'firstname' => 'required|string|max:50',
+                'secname'     => 'nullable|string|max:50',
+                'thirdname'   => 'nullable|string|max:50',
+                'lastname' => 'required|string|max:50',
+                'phone_no' => 'nullable|regex:/^07[0-9]{8}$/',
+                'email' => 'required|email|unique:users',
+
+                'password' => 'required|string|min:8',
+                'subject_id' => 'required|exists:subjects,id',
+                'dob' => 'required|date',
+                'gender' => 'required|in:male,female',
+                'joining_date' => 'required|date',
+                'image'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            ],
+            [
+                'phone_no.regex' => 'The phone number must start with 07 and be exactly 10 digits.',
+                'email.unique'   => 'This email is already taken.',]
+                
+        );
+
         $user = User::create([
             'firstname' => $request->firstname,
+             'secname' => $request->secname,
+            'thirdname' => $request->thirdname,
             'lastname' => $request->lastname,
             'email' => $request->email,
+             'phone_no' => $request->phone_no,
             'password' => Hash::make($request->password),
+             'image' => $request->hasFile('image')
+                        ? $request->file('image')->store('users', 'public')
+                        : 'users/default.jpg',
             'role_id' => 3 // teacher role
         ]);
-    
+
         TeacherProfile::create([
             'user_id' => $user->id,
             'subject_id' => $request->subject_id,
@@ -78,14 +95,14 @@ class TeacherProfileController extends Controller
             'joining_date' => $request->joining_date,
             'leave_date' => $request->leave_date,
         ]);
-    
+
         return redirect()->route('admin.teacher_profiles.index')->with('success', 'Teacher created successfully.');
     }
     public function edit($id)
     {
         $teacherProfile = TeacherProfile::findOrFail($id);
         $users = User::all();
-    
+
         return view('admin.teachers.edit', compact('teacherProfile', 'users'));
     }
 
@@ -98,7 +115,7 @@ class TeacherProfileController extends Controller
             'thirdname' => 'nullable|string|max:50',
             'lastname'  => 'required|string|max:50',
             'email'     => 'required|email|max:100',
-    
+
             // profile fields
             'dob'           => 'required|date',
             'gender'        => 'required|in:male,female',
@@ -108,7 +125,7 @@ class TeacherProfileController extends Controller
             'address'       => 'nullable|string|max:500',
             'image'           => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-    
+
         $teacher_profile->user->update([
             'firstname' => $request->firstname,
             'secname'   => $request->secname,
@@ -116,13 +133,13 @@ class TeacherProfileController extends Controller
             'lastname'  => $request->lastname,
             'email'     => $request->email,
         ]);
-    
+
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('teacher_pics', 'public');
             $teacher_profile->user->image = $path;
             $teacher_profile->user->save();
         }
-    
+
         $teacher_profile->update([
             'dob'           => $request->dob,
             'gender'        => $request->gender,
@@ -131,14 +148,15 @@ class TeacherProfileController extends Controller
             'leave_date'    => $request->leave_date,
             'address'       => $request->address,
         ]);
-    
+
         return redirect()->route('admin.teacher_profiles.show', $teacher_profile->id)
-        ->with('success', 'Teacher profile updated successfully.');    }
+            ->with('success', 'Teacher profile updated successfully.');
+    }
     public function show($id)
-{
-    $teacherProfile = TeacherProfile::with(['user', 'subject', 'classes'])->findOrFail($id);
-    return view('admin.teachers.show', compact('teacherProfile'));
-}
+    {
+        $teacherProfile = TeacherProfile::with(['user', 'subject', 'classes'])->findOrFail($id);
+        return view('admin.teachers.show', compact('teacherProfile'));
+    }
 
 
     public function destroy(TeacherProfile $teacher_profile)
@@ -147,4 +165,3 @@ class TeacherProfileController extends Controller
         return redirect()->back()->with('success', 'Teacher profile deleted.');
     }
 }
-

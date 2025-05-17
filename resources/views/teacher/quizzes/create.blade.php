@@ -1,6 +1,6 @@
 <div class="modal fade" id="quizCreateModal" tabindex="-1" aria-labelledby="quizCreateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        @if ($errors->any())
+        {{-- @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
                     @foreach ($errors->all() as $error)
@@ -8,7 +8,7 @@
                     @endforeach
                 </ul>
             </div>
-        @endif
+        @endif --}}
         <form action="{{ route('teacher.quizzes.store') }}" method="POST">
             @csrf
             <div class="modal-content">
@@ -42,14 +42,20 @@
 
 
                     <div class="mb-3">
-                        <label>Start Time</label>
-                        <input type="datetime-local" name="start_time" class="form-control" required>
+                        <label for="quiz_date">Quiz Date</label>
+                        <input type="date" name="quiz_date" id="quiz_date" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
-                        <label>End Time</label>
-                        <input type="datetime-local" name="end_time" class="form-control" required>
+                        <label for="start_hour">Start Time</label>
+                        <input type="time" name="start_hour" id="start_hour" class="form-control" required>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="end_hour">End Time</label>
+                        <input type="time" name="end_hour" id="end_hour" class="form-control" required>
+                    </div>
+
 
                     <div class="mb-3">
                         <label>Duration (minutes)</label>
@@ -65,7 +71,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-secondary text-light" data-bs-dismiss="modal"> <i class="fas fa-arrow-left me-1"></i></button>
                     <button class="btn btn-primary">Create</button>
                 </div>
             </div>
@@ -74,27 +80,28 @@
 </div>
 @push('scripts')
     <script>
-       $(document).on('shown.bs.modal', '#quizCreateModal', function () {
-    const gradeSelect = document.getElementById('grade_id');
-    const sectionsContainer = document.getElementById('sections-container');
+        $(document).on('shown.bs.modal', '#quizCreateModal', function() {
+            const gradeSelect = document.getElementById('grade_id');
+            const sectionsContainer = document.getElementById('sections-container');
 
-    function loadSections(gradeId) {
-        if (!gradeId) {
-            sectionsContainer.innerHTML = '<p class="text-muted">Please select a grade first.</p>';
-            return;
-        }
-
-        fetch(`/teacher/grade/${gradeId}/sections`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.length === 0) {
-                    sectionsContainer.innerHTML = '<p class="text-warning">No sections found for this grade.</p>';
+            function loadSections(gradeId) {
+                if (!gradeId) {
+                    sectionsContainer.innerHTML = '<p class="text-muted">Please select a grade first.</p>';
                     return;
                 }
 
-                let html = '';
-                data.forEach(section => {
-                    html += `
+                fetch(`/teacher/grade/${gradeId}/sections`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length === 0) {
+                            sectionsContainer.innerHTML =
+                                '<p class="text-warning">No sections found for this grade.</p>';
+                            return;
+                        }
+
+                        let html = '';
+                        data.forEach(section => {
+                            html += `
                         <div class="form-check  ms-4">
                             <input class="form-check-input" type="checkbox" name="class_ids[]" value="${section.id}" id="section_${section.id}">
                             <p class="form-check " for="section_${section.id}">
@@ -102,23 +109,21 @@
                             </p>
                         </div>
                     `;
-                });
-                sectionsContainer.innerHTML = html;
-            })
-            .catch(() => {
-                sectionsContainer.innerHTML = '<p class="text-danger">Failed to load sections.</p>';
+                        });
+                        sectionsContainer.innerHTML = html;
+                    })
+                    .catch(() => {
+                        sectionsContainer.innerHTML = '<p class="text-danger">Failed to load sections.</p>';
+                    });
+            }
+
+            gradeSelect.addEventListener('change', function() {
+                loadSections(this.value);
             });
-    }
 
-    gradeSelect.addEventListener('change', function () {
-        loadSections(this.value);
-    });
-
-   if (gradeSelect.value) {
-    gradeSelect.dispatchEvent(new Event('change'));
-}
-});
-
-
+            if (gradeSelect.value) {
+                gradeSelect.dispatchEvent(new Event('change'));
+            }
+        });
     </script>
 @endpush

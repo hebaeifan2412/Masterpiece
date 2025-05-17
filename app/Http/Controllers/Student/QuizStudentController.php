@@ -20,7 +20,7 @@ $quizzes = Quiz::where('status', 'show')
     ->whereHas('classes', function ($query) use ($classId) {
         $query->where('class_profile_id', $classId);
     })
-    ->with(['classes.grade', 'teacher.subject' , 'teacher.user']) 
+    ->with(['classes.grade', 'teacher.subject' , 'teacher.user'])->orderBy('start_time', 'desc')//asc
     ->get();
 
         return view('student.quiz.index', compact('quizzes', 'now'));

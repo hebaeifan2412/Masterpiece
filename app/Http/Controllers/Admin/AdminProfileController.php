@@ -12,7 +12,7 @@ class AdminProfileController extends Controller
     public function edit()
     {
         $admin = Auth::user();
-      
+
         return view('admin.profile.edit', compact('admin'));
     }
 
@@ -26,10 +26,17 @@ class AdminProfileController extends Controller
             'thirdname'   => 'nullable|string|max:50',
             'lastname'    => 'nullable|string|max:50',
             'email'       => 'required|email|unique:users,email,' . $admin->id,
-            'phone_no'    => 'nullable|string|max:15',
+            'phone_no' => 'nullable|regex:/^07[0-9]{8}$/',
             'status'      => 'in:active,inactive',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048',],
+         [
+    'phone_no.regex' => 'The phone number must start with 07 and be exactly 10 digits.',
+    'email.unique'   => 'This email is already taken.',
+    'image.image'    => 'The uploaded file must be an image.',
+    'image.mimes'    => 'The image must be a file of type: jpeg, png, jpg.',
+    'image.max'      => 'The image size must not exceed 2MB.',
+]);
+
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('admin_images', 'public');

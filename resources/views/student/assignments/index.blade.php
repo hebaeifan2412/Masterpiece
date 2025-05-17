@@ -81,7 +81,7 @@
                     <h6 class="mb-0 text-dark fw-semibold">Your Results</h6>
                 </div>
                 <div class="mark-display bg-white rounded-2 p-2 text-center d-inline-block">
-                    <p class="mb-0 text-primary fw-bold fs-3">{{ $submission->mark }} / {{ $submission->fullmark }}</p>
+                    <p class="mb-0 text-primary fw-bold fs-3">{{ $submission->mark }} / {{ $submission->assignment->fullmark }}</p>
                 </div>
             </div>
 

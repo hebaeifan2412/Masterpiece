@@ -19,7 +19,7 @@
                 </div>
             @endif
 
-            @if($errors->any())
+            {{-- @if($errors->any())
                 <div class="alert alert-danger alert-dismissible fade show">
                     <ul class="mb-0">
                         @foreach ($errors->all() as $error)
@@ -28,7 +28,7 @@
                     </ul>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            @endif
+            @endif --}}
 
             <div class="card shadow-sm border-0 overflow-hidden">
                 <div class="card-header bg-primary text-white py-3">

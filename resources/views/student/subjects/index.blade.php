@@ -29,16 +29,18 @@
                                     </p>
                                 </div>
                                 <div class="teacher-info d-flex align-items-center mb-3">
-                                    <div class="avatar-sm me-3">
+                                    <div class="avatar-sm me-3 mt-0">
                                         <div class="avatar-title bg-primary-soft text-primary rounded-circle">
                                             <i class="fas fa-user-tie"></i>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="pt-3">
                                         <h6 class="mb-0 fw-semibold">{{ $teacher->user->firstname }}
                                             {{ $teacher->user->lastname }}</h6>
-                                        <small class="text-muted">Teacher</small>
+                                            <p class="text-muted">{{ $teacher->user->email }}</p>
+                                        
                                     </div>
+                                   
                                 </div>
                                 {{-- <span class="badge bg-light text-primary rounded-pill">
                                 {{ $teacher->class->name ?? 'No Class' }}
@@ -49,7 +51,7 @@
 
 
                             <!-- Stats -->
-                            <div class="subject-stats row g-2 mt-3">
+                            {{-- <div class="subject-stats row g-2 mt-3">
                                 <div class="col-6">
                                     <div class="p-3 bg-light-purple rounded text-center">
                                         <div class="d-flex  align-items-center justify-content-center">
@@ -69,7 +71,7 @@
                                         <small class=" text-light ">Quizzes</small>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
 
 

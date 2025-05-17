@@ -13,6 +13,7 @@ class Submission extends Model
     'student_id',
     'file_path',
     'mark',
+    'feedback',
     'submitted_at',
    
     ];

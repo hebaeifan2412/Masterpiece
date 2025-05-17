@@ -133,8 +133,8 @@
     confirmButtonText: 'Yes, delete',
     cancelButtonText: 'Cancel',
     customClass: {
-        confirmButton: 'btn bg-light-red ',
-        cancelButton: 'btn btn-secondary ms-2',
+        confirmButton: 'btn bg-light-red text-light ',
+        cancelButton: 'btn btn-secondary ms-2 text-light',
     },
     buttonsStyling: false
 }).then((result) => {

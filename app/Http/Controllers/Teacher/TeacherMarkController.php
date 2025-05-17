@@ -16,8 +16,14 @@ class TeacherMarkController extends Controller
         $teacher = Auth::user()->teacherProfile;
 
         //  classes with students and grades
-        $classess = $teacher->classes()->with(['students.user', 'grade'])->get();
-
+       $classess = $teacher->classes()->with([
+    'students.user',
+    'grade',
+    'quizzes' => function ($query) use ($teacher) {
+        $query->where('teacher_id', $teacher->id);
+    },
+    'quizzes.questions'
+])->get();
         //  class IDs the teacher teaches
         $classIds = $classess->pluck('id');
 

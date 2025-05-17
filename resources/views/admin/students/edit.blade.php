@@ -93,14 +93,7 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <div class="form-floating">
-                                                    <input type="text" name="phone_no" class="form-control" value="{{ old('phone_no', $student->user->phone_no) }}">
-                                                    <label for="phone_no">Phone Number</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
+                                               <div class="form-floating">
                                                     <select name="gender" class="form-select" required>
                                                         <option value="male" {{ $student->gender == 'male' ? 'selected' : '' }}>Male</option>
                                                         <option value="female" {{ $student->gender == 'female' ? 'selected' : '' }}>Female</option>
@@ -109,7 +102,9 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                           
+
+                                            <div class="col-md-4">
                                                 <div class="form-floating">
                                                     <input type="date" name="date_of_birth" class="form-control" value="{{ $student->date_of_birth }}">
                                                     <label for="date_of_birth">Date of Birth</label>
@@ -129,7 +124,7 @@
                                         <div class="row g-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating">
-                                                    <input type="text" name="national_id" class="form-control" value="{{ old('national_id', $student->national_id) }}">
+                                                    <input type="text" name="national_id" class="form-control" value="{{ old('national_id', $student->national_id) }}" readonly>
                                                     <label for="national_id">National ID</label>
                                                 </div>
                                             </div>

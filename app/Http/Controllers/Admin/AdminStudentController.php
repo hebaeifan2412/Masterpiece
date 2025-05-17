@@ -171,7 +171,7 @@ class AdminStudentController extends Controller
             'mother_name'   => $request->mother_name,
         ]);
     
-        return redirect()->route('admin.students.index')->with('success', 'Student updated successfully.');
+        return redirect()->route('admin.students.show', $student->national_id)->with('success', 'Student updated successfully.');
     }
         public function trashed()
 {

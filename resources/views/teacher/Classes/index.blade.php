@@ -3,7 +3,7 @@
 @section('content')
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0 fw-bold text-dark"><i class="fas fa-door-open text-dark me-1"></i> My Classes</h2>
+            <h2 class="mb-0 fw-bold text-dark"><i class="fas fa-door-open text-dark me-3"></i> My Classes</h2>
         </div>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -65,7 +65,7 @@
                                         <div class="modal-body" id="printableTable_{{ $entry->id }}">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered table-hover align-middle">
-                                                    <thead class="table-light">
+                                                    <thead class="bg-primary text-light">
                                                         <tr>
                                                             <th class="text-center" width="40">#</th>
                                                             <th>Student</th>

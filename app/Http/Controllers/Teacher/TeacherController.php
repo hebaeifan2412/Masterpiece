@@ -13,6 +13,7 @@ use App\Models\Subject;
 use App\Models\TeacherProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class TeacherController extends Controller
@@ -54,23 +55,29 @@ class TeacherController extends Controller
      });
 
 
-      $averages = collect();
 
-    foreach ($classes as $class) {
-       $avg = Mark::whereHas('quiz', function ($query) use ($teacherProfile, $class) {
-    $query->where('teacher_id', $teacherProfile->id)
-          ->whereHas('classes', function ($q) use ($class) {
-              $q->where('class_profiles.id', $class->id);
-          });
-})
-->avg('marks');
+    $quizClassAverages = DB::table('marks')
+        ->join('students', 'marks.student_id', '=', 'students.national_id')
+        ->join('class_profiles', 'students.class_id', '=', 'class_profiles.id')
+        ->join('grades', 'class_profiles.grade_id', '=', 'grades.id')
+        ->join('quizzes', 'marks.quiz_id', '=', 'quizzes.id')
+        ->join('class_quiz', function($join) {
+            $join->on('quizzes.id', '=', 'class_quiz.quiz_id')
+                 ->on('class_profiles.id', '=', 'class_quiz.class_profile_id');
+        })
+        ->select(
+            'quizzes.title as quiz_title',
+            'grades.name as grade_name',
+            'class_profiles.section',
+            DB::raw('ROUND(AVG(marks.marks), 2) as average')
+        )
+        ->groupBy('quizzes.id', 'class_profiles.id', 'grades.name', 'class_profiles.section', 'quizzes.title')
+        ->get();
 
-        $averages->push([
-            'class' => $class->grade->name . ' - ' . $class->section,
-            'average' => round($avg ?? 0, 2)
-        ]);
-    }
- 
+    
+
+
+    
      return view('teacher.home', compact(
          'temperature', 
          'cityName', 
@@ -82,6 +89,6 @@ class TeacherController extends Controller
          'classes',
          'user',
          'subjectName',
-           'averages' ,
+           'quizClassAverages' ,
      ));
  }}

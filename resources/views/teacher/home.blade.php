@@ -115,7 +115,7 @@
                                                 <div class="card-body">
                                                     <h4 class="card-title">Average Quiz Marks per Class</h4>
                                                     <canvas id="quizAverageChart" height="100"></canvas>
-                                                    <pre>{{ json_encode($averages) }}</pre>
+                                                    {{-- <pre>{{ json_encode($averages) }}</pre> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -130,35 +130,34 @@
     @endsection
 
     @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-
-
-                const ctx = document.getElementById('quizAverageChart');
-                if (ctx) {
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: {!! json_encode($averages->pluck('class')) !!},
-                            datasets: [{
-                                label: 'Average Marks',
-                                data: {!! json_encode($averages->pluck('average')) !!},
-                                backgroundColor: 'rgba(75, 192, 192, 0.7)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: 100
-                                }
-                            }
+ 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('quizAverageChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {!! json_encode($quizClassAverages->map(fn($q) => $q->quiz_title . ' - ' . $q->grade_name . '-' . $q->section)) !!},
+                    datasets: [{
+                        label: 'Average Mark',
+                        data: {!! json_encode($quizClassAverages->pluck('average')) !!},
+                        backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
                         }
-                    });
+                    }
                 }
             });
-        </script>
+        }
+    });
+</script>
     @endpush

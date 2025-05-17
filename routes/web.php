@@ -38,6 +38,7 @@ use App\Http\Controllers\Teacher\TeacherCourseController;
 use App\Http\Controllers\Teacher\TeacherMarkController;
 use App\Http\Controllers\Admin\TeacherAssignmentController;
 use App\Http\Controllers\ContactController;
+use App\Models\Mark;
 
 /*
 |--------------------------------------------------------------------------
@@ -175,6 +176,8 @@ Route::get('/teacher/class/{id}/students-pdf', [ClassTeacherController::class, '
 
         Route::get('/assignments/{id}/submissions', [AssignmentController::class, 'submissions'])->name('assignments.submissions');
         Route::put('teacher/submissions/{submission}/mark', [AssignmentController::class, 'updateMark'])->name('assignments.submissions.mark');
+        Route::post('/assignments/submissions', [AssignmentController::class, 'saveMissingSubmissions'])->name('assignments.submissions.create');
+
     });
 });
 
@@ -207,6 +210,19 @@ Route::prefix('student')->name('student.')->middleware(['auth', 'role:student'])
     Route::get('/assignments', [StudentAssignmentController::class, 'index'])->name('assignments.index');
     Route::post('/assignments/{id}/submit', [StudentAssignmentController::class, 'submit'])->name('assignments.submit');
     Route::delete('/student/assignments/submission/{id}', [StudentAssignmentController::class, 'destroySubmission'])->name('assignments.submission.delete');
+});
+Route::get('/test-quiz-averages', function () {
+    $quizzes = \App\Models\Quiz::with('marks')->get();
+
+    foreach ($quizzes as $quiz) {
+        echo "<strong>{$quiz->title}</strong><br>";
+        echo "Total Marks: " . $quiz->marks->count() . "<br>";
+        echo "Average: " . $quiz->marks->avg('mark') . "<hr>";
+    }
+});
+Route::get('/test-student-link', function () {
+    $mark = Mark::with('student.user')->first();
+    return $mark->student ? $mark->student->user->firstname : '❌ no student found';
 });
 
 require __DIR__ . '/auth.php';

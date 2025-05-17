@@ -4,8 +4,14 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <h2 class="mb-4 h4 fw-bold">Quiz Results: {{ $quiz->title }}</h2>
-            <p class="mb-3 text-muted">Score: {{ $mark->marks }} / {{ $quiz->questions->count() }}</p>
-
+            <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-star text-primary me-2 fs-5"></i>
+                    <h6 class="mb-0 text-dark fw-semibold">Your Results</h6>
+                </div>
+                <div class="mark-display bg-white rounded-2 p-2 text-center d-inline-block">
+                    <p class="mb-0 text-primary fw-bold fs-3">{{ $mark->marks }} / {{ $quiz->questions->count() }}</p>
+                </div>
+           
             @foreach ($quiz->questions as $index => $question)
                 @php
                     $studentAnswer = $answers->where('quiz_question_id', $question->id)->first();

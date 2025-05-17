@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container py-4">
-        <h2 class="mb-4">Student Quizzes Marks</h2>
+        <h2 class="mb-4"><i class="fa-solid fa-marker me-3"></i>Student Quizzes Marks</h2>
 
         <form method="GET" action="" class="row g-3 mb-4">
             <div class="col-md-4">

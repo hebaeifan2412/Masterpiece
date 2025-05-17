@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-5">
     <h2 class="mb-4 fw-bold">Change Password</h2>
-    <form method="POST" action="{{ route('teacher.password.update') }}">
+    <form method="POST" action="{{ route('admin.password.update') }}">
         @csrf
         @method('PUT')
 

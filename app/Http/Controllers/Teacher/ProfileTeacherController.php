@@ -39,16 +39,19 @@ class ProfileTeacherController extends Controller
         $user->thirdname = $request->thirdname;
         $user->lastname  = $request->lastname;
         $user->phone_no  = $request->phone;
+
+
         if ($request->hasFile('image')) {
-            if ($teacher->image && Storage::disk('public')->exists($teacher->image)) {
-                Storage::disk('public')->delete($teacher->image);
+            if ($user->image && Storage::disk('public')->exists($user->image)) {
+                Storage::disk('public')->delete($user->image);
             }
 
-            $image      = $request->file('image');
-            $imageName  = time() . '.' . $image->getClientOriginalExtension();
-            $imagePath  = $image->storeAs('teacher_pics', $imageName, 'public');
+            $image     = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('teacher_pics', $imageName, 'public');
             $user->image = $imagePath;
         }
+
         $user->save();
 
         $teacher->qualification = $request->qualification;

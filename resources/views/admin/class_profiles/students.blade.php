@@ -33,7 +33,6 @@
                                         <th>National ID</th>
                                         <th>Gender</th>
                                         <th>Email</th>
-                                        <th>Phone</th>
                                         <th>Date of Birth</th>
                                     </tr>
                                 </thead>
@@ -60,7 +59,6 @@
                                                     {{ $student->user->email ?? '-' }}
                                                 </a>
                                             </td>
-                                            <td>{{ $student->user->phone ?? '-' }}</td>
                                             <td>
                                                 @if($student->date_of_birth)
                                                     {{ \Carbon\Carbon::parse($student->date_of_birth)->format('M d, Y') }}

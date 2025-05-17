@@ -4,8 +4,9 @@
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-dark">
-                <i class="fas fa-tasks me-2"></i> Quizzes Management
+                <i class="fas fa-tasks me-3"></i> Quizzes Management
             </h2>
+            
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quizCreateModal">
                 <i class="fas fa-plus me-1"></i> Create New Quiz
             </button>
@@ -15,6 +16,16 @@
             <div class="alert alert-success alert-dismissible fade show">
                 <i class="fas fa-check-circle me-2 "></i> {{ session('success') }}
                 <button type="button" class="btn-close mb-1" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
@@ -29,8 +40,8 @@
                         <thead class="table-light">
                             <tr>
                                 <th class="ps-4">Title</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
+                                <th>Date</th>
+                                <th>Time</th>
                                 <th>Status</th>
                                 <th>Questions</th>
                                 <th class="text-end pe-4">Actions</th>
@@ -42,8 +53,9 @@
                                     <td class="ps-4 fw-bold">{{ $quiz->title }}</td>
                                     
 
-                                    <td>{{ \Carbon\Carbon::parse($quiz->start_time)->format('M d, Y H:i') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($quiz->end_time)->format('M d, Y H:i') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($quiz->start_time)->format('M d, Y ') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($quiz->start_time)->format(' H:i') }}
+                                         - {{ \Carbon\Carbon::parse($quiz->end_time)->format(' H:i') }}</td>
                                     <td>
                                         <span
                                             class="badge 
@@ -79,15 +91,15 @@
                                             </a>
 
                                             <form method="POST" action="{{ route('teacher.quizzes.destroy', $quiz->id) }}"
-                                                class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm  ld"
-                                                    onclick="return confirm('Are you sure you want to delete this quiz?')"
-                                                    data-bs-toggle="tooltip" title="Delete Quiz">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
-                                            </form>
+      class="d-inline delete-quiz-form" id="delete-quiz-form-{{ $quiz->id }}">
+    @csrf
+    @method('DELETE')
+    <button type="button" class="btn btn-sm ld delete-quiz-btn"
+            data-id="{{ $quiz->id }}" title="Delete Quiz">
+        <i class="fas fa-trash-alt"></i>
+    </button>
+</form>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -148,5 +160,44 @@
                 return new bootstrap.Tooltip(tooltipTriggerEl)
             })
         });
+        
     </script>
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Cannot Delete',
+            text: '{{ session('error') }}',
+        });
+    </script>
+@endif
+@endpush
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-quiz-btn');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const quizId = this.getAttribute('data-id');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This quiz will be permanently deleted.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#F3797E',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(`delete-quiz-form-${quizId}`).submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
 @endpush

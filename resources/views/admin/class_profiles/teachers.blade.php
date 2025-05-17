@@ -61,10 +61,11 @@
             @endif
         </div>
     </div>
-</div>
-<a href="{{ route('admin.grades.class_profiles', ['grade' => $classProfile->grade->id]) }}" class="btn btn-secondary text-light me-2 mt-4 float-end">
+    <a href="{{ route('admin.grades.class_profiles', ['grade' => $classProfile->grade->id]) }}" class="btn btn-secondary text-light me-2 mt-4 float-end">
                 <i class="fas fa-arrow-left me-1"></i> 
             </a>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const buttons = document.querySelectorAll('.unassign-btn');

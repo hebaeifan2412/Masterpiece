@@ -50,29 +50,29 @@
 
                                 <small class="text-muted"> <i class="fa-solid fa-book  menu-icon"></i>
                                     {{ $quiz->teacher->subject->name ?? 'No Subject' }} -
-                                    {{ $quiz->teacher->user->firstname }}  {{ $quiz->teacher->user->lastname }} </small>
+                                    {{ $quiz->teacher->user->firstname }} {{ $quiz->teacher->user->lastname }} </small>
 
                             </div>
-
+                            <div class="d-flex align-items-center mb-2">
+                                <small class="text-muted"> <i class="fa-solid fa-calendar-alt menu-icon"></i>
+                                    {{ $start->format('d M Y') }} </small>
+                            </div>
                             <div class="row g-2 mb-3">
                                 <div class="col-6">
                                     <div class="border rounded p-2 text-center">
                                         <small class="d-block text-muted">Start</small>
-                                        <i class="far fa-calendar-alt me-2 text-muted"></i>
-                                        <small class="text-muted">{{ $start->format('d M Y') }}</small>
+                                        <i class="far fa-clock me-2 text-muted"></i>
                                         <strong>{{ $start->format('h:i A') }}</strong>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="border rounded p-2 text-center">
                                         <small class="d-block text-muted">End</small>
-                                        <i class="far fa-calendar-alt me-2 text-muted"></i>
-                                        <small class="text-muted">{{ $end->format('d M Y') }}</small>
+                                        <i class="far fa-clock me-2 text-muted"></i>
                                         <strong>{{ $end->format('h:i A') }}</strong>
                                     </div>
                                 </div>
                             </div>
-
                             @if ($hasAnswered)
                                 <a href="{{ route('student.quizzes.results', $quiz->id) }}"
                                     class="btn bg-light-blue text-light w-100">
@@ -85,11 +85,12 @@
                                     <i class="fas fa-play-circle me-1"></i> Start Quiz
                                 </button>
                             @endif
-                        </div>
-                    </div>
-                </div>
-            @endforeach
+                            
         </div>
+    </div>
+    </div>
+    @endforeach
+    </div>
     </div>
 
     <!-- Modal -->

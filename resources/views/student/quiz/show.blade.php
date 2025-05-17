@@ -75,7 +75,7 @@
             
             <!-- Submit Button -->
             <div class="quiz-footer">
-                <button type="submit" class="submit-btn" id="submitQuizBtn">
+                <button type="submit" class="submit-btn btn-primary" id="submitQuizBtn">
                     <i class="fas fa-paper-plane me-2"></i> Submit Quiz
                 </button>
             </div>
@@ -122,7 +122,7 @@
             timerPath.setAttribute('stroke-dasharray', `${circumference - dashoffset} ${dashoffset}`);
             
             // Change color based on remaining time
-            if (totalSeconds <= 30) {
+            if (totalSeconds <= 10) {
                 timerPath.classList.add('timer-critical');
                 timerDisplay.classList.add('text-danger', 'pulse');
             } else if (totalSeconds <= 60) {
@@ -255,9 +255,16 @@
     }
     
     /* Timer Styles */
-    .quiz-timer {
-        position: relative;
-    }
+   .quiz-timer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: #fff;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
     
     .timer-circle {
         width: 80px;

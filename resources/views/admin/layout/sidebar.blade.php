@@ -43,7 +43,7 @@
       <!-- Classes -->
       <li class="nav-item">
           <a class="nav-link {{ request()->routeIs('admin.marks.*') ? 'active' : '' }}" href="{{ route('admin.marks.index') }}">
-              <i class="fas fa-school menu-icon"></i>
+              <i class="fas fa-marker menu-icon"></i>
               <span class="menu-title">Marks</span>
           </a>
       </li>

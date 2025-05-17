@@ -39,7 +39,8 @@
                     </div>
                     @endif
 
-                    <form action="{{ route('admin.teacher_profiles.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.teacher_profiles.store') }}" method="POST" enctype="multipart/form-data"
+                    class="needs-validation" novalidate>
                         @csrf
 
                         <!-- Personal Information Section -->
@@ -59,13 +60,13 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-floating">
-                                            <input type="text" name="secname" class="form-control" id="secname" placeholder="Second Name">
+                                            <input type="text" name="secname" class="form-control" id="secname" placeholder="Second Name" required>
                                             <label for="secname">Second Name</label>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-floating">
-                                            <input type="text" name="thirdname" class="form-control" id="thirdname" placeholder="Third Name">
+                                            <input type="text" name="thirdname" class="form-control" id="thirdname" placeholder="Third Name" required>
                                             <label for="thirdname">Third Name</label>
                                         </div>
                                     </div>
@@ -85,8 +86,11 @@
                                     
                                     <div class="col-md-4">
                                         <div class="form-floating">
-                                            <input type="text" name="phone_no" class="form-control" id="phone_no" placeholder="Phone" maxlength="10">
+                                            <input type="text" name="phone_no" class="form-control" id="phone_no" placeholder="Phone" maxlength="10" required>
                                             <label for="phone_no">Phone Number</label>
+                                            <div class="invalid-feedback">
+                                                The phone number must start with 07 and be exactly 10 digits.
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -94,7 +98,10 @@
                                         <div class="form-floating">
                                             <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
                                             <label for="password">Password <span class="text-danger">*</span></label>
-                                        </div>
+                                       
+                                        <div class="invalid-feedback">
+                                                Password must be exactly 8 char and have number.
+                                            </div> </div>
                                     </div>
                                     
                                     <div class="col-md-6">
@@ -228,3 +235,23 @@
 </style>
 
 @endsection
+@push('scripts')
+    <script>
+        // Bootstrap-style client-side validation
+        (function() {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+
+            Array.from(forms).forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+@endpush

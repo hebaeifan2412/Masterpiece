@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Assignment;
 use App\Models\ClassProfile;
+use App\Models\Student;
 use App\Models\Submission;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -67,7 +68,7 @@ class AssignmentController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'fullmark' => 'required|integer|min:1',
-            'open_time' => 'required|date',
+            'open_time' => 'required|date|after_or_equal:now',
             'close_time' => 'required|date|after:open_time',
             'status' => 'required|in:show,hide',
             'attachment' => 'nullable|file|max:10240', // max 10MB
@@ -168,7 +169,7 @@ class AssignmentController extends Controller
             'class_ids.*' => 'exists:class_profiles,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'open_time' => 'required|date',
+            'open_time' => 'required|date|after_or_equal:now',
             'close_time' => 'required|date|after:open_time',
             'status' => 'required|in:show,hide',
             'fullmark' => 'required|integer|min:0',
@@ -201,5 +202,42 @@ class AssignmentController extends Controller
         $assignment->delete();
 
         return redirect()->route('teacher.assignments.index')->with('success', 'Assignment deleted successfully.');
+    }
+    public function saveMissingSubmissions(Request $request)
+
+    {
+
+
+        $student = Student::where('national_id', $request->student_id)->firstOrFail();
+        $request->validate([
+            'assignment_id' => 'required|exists:assignments,id',
+            'student_id' => 'required|exists:students,national_id',
+            'mark' => 'nullable|numeric|min:0',
+            'feedback' => 'nullable|string|max:1000',
+        ]);
+        $assignment = Assignment::findOrFail($request->assignment_id);
+
+        if (Carbon::now()->lt(Carbon::parse($assignment->close_time))) {
+            return redirect()->back()->with('error', 'You can only add marks after the assignment has closed.');
+        }
+
+        // dd('READY TO CREATE', $request->all());
+        try {
+            $submission = Submission::create([
+                'assignment_id' => $request->assignment_id,
+                'student_id' => $student->national_id,
+                'mark' => $request->mark,
+                'feedback'      => $request->feedback,
+                'submitted_at' => now(),
+                'file_path' => null,
+            ]);
+
+
+            //dd("SAVED", $submission);
+        } catch (\Throwable $e) {
+            dd("ERROR", $e->getMessage());
+        }
+
+        return back()->with('success', 'Missing submissions saved with 0 marks.');
     }
 }

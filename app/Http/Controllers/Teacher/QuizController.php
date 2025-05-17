@@ -11,6 +11,10 @@ use Carbon\Carbon;
 
 class QuizController extends Controller
 {
+    private function quizHasStarted($quiz)
+    {
+        return now()->greaterThanOrEqualTo($quiz->start_time);
+    }
     public function index()
     {
         $teacherId = Auth::user()->teacherProfile->id;
@@ -18,49 +22,68 @@ class QuizController extends Controller
         $quizzes = Quiz::where('teacher_id', $teacherId)
             ->with(['classes', 'questions.options'])
             ->get();
-$classess = auth()->user()->teacherProfile->classes()->with('grade')->get();
-$grades = $classess->pluck('grade')->unique('id');
+        $classess = auth()->user()->teacherProfile->classes()->with('grade')->get();
+        $grades = $classess->pluck('grade')->unique('id');
 
-return view('teacher.quizzes.index', compact('quizzes', 'classess', 'grades'));
-
+        return view('teacher.quizzes.index', compact('quizzes', 'classess', 'grades'));
     }
 
     public function create()
     {
-        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();$grades = $classess->pluck('grade')->unique('id');
+        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
+        $grades = $classess->pluck('grade')->unique('id');
 
-return view('teacher.quizzes.create', compact('classess', 'grades'));
-    
+        return view('teacher.quizzes.create', compact('classess', 'grades'));
     }
 
-   public function store(Request $request)
-{
-    $teacherId = Auth::user()->teacherProfile->id;
+    public function store(Request $request)
+    {
+        $teacherId = Auth::user()->teacherProfile->id;
 
-    $request->validate([
-        'class_ids' => 'required|array',
-        'class_ids.*' => 'exists:class_profiles,id',
-        'title' => 'required|string|max:255',
-        'start_time' => 'required|date',
-        'end_time' => 'required|date|after:start_time',
-        'duration' => 'required|integer|min:1',
-        'status' => 'required|in:show,hide',
-    ]);
+        $quiz_date = $request->input('quiz_date');
+        $start_hour = $request->input('start_hour');
+        $end_hour = $request->input('end_hour');
 
-    $quiz = Quiz::create([
-        'teacher_id' => $teacherId,
-        'title' => $request->title,
-        'start_time' => $request->start_time,
-        'end_time' => $request->end_time,
-        'duration' => $request->duration,
-        'number_of_questions' => 0,
-        'status' => $request->status,
-    ]);
+        $start_time = "{$quiz_date} {$start_hour}";
+        $end_time = "{$quiz_date} {$end_hour}";
 
-    $quiz->classes()->attach($request->class_ids);
+        $request->merge([
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+        ]);
 
-    return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz created successfully.');
-}
+        $request->validate([
+            'class_ids' => 'required|array',
+            'class_ids.*' => 'exists:class_profiles,id',
+            'title' => 'required|string|max:255',
+            'quiz_date' => 'required|date|after_or_equal:today',
+            'start_hour' => 'required|date_format:H:i',
+            'end_hour' => 'required|date_format:H:i|after:start_hour',
+            'duration' => 'required|integer|min:1',
+            'status' => 'required|in:show,hide',
+        ]);
+
+        $startDateTime = Carbon::parse("$quiz_date $start_hour");
+
+        if (Carbon::parse($quiz_date)->isToday() && $startDateTime->lt(now())) {
+            return back()->withErrors([
+                'start_hour' => 'Start time must be in the future if quiz date is today.'
+            ])->withInput();
+        }
+        $quiz = Quiz::create([
+            'teacher_id' => $teacherId,
+            'title' => $request->title,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'duration' => $request->duration,
+            'number_of_questions' => 0,
+            'status' => $request->status,
+        ]);
+
+        $quiz->classes()->attach($request->class_ids);
+
+        return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz created successfully.');
+    }
 
     public function show($quizId)
     {
@@ -71,75 +94,119 @@ return view('teacher.quizzes.create', compact('classess', 'grades'));
     public function edit($id)
     {
         $teacherId = Auth::user()->teacherProfile->id;
-
-        $quiz = Quiz::where('teacher_id', $teacherId)
-        ->with('classes') 
+        
+  $quiz = Quiz::where('teacher_id', $teacherId)
+        ->with('classes.grade')
         ->findOrFail($id);
-        $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
+
+    // استخرج كل الـ grade_id المرتبطة بالكويز
+    $gradeIds = $quiz->classes->pluck('grade_id')->unique();
+
+    // رجّع فقط الصفوف الخاصة بنفس الـ grade (أو أكثر من grade إذا مرتبط)
+    $classess = Auth::user()->teacherProfile->classes()
+        ->whereIn('grade_id', $gradeIds)
+        ->with('grade')
+        ->get();
+
+        // $quiz = Quiz::where('teacher_id', $teacherId)
+        //     ->with('classes')
+        //     ->findOrFail($id);
+
+        // if ($this->quizHasStarted($quiz)) {
+        //     return redirect()->route('teacher.quizzes.index')
+        //         ->withErrors(['edit' => 'You cannot edit a quiz after it has started.']);
+        // }
+      // $classess = Auth::user()->teacherProfile->classes()->with('grade')->get();
 
         return view('teacher.quizzes.edit', compact('quiz', 'classess'));
     }
-public function update(Request $request, $id)
-{
-    $teacherId = Auth::user()->teacherProfile->id;
+    public function update(Request $request, $id)
+    {
+        $teacherId = Auth::user()->teacherProfile->id;
 
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'class_ids' => 'required|array',
-        'class_ids.*' => 'exists:class_profiles,id',
-        'duration' => 'required|integer|min:1',
-        'start_time' => 'required|date',
-        'end_time' => 'required|date|after:start_time',
-        
-        'status' => 'required|in:show,hide',
-    ]);
+        $quiz_date = $request->input('quiz_date');
+        $start_hour = $request->input('start_hour');
+        $end_hour = $request->input('end_hour');
 
-    $quiz = Quiz::where('teacher_id', $teacherId)->findOrFail($id);
+        $start_time = "{$quiz_date} {$start_hour}";
+        $end_time = "{$quiz_date} {$end_hour}";
 
-    $quiz->update([
-        'title' => $request->title,
-        'duration' => $request->duration,
-        'start_time' => $request->start_time,
-        'end_time' => $request->end_time,
-       
-        'status' => $request->status,
-    ]);
+        $request->merge([
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+        ]);
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'class_ids' => 'required|array',
+            'class_ids.*' => 'exists:class_profiles,id',
+            'duration' => 'required|integer|min:1',
+            'quiz_date' => 'required|date|after_or_equal:today',
+            'start_hour' => 'required|date_format:H:i',
+            'end_hour' => 'required|date_format:H:i|after:start_hour',
 
-    // Sync classes
-    $quiz->classes()->sync($request->class_ids);
+            'status' => 'required|in:show,hide',
+        ]);
 
-    return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz updated successfully.');
-}
+        $startDateTime = Carbon::parse("$quiz_date $start_hour");
+
+        if (Carbon::parse($quiz_date)->isToday() && $startDateTime->lt(now())) {
+            return back()->withErrors([
+                'start_hour' => 'Start time must be in the future if quiz date is today.'
+            ])->withInput();
+        }
+        $quiz = Quiz::where('teacher_id', $teacherId)->findOrFail($id);
+
+        $quiz->update([
+            'title' => $request->title,
+            'duration' => $request->duration,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+
+            'status' => $request->status,
+        ]);
+
+        // Sync classes
+        $quiz->classes()->sync($request->class_ids);
+
+        return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz updated successfully.');
+    }
 
     public function destroy($id)
     {
         $teacherId = Auth::user()->teacherProfile->id;
 
         $quiz = Quiz::where('teacher_id', $teacherId)->findOrFail($id);
+
+        if ($this->quizHasStarted($quiz)) {
+            return redirect()->route('teacher.quizzes.index')
+                ->withErrors(['delete' => 'You cannot delete a quiz after it has started.']);
+        }
+
         $quiz->delete();
 
         return redirect()->route('teacher.quizzes.index')->with('success', 'Quiz deleted successfully.');
     }
- public function getSectionsByGrade($gradeId)
-{
-    $teacher = auth()->user()->teacherProfile;
 
-    $sections = $teacher->classes()
-        ->with('grade')
-        ->whereHas('grade', function ($query) use ($gradeId) {
-            $query->where('id', $gradeId);
-        })
-        ->get()
-        ->map(function ($class) {
-            return [
-                'id' => $class->id,
-                'grade' => $class->grade->name,
-                'section' => $class->section
-            ];
-        });
+    public function getSectionsByGrade($gradeId)
+    {
+        $teacher = auth()->user()->teacherProfile;
 
-    return response()->json($sections);
-}
+        $sections = $teacher->classes()
+            ->with('grade')
+            ->whereHas('grade', function ($query) use ($gradeId) {
+                $query->where('id', $gradeId);
+            })
+            ->get()
+            ->map(function ($class) {
+                return [
+                    'id' => $class->id,
+                    'grade' => $class->grade->name,
+                    'section' => $class->section
+                ];
+            });
+
+        return response()->json($sections);
+    }
 
 
     public function startQuiz($id)
