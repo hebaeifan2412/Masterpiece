@@ -14,7 +14,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="{{ asset('dash-front/css/vertical-layout-light/style.css') }}">
   <!-- endinject -->
-  <link rel="shortcut icon" href="{{ asset('dash-front/images/favicon.png') }}" />
+ <link rel="shortcut icon" href="{{ asset('dash-front/images/icon.png') }}" />
 
   
   <style>

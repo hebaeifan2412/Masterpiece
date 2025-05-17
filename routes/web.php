@@ -52,7 +52,8 @@ use App\Models\Mark;
 */
 
 Route::get('/', [HomeController::class, 'index']);
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.submit');
+// Route::post('/contact', [ContactController::class, 'store'])->name('contact.submit');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('signin');

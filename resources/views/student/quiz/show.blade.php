@@ -1,5 +1,15 @@
-@extends('student.layout.app')
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>School Student</title>
+    @include('student.layout.style') {{-- Include CSS --}}
+</head>
+
+<body>
+    <div class="container-scroller">
 <div class="container py-5">
     <div class="quiz-container">
         <!-- Quiz Header -->
@@ -94,13 +104,14 @@
                 <h4 class="modal-title mt-3">Are you sure you want to submit?</h4>
                 <p class="text-muted mt-2">You won't be able to change your answers after submission</p>
                 <div class="d-flex justify-content-center mt-4 gap-3">
-                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-purple px-4" id="confirmSubmit">Confirm Submit</button>
+                    <button type="button" class="btn btn-secondary text-light px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary px-4" id="confirmSubmit">Confirm Submit</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+    </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -190,6 +201,49 @@
             document.getElementById('quizForm').submit();
         });
     });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    let isQuizSubmitted = false;
+
+    // منع مغادرة الصفحة
+    window.addEventListener('beforeunload', function (e) {
+        if (!isQuizSubmitted) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
+
+    // عند الضغط على تأكيد الإرسال
+    document.getElementById('confirmSubmit').addEventListener('click', function () {
+        isQuizSubmitted = true;
+    });
+
+    // منع الاختصارات
+    window.addEventListener('keydown', function (e) {
+        if (
+            !isQuizSubmitted &&
+            !['INPUT', 'TEXTAREA'].includes(e.target.tagName) &&
+            (
+                e.key === 'F5' ||
+                (e.ctrlKey && ['r', 'R', 'w', 'u'].includes(e.key)) ||
+                (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i')
+            )
+        ) {
+            e.preventDefault();
+            alert("You can't leave or refresh the quiz until you submit.");
+        }
+    });
+
+    // منع كليك يمين
+    document.addEventListener('contextmenu', function (e) {
+        if (!isQuizSubmitted) {
+            e.preventDefault();
+        }
+    });
+});
+
+
 </script>
 
 <style>
@@ -257,7 +311,7 @@
     /* Timer Styles */
    .quiz-timer {
     position: fixed;
-    top: 20px;
+    top: 80px;
     right: 20px;
     z-index: 9999;
     background: #fff;
@@ -520,4 +574,13 @@
         }
     }
 </style>
-@endsection
+@include('student.layout.script') {{-- Include JS --}}
+
+    @include('student.layout.footer')
+    <!-- Scripts -->
+   <!-- Add in head or before closing body tag -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

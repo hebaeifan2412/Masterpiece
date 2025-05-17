@@ -71,6 +71,7 @@ class TeacherController extends Controller
             'class_profiles.section',
             DB::raw('ROUND(AVG(marks.marks), 2) as average')
         )
+        ->where('quizzes.teacher_id', $teacherProfile->id)
         ->groupBy('quizzes.id', 'class_profiles.id', 'grades.name', 'class_profiles.section', 'quizzes.title')
         ->get();
 

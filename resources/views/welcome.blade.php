@@ -25,6 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+ <link rel="shortcut icon" href="{{ asset('dash-front/images/icon.png') }}" />
 
 
     <style>
@@ -352,28 +353,29 @@
                         <div class="bg-white p-3 shadow rounded">
                             <h2 class="section-title mb-4">Message Us</h2>
 
-                            <form method="post" data-aos="fade">
+                            <form method="post" action="{{ route('contact.submit') }}" data-aos="fade">
+                                @csrf
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <input type="text" class="form-control form-control-lg"
+                                        <input type="text" class="form-control form-control-lg" name="first_name"
                                             placeholder="First name">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <input type="text" class="form-control form-control-lg"
-                                            placeholder="Last name">
+                                            name="last_name" placeholder="Last name">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" placeholder="Subject">
+                                    <input type="text"  name="subject" class="form-control form-control-lg" placeholder="Subject">
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-lg" placeholder="Email">
+                                    <input type="email"  name="email" class="form-control form-control-lg" placeholder="Email">
                                 </div>
 
                                 <div class="form-group">
-                                    <textarea class="form-control form-control-lg" rows="5" placeholder="Write your message here"></textarea>
+                                    <textarea name="message"  class="form-control form-control-lg" rows="5" placeholder="Write your message here"></textarea>
                                 </div>
 
                                 <div class="form-group">
@@ -382,6 +384,11 @@
                                     </button>
                                 </div>
                             </form>
+                            @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
                         </div>
                     </div>
                 </div>
@@ -398,13 +405,13 @@
                     <!-- Social Icons (Left Side) -->
                     <div class="col-md-3 text-center text-md-start mb-3 mb-md-0">
                         <div class="social-icons">
-                            <a href="#" class="social-icon me-2">
+                            <a href="https://www.facebook.com/share/16Mo7v5tVA/" class="social-icon me-2" target="_blank">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="#" class="social-icon me-2">
+                            <a href="https://www.linkedin.com/in/heba-aleifan" class="social-icon me-2" target="_blank">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="social-icon">
+                            <a href="https://www.instagram.com/hebaeifan?igsh=dGtwdHFvcTdwZWhz" class="social-icon" target="_blank">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>

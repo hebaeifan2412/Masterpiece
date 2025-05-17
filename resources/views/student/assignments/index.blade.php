@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container py-4">
+        
         <h2 class="mb-4 fw-bold"> <i class="fas fa-clipboard  text-dark me-3"></i>Assignments</h2>
 
         @if (session('success'))
@@ -11,6 +12,7 @@
         @endif
 
         @forelse ($assignments as $assignment)
+        {{-- <pre>{{ $assignment->attachment }}</pre> --}}
             @php
                 $submission = $assignment->submissions
                     ->where('student_id', auth()->user()->student->national_id)
@@ -25,6 +27,13 @@
                     <p class="card-text">{{ $assignment->description ?? 'No description.' }}</p>
                     {{-- <p class="mb-1"> <i class="fas fa-book-open me-2"></i><strong>Subject:</strong>
                         {{ $assignment->teacher->subject->name ?? 'No Subject' }}</p> --}}
+                           @if($assignment->attachment)
+                <p>
+                    <a href="{{ asset('storage/' . $assignment->attachment) }}" class="btn btn-primary" target="_blank">
+                        assignment File
+                    </a>
+                </p>
+            @endif
                          <div class="row gap-3  ">
                           <div class="col-5 subject-info mb-3 p-3 bg-light rounded">
         <div class="d-flex align-items-center mb-2">

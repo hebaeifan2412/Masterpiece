@@ -99,10 +99,8 @@ class QuizController extends Controller
         ->with('classes.grade')
         ->findOrFail($id);
 
-    // استخرج كل الـ grade_id المرتبطة بالكويز
     $gradeIds = $quiz->classes->pluck('grade_id')->unique();
 
-    // رجّع فقط الصفوف الخاصة بنفس الـ grade (أو أكثر من grade إذا مرتبط)
     $classess = Auth::user()->teacherProfile->classes()
         ->whereIn('grade_id', $gradeIds)
         ->with('grade')
